@@ -33,16 +33,16 @@ Use scripts at will. Examples:
 
 After running runAll.sh, you will find several files in the directories corresponding to each project tested:
 
-<name>-noXOR.log    -- A log of the standard translation + building of the BDD
-<name->-noXOR.var   -- The names of the variables in the system in order of appearance
-<name>-noXOR.exp    -- The clauses in the standard translation of the system
-<name>-noXOR.ord    -- The variables in the system as ordered by the static heuristic to start building the BDD
-<name>-noXOR.dddmp  -- The BDD for the standard translation in dddmp format
+[name]-noXOR.log    -- A log of the standard translation + building of the BDD
+[name]-noXOR.var   -- The names of the variables in the system in order of appearance
+[name]-noXOR.exp    -- The clauses in the standard translation of the system
+[name]-noXOR.ord    -- The variables in the system as ordered by the static heuristic to start building the BDD
+[name]-noXOR.dddmp  -- The BDD for the standard translation in dddmp format
 
-<name>.dimacs       -- The standard translation in DIMACS format
+[name].dimacs       -- The standard translation in DIMACS format
 
-<name>-XOR.log      -- A log of the extended translation + building of the BDD
-<name->-XOR.var     -- The names of the variables in the system in order of appearance
-<name>-XOR.exp      -- The clauses in the extended translation of the system
-<name>-XOR.ord      -- The variables in the system as ordered by the static heuristic to start building the BDD
-<name>-XOR.dddmp    -- The BDD for the extended translation in dddmp format
+[name]-XOR.log      -- A log of the extended translation + building of the BDD
+[name]-XOR.var     -- The names of the variables in the system in order of appearance
+[name]-XOR.exp      -- The clauses in the extended translation of the system
+[name]-XOR.ord      -- The variables in the system as ordered by the static heuristic to start building the BDD
+[name]-XOR.dddmp    -- The BDD for the extended translation in dddmp format
