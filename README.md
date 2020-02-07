@@ -57,3 +57,19 @@ After running runAll.sh, you will find several files in the directories correspo
 
 [name]-XOR.dddmp    -- The BDD for the extended translation in dddmp format
 
+BUGS: If you get an error like this:
+Extending-Logic/code/cudd-3.0.0/build-aux/missing: line 81: aclocal-1.15: command not found
+WARNING: 'aclocal-1.15' is missing on your system.
+         You should only need it if you modified 'acinclude.m4' or
+         'configure.ac' or m4 files included by 'configure.ac'.
+         The 'aclocal' program is part of the GNU Automake package:
+         
+You should cd to the cudd-3.0.0 dir and run:
+autoreconf -ivf
+then go back to the code dir and run make again. It is a git/svn bug.
+
+========================================================================
+KNOWN ISSUES
+========================================================================
+* Autoconf does not work well on code freshly checked out of git.  Autoconf
+ artifacts must be rebuilt using `autoreconf -ivf` .
