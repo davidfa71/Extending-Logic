@@ -1,0 +1,93 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         lzo.kconfig
+# \brief	lzo.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HOST_HAVE_LZO
+	bool
+	help
+		lzo host development machine.
+
+config EMBTK_HAVE_LZO
+	bool "Have lzo for the target"
+	select KEMBTK_UCLIBC_UCLIBC_SUSV4_LEGACY if EMBTK_CLIB_UCLIBC
+	help
+		LZO is a data compression library which is suitable for data
+		de-/compression in real-time. This means it favours speed over
+		compression ratio.
+		LZO is written in ANSI C. Both the source code and the
+		compressed data format are designed to be portable across
+		platforms.
+		LZO implements a number of algorithms with the following
+		features:
+
+			* Decompression is simple and *very* fast.
+			* Requires no memory for decompression.
+			* Compression is pretty fast.
+			* Requires 64 kB of memory for compression.
+			* Allows you to dial up extra compression at a speed
+			  cost in the compressor. The speed of the decompressor 
+			  is not reduced.
+			* Includes compression levels for generating
+			  pre-compressed data which achieve a quite competitive
+			  compression ratio.
+			* There is also a compression level which needs only
+			  8 kB for compression.
+			* Algorithm is thread safe.
+			* Algorithm is lossless.
+   		 LZO supports overlapping compression and in-place
+   		 decompression.
+
+choice
+	prompt "lzo version you wish"
+	depends on EMBTK_HAVE_LZO || EMBTK_HOST_HAVE_LZO
+	help
+		Here you can choose which version of lzo you want to use.
+
+	config  EMBTK_LZO_VERSION_2_03
+		bool "lzo-2.03"
+endchoice
+
+config EMBTK_LZO_VERSION_STRING
+	string
+	default "2.03"	if EMBTK_LZO_VERSION_2_03
+
+config EMBTK_LZO_NEED_PATCH
+	bool
+	select EMBTK_LZO_HOST_NEED_PATCH
+config EMBTK_LZO_NEED_AUTORECONF
+	bool
+	select EMBTK_LZO_HOST_NEED_AUTORECONF
+config EMBTK_LZO_PKG_IS_TARGZ
+	bool
+config EMBTK_LZO_PKG_IS_TARBZ2
+	bool
+
+config EMBTK_LZO_HOST_NEED_PATCH
+	bool
+config EMBTK_LZO_HOST_NEED_AUTORECONF
+	bool
+config EMBTK_LZO_HOST_PKG_IS_TARGZ
+	bool
+config EMBTK_LZO_HOST_PKG_IS_TARBZ2
+	bool

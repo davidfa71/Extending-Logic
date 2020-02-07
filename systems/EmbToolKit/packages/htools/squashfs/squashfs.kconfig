@@ -1,0 +1,45 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2011-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         squashfs.kconfig
+# \brief	squashfs.kconfig of Embtoolkit.
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         August 2011
+################################################################################
+
+config EMBTK_HOST_HAVE_SQUASHFS
+	bool
+	select EMBTK_SQUASHFS_HOST_NEED_PATCH
+	select EMBK_HOST_HAVE_ZLIB
+	help
+	 Say Y to build host tools needed to generate squashfs filesystem.
+	 Squashfs is a compressed read-only filesystem for Linux.
+	 Squashfs is intended for general read-only filesystem use, for archival
+	 use (i.e. in cases where a .tar.gz file may be used), and in
+	 constrained block device/memory systems (e.g. embedded systems) where
+	 low overhead is needed.
+
+config EMBTK_SQUASHFS_HOST_VERSION_STRING
+	string
+	default "4.2"
+
+config EMBTK_SQUASHFS_HOST_NEED_PATCH
+	bool
+config EMBTK_SQUASHFS_HOST_NEED_AUTORECONF
+	bool

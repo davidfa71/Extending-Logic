@@ -1,0 +1,58 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xcmiscproto.kconfig
+# \brief	xcmiscproto.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XCMISCPROTO
+	bool "Have xcmiscproto"
+	help
+		xcmiscproto for X windowing system.
+		XC-MISC Extension: This extension defines a protocol that
+		provides Xlib two ways to query the server for available
+		resource IDs.
+
+choice
+	prompt "xcmiscproto version you wish"
+	depends on EMBTK_HAVE_XCMISCPROTO
+	help
+	 Here you can choose which version of xcmiscproto you want to use.
+
+	config  EMBTK_XCMISCPROTO_VERSION_1_2_1
+		bool "xcmiscproto-1.2.1"
+	config  EMBTK_XCMISCPROTO_VERSION_1_2_0
+		bool "xcmiscproto-1.2.0"
+endchoice
+
+config EMBTK_XCMISCPROTO_VERSION_STRING
+	string
+	default "1.2.1"		if EMBTK_XCMISCPROTO_VERSION_1_2_1
+	default "1.2.0"		if EMBTK_XCMISCPROTO_VERSION_1_2_0
+
+config EMBTK_XCMISCPROTO_NEED_PATCH
+	bool
+config EMBTK_XCMISCPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_XCMISCPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_XCMISCPROTO_PKG_IS_TARBZ2
+	bool

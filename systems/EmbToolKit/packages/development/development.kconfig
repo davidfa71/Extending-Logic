@@ -1,0 +1,78 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         development.kconfig
+# \brief	development.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2009
+################################################################################
+
+# atf
+source packages/development/atf/atf.kconfig
+
+# boost
+source packages/development/boost/boost.kconfig
+
+# fftw
+source packages/development/fftw/fftw.kconfig
+
+# gettext-intl
+source packages/development/gettext-intl/gettext-intl.kconfig
+
+# glibmm
+source packages/development/glibmm/glibmm.kconfig
+
+# gtest
+source packages/development/gtest/gtest.kconfig
+
+# icu
+source packages/development/icu/icu.kconfig
+
+# kyua
+source packages/development/kyua/kyua.kconfig
+
+# libbsd
+source packages/development/libbsd/libbsd.kconfig
+
+# libelf
+source packages/development/libelf/libelf.kconfig
+
+# libevent
+source packages/development/libevent/libevent.kconfig
+
+# libnih
+source packages/development/libnih/libnih.kconfig
+
+# libsigc++
+source packages/development/libsigcpp/libsigcpp.kconfig
+
+# libsigsegv
+source packages/development/libsigsegv/libsigsegv.kconfig
+
+# libunwind
+source packages/development/libunwind/libunwind.kconfig
+
+# libuuid
+source packages/development/e2fsprogs-libuuid/e2fsprogs-libuuid.kconfig
+
+# openblas
+source packages/development/openblas/openblas.kconfig
+
+# popt
+source packages/development/popt/popt.kconfig

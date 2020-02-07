@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libtirpc.kconfig
+# \brief	libtirpc.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2012
+################################################################################
+
+config EMBTK_HAVE_LIBTIRPC
+	bool "Have libtirpc"
+	select EMBTK_UCLIBC_UCLIBC_HAS_SOCKET if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_HAS_NETWORK_SUPPORT if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_USE_NETLINK if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_SUPPORT_AI_ADDRCONFIG if EMBTK_CLIB_UCLIBC
+	help
+	 Libtirpc is a port of Suns Transport-Independent RPC library to Linux.
+
+choice
+	prompt "libtirpc version you wish"
+	depends on EMBTK_HAVE_LIBTIRPC
+	help
+	 Here you can choose which version of libtirpc you want to use.
+
+	config  EMBTK_LIBTIRPC_VERSION_0_2_2
+		bool "libtirpc-0.2.2"
+		select EMBTK_LIBTIRPC_NEED_PATCH
+		select EMBTK_LIBTIRPC_NEED_AUTORECONF
+endchoice
+
+config EMBTK_LIBTIRPC_VERSION_STRING
+	string
+	default "0.2.2"		if EMBTK_LIBTIRPC_VERSION_0_2_2
+
+config EMBTK_LIBTIRPC_NEED_PATCH
+	bool
+config EMBTK_LIBTIRPC_NEED_AUTORECONF
+	bool

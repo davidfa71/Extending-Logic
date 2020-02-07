@@ -1,0 +1,52 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2013 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         sqlite.kconfig
+# \brief	sqlite.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2010
+################################################################################
+
+config EMBTK_HAVE_SQLITE
+	bool "Have sqlite"
+	help
+	 SQLite is a software library that implements a self-contained,
+	 serverless, zero-configuration, transactional SQL database engine.
+	 SQLite is the most widely deployed SQL database engine in the world.
+	 The source code for SQLite is in the public domain.
+
+choice
+	prompt "sqlite version you wish"
+	depends on EMBTK_HAVE_SQLITE
+	help
+	 Here you can choose which version of sqlite you want to use.
+
+	config  EMBTK_SQLITE_VERSION_3_8_6
+		bool "sqlite-3.8.6"
+endchoice
+
+config EMBTK_SQLITE_VERSION_STRING
+	string
+	default "3080600"	if EMBTK_SQLITE_VERSION_3_8_6
+
+
+config EMBTK_SQLITE_NEED_PATCH
+	bool
+config EMBTK_SQLITE_NEED_AUTORECONF
+	bool

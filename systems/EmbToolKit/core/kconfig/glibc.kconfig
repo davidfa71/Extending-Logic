@@ -1,0 +1,49 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2013-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         glibc.kconfig
+# \brief	glibc.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2013
+################################################################################
+
+choice
+	prompt "GLIBC version you wish"
+	help
+	 Here you can choose which version of glibc you want to use.
+
+	config  EMBTK_GLIBC_VERSION_2_19
+		bool "glibc-2.19"
+		select EMBTK_GLIBC_NEED_PATCH
+	config  EMBTK_GLIBC_VERSION_2_17
+		bool "glibc-2.17"
+		select EMBTK_GLIBC_NEED_PATCH
+endchoice
+
+config EMBTK_GLIBC_VERSION_STRING
+	string
+	default "2.19"		if EMBTK_GLIBC_VERSION_2_19
+	default "2.17"		if EMBTK_GLIBC_VERSION_2_17
+
+config EMBTK_GLIBC_REFSPEC
+	string
+	default "toolchain"
+
+config EMBTK_GLIBC_NEED_PATCH
+	bool

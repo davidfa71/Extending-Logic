@@ -1,0 +1,49 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2013 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         fcgi.kconfig
+# \brief	fcgi.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2013
+################################################################################
+
+config EMBTK_HAVE_FCGI
+	bool "Have fcgi"
+	select EMBTK_GCC_LANGUAGE_CPP
+	help
+	 fastcgi development library.
+
+choice
+	prompt "fcgi version you wish"
+	depends on EMBTK_HAVE_FCGI
+	help
+	 Here you can choose which version of fcgi you want to use.
+
+	config EMBTK_FCGI_VERSION_2_4_1
+		bool "fcgi-2.4.1-SNAP-0910052249"
+endchoice
+
+config EMBTK_FCGI_VERSION_STRING
+	string
+	default "2.4.1-SNAP-0910052249"	if EMBTK_FCGI_VERSION_2_4_1
+
+config EMBTK_FCGI_NEED_PATCH
+	bool
+config EMBTK_FCGI_NEED_AUTORECONF
+	bool

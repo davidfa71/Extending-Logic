@@ -1,0 +1,37 @@
+#ifndef _OBJECTIVE_HPP_
+#define _OBJECTIVE_HPP_
+
+#include <map>
+#include <vector>
+#include <set>
+#include <iostream>
+
+class Objective {
+	public:
+		void		 setMin(int min);
+		void		 setMax(int max);
+		int		 getMin();
+		int 		 getMax();
+		void             add(double d, std::set<int> v);	
+		int              size();
+                Objective        simplify(const std::vector<char>& v);
+	        friend  std::ostream& operator<<(std::ostream& os, Objective& obj);
+		double 		 evaluate(std::vector<char> values);
+		Objective	 filter(std::set<int> variables);
+		Objective	 filter(int minVar, int maxVar);
+                double           getIndependent();
+                std::vector<int>   getFactors(int i);
+                // Change every variable to its translation
+                // useful to go from variable indexes to positions
+                // and vice versa
+                void             translate(std::vector<int>& tr);
+		void             add(double coef, std::vector<int>);
+
+                typedef std::set<std::pair<double, std::set<int>>> funType; 
+	private:
+                double independent = 0;
+		funType fun;
+		int min, max;
+
+};
+#endif

@@ -1,0 +1,102 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         atk.kconfig
+# \brief	atk.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HAVE_ATK
+	bool "Have atk"
+	help
+		GNOME Accessibility is the suite of software services and
+		support in GNOME that allows people with disabilities to utilize
+		all of the functionality of the GNOME user environment.
+
+# atk versions selection helpers symbols
+config	EMBTK_ATK_VERSION_1_32_X_AND_GREATER
+	bool
+	help
+		Equal or greater than atk-1.32.x
+		Note: this version does not exist yet. It is only here for
+		reference for versions selection logic
+config	EMBTK_ATK_VERSION_1_30_X_AND_GREATER
+	bool
+	help
+		Equal or greater than atk-1.30.x
+config	EMBTK_ATK_VERSION_1_28_X_AND_GREATER
+	bool
+	help
+		Equal or greater than atk-1.28.x
+
+config	EMBTK_ATK_VERSION_1_32_X
+	bool
+	default y if EMBTK_ATK_VERSION_1_32_X_AND_GREATER
+config	EMBTK_ATK_VERSION_1_30_X
+	bool
+	default y if EMBTK_ATK_VERSION_1_30_X_AND_GREATER
+	select EMBTK_ATK_VERSION_1_32_X
+config	EMBTK_ATK_VERSION_1_28_X
+	bool
+	default y if EMBTK_ATK_VERSION_1_28_X_AND_GREATER
+	select EMBTK_ATK_VERSION_1_30_X
+
+# Select all of these versions if none selected
+config EMBTK_ATK_VERSION_ALL
+	bool
+	default y if \
+		!EMBTK_ATK_VERSION_1_32_X_AND_GREATER && \
+		!EMBTK_ATK_VERSION_1_30_X_AND_GREATER && \
+		!EMBTK_ATK_VERSION_1_28_X_AND_GREATER
+	select EMBTK_ATK_VERSION_1_28_X
+
+# atk version selectable upon above selection logic
+choice
+	prompt "atk version you wish"
+	depends on EMBTK_HAVE_ATK
+	help
+		Here you can choose which version of atk you want to use.
+
+	config  EMBTK_ATK_VERSION_1_30_0
+		bool "atk-1.30.0"
+		depends on EMBTK_ATK_VERSION_1_30_X
+	config  EMBTK_ATK_VERSION_1_28_0
+		bool "atk-1.28.0"
+		depends on EMBTK_ATK_VERSION_1_28_X
+endchoice
+
+config EMBTK_ATK_MAJOR_VERSION_STRING
+	string
+	default "1.30"		if EMBTK_ATK_VERSION_1_30_0
+	default "1.28"		if EMBTK_ATK_VERSION_1_28_0
+
+config EMBTK_ATK_VERSION_STRING
+	string
+	default "1.30.0"	if EMBTK_ATK_VERSION_1_30_0
+	default "1.28.0"	if EMBTK_ATK_VERSION_1_28_0
+
+config EMBTK_ATK_NEED_PATCH
+	bool
+config EMBTK_ATK_NEED_AUTORECONF
+	bool
+config EMBTK_ATK_PKG_IS_TARGZ
+	bool
+config EMBTK_ATK_PKG_IS_TARBZ2
+	bool

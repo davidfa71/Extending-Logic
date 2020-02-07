@@ -1,0 +1,67 @@
+################################################################################
+# Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         targetbuildopts.kconfig
+# \brief	Target build otions
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2010
+################################################################################
+
+choice
+	prompt "Generated libraries/binaries optimization"
+	help
+		Target binaries and libraries optimization for size or speed
+		(or no optimization).
+
+	config	EMBTK_TARGET_SIZE_OPTIMIZED
+		bool "Optimize for size"
+		help
+			Optimize target libraries and binaries for minimal size
+			(gcc -Os switch).
+	config	EMBTK_TARGET_SPEED_OPTIMIZED
+		bool "Optimize for speed"
+		help
+			Optimize target libraries and binaries for speed
+			(gcc -O3 switch).
+	config	EMBTK_TARGET_NONE_OPTIMIZED
+		bool "No optimization"
+		help
+			Do not optimize libraries and binaries at all.
+endchoice
+
+config EMBTK_TARGET_WITH_DEBUG_DATA
+	bool "Build target's binaries and libraries with debug data"
+	help
+		Build target's binaries and libraries with debug data
+		(gcc -g switch).
+
+config EMBTK_TARGET_STRIPPED
+	bool "Strip target's binaries"
+	help
+		Say yes if you want to strip binaries (including libraries)
+		generated for your target embedded system. This will reduce the
+		size of these binaries.
+		Note: These binaries are only stripped if you choose to build a
+		root filesystem.
+
+config EMBTK_TARGET_COMPILER_CFLAGS
+	string "Additional compiler flags for your target"
+	help
+		Here you can change default flags passed to gcc when components
+		of your target are built: C library, packages, ...

@@ -1,0 +1,72 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2011-2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gperf.kconfig
+# \brief	gperf.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2011
+################################################################################
+
+config EMBTK_HOST_HAVE_GPERF
+	bool
+	help
+		gperf for host development machine.
+
+config EMBTK_HAVE_GPERF
+	bool
+	help
+		This is GNU gperf. It is a program that generates perfect hash
+		functions for sets of key words.
+		A perfect hash function is:
+			A hash function and a data structure that allows
+			recognition of a key word in a set of words using
+			exactly 1 probe into the data structure.
+choice
+	prompt "gperf version you wish"
+	depends on EMBTK_HAVE_GPERF || EMBTK_HOST_HAVE_GPERF
+	help
+		Here you can choose which version of gperf you want to use.
+
+	config  EMBTK_GPERF_VERSION_3_0_4
+		bool "gperf-3.0.4"
+endchoice
+
+config EMBTK_GPERF_VERSION_STRING
+	string
+	default "3.0.4"		if EMBTK_GPERF_VERSION_3_0_4
+
+config EMBTK_GPERF_NEED_PATCH
+	bool
+	select EMBTK_GPERF_HOST_NEED_PATCH
+config EMBTK_GPERF_NEED_AUTORECONF
+	bool
+	select EMBTK_GPERF_HOST_NEED_AUTORECONF
+config EMBTK_GPERF_PKG_IS_TARGZ
+	bool
+config EMBTK_GPERF_PKG_IS_TARBZ2
+	bool
+
+config EMBTK_GPERF_HOST_NEED_PATCH
+	bool
+config EMBTK_GPERF_HOST_NEED_AUTORECONF
+	bool
+config EMBTK_GPERF_HOST_PKG_IS_TARGZ
+	bool
+config EMBTK_GPERF_HOST_PKG_IS_TARBZ2
+	bool

@@ -1,0 +1,216 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gcc.kconfig
+# \brief	gcc.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+
+config EMBTK_HAVE_GCC
+	bool
+	default y
+
+choice
+	prompt "GCC series to use"
+	depends on EMBTK_HAVE_GCC
+	help
+	 Here you can choose which GCC series you want to use.
+
+	config EMBTK_GCC_VERSION_4_9_X
+		bool "gcc-4.9.x"
+	config EMBTK_GCC_VERSION_4_8_X
+		bool "gcc-4.8.x"
+	config EMBTK_GCC_VERSION_4_7_X
+		bool "gcc-4.7.x"
+	config EMBTK_GCC_VERSION_GIT
+		bool "Use GCC git repository"
+		help
+		 Answer Y here if you want to build your toolchain based on GCC
+		 sources from its GIT repository.
+		 See http://gcc.gnu.org/git/?p=gcc.git
+endchoice
+
+# GCC-4.9.x
+choice
+	prompt "Version of gcc-4.9.x you wish"
+	depends on EMBTK_GCC_VERSION_4_9_X
+	help
+	 gcc-4.9.x version used.
+
+	config EMBTK_GCC_VERSION_4_9_2
+		bool "gcc-4.9.2"
+		select EMBTK_GCC_NEED_PATCH
+endchoice
+
+# GCC-4.8.x
+choice
+	prompt "Version of gcc-4.8.x you wish"
+	depends on EMBTK_GCC_VERSION_4_8_X
+	help
+	 gcc-4.8.x version used.
+
+	config EMBTK_GCC_VERSION_4_8_3
+		bool "gcc-4.8.3"
+		select EMBTK_GCC_NEED_PATCH
+endchoice
+
+# GCC-4.7.x
+choice
+	prompt "Version of gcc-4.7.x you wish"
+	depends on EMBTK_GCC_VERSION_4_7_X
+	help
+	 gcc-4.7.x version used.
+
+	config EMBTK_GCC_VERSION_4_7_4
+		bool "gcc-4.7.4"
+endchoice
+
+#
+# GIT repository options
+#
+config EMBTK_GCC_GIT_BRANCH
+	string "Branch to use"
+	default "master"
+	depends on EMBTK_GCC_VERSION_GIT
+	help
+	 The branch of the git repository to use, the default is master.
+
+config EMBTK_GCC_GIT_REVISION
+	string "Checkout a specific revision instead of the latest"
+	depends on EMBTK_GCC_VERSION_GIT
+	help
+	 Chechout a specific revision instead of the latest.
+
+config EMBTK_GCC_REFSPEC
+	string
+	default "toolchain"
+
+#
+# Versions strings for tarball packages.
+#
+config EMBTK_GCC_VERSION_STRING
+	string
+	default "4.9.2"		if EMBTK_GCC_VERSION_4_9_2
+	default "4.8.3"		if EMBTK_GCC_VERSION_4_8_3
+	default "4.7.4"		if EMBTK_GCC_VERSION_4_7_4
+	default "git"		if EMBTK_GCC_VERSION_GIT
+
+config EMBTK_GCC_NEED_PATCH
+	bool
+	select EMBTK_GCC1_NEED_PATCH
+	select EMBTK_GCC2_NEED_PATCH
+	select EMBTK_GCC3_NEED_PATCH
+
+config EMBTK_GCC_NEED_AUTORECONF
+	bool
+	select EMBTK_GCC1_NEED_AUTORECONF
+	select EMBTK_GCC2_NEED_AUTORECONF
+	select EMBTK_GCC3_NEED_AUTORECONF
+
+
+#
+# GCC1 virtual packages
+#
+config EMBTK_GCC1_LANGUAGE_CPP
+	bool
+config EMBTK_GCC1_LANGUAGE_OBJECTIVEC
+	bool
+config EMBTK_GCC1_LANGUAGE_OBJECTIVECPP
+	bool
+config EMBTK_GCC1_LANGUAGE_FORTRAN
+	bool
+config EMBTK_GCC1_GIT_BRANCH
+	string
+	default EMBTK_GCC_GIT_BRANCH
+	depends on EMBTK_GCC_VERSION_GIT
+config EMBTK_GCC1_GIT_REVISION
+	string
+	depends on EMBTK_GCC_VERSION_GIT
+	default EMBTK_GCC_GIT_REVISION
+config EMBTK_GCC1_REFSPEC
+	string
+	default EMBTK_GCC_REFSPEC
+config EMBTK_GCC1_VERSION_STRING
+	string
+	default EMBTK_GCC_VERSION_STRING
+config EMBTK_GCC1_NEED_PATCH
+	bool
+config EMBTK_GCC1_NEED_AUTORECONF
+	bool
+
+#
+# GCC2 virtual packages
+#
+config EMBTK_GCC2_LANGUAGE_CPP
+	bool
+config EMBTK_GCC2_LANGUAGE_OBJECTIVEC
+	bool
+config EMBTK_GCC2_LANGUAGE_OBJECTIVECPP
+	bool
+config EMBTK_GCC2_LANGUAGE_FORTRAN
+	bool
+config EMBTK_GCC2_GIT_BRANCH
+	string
+	default EMBTK_GCC_GIT_BRANCH
+	depends on EMBTK_GCC_VERSION_GIT
+config EMBTK_GCC2_GIT_REVISION
+	string
+	depends on EMBTK_GCC_VERSION_GIT
+	default EMBTK_GCC_GIT_REVISION
+config EMBTK_GCC2_REFSPEC
+	string
+	default EMBTK_GCC_REFSPEC
+config EMBTK_GCC2_VERSION_STRING
+	string
+	default EMBTK_GCC_VERSION_STRING
+config EMBTK_GCC2_NEED_PATCH
+	bool
+config EMBTK_GCC2_NEED_AUTORECONF
+	bool
+
+#
+# GCC3 virtual packages
+#
+config EMBTK_GCC3_LANGUAGE_CPP
+	bool
+config EMBTK_GCC3_LANGUAGE_OBJECTIVEC
+	bool
+config EMBTK_GCC3_LANGUAGE_OBJECTIVECPP
+	bool
+config EMBTK_GCC3_LANGUAGE_FORTRAN
+	bool
+config EMBTK_GCC3_GIT_BRANCH
+	string
+	default EMBTK_GCC_GIT_BRANCH
+	depends on EMBTK_GCC_VERSION_GIT
+config EMBTK_GCC3_GIT_REVISION
+	string
+	depends on EMBTK_GCC_VERSION_GIT
+	default EMBTK_GCC_GIT_REVISION
+config EMBTK_GCC3_REFSPEC
+	string
+	default EMBTK_GCC_REFSPEC
+config EMBTK_GCC3_VERSION_STRING
+	string
+	default EMBTK_GCC_VERSION_STRING
+config EMBTK_GCC3_NEED_PATCH
+	bool
+config EMBTK_GCC3_NEED_AUTORECONF
+	bool

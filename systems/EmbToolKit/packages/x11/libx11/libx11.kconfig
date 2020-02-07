@@ -1,0 +1,76 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libx11.kconfig
+# \brief	libx11.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_LIBX11
+	bool "Have libX11"
+	select EMBTK_HAVE_UTILMACROS
+	select EMBTK_HAVE_INPUTPROTO
+	select EMBTK_HAVE_KBPROTO
+	select EMBTK_HAVE_XEXTPROTO
+	select EMBTK_HAVE_XPROTO
+	select EMBTK_HAVE_LIBXCB
+	select EMBTK_HAVE_XTRANS
+	help
+		libX11 for X windowing system.
+choice
+	prompt "libx11 version you wish"
+	depends on EMBTK_HAVE_LIBX11
+	help
+		Here you can choose which version of libx11 you want to use.
+
+	config  EMBTK_LIBX11_VERSION_1_4_4
+		bool "libX11-1.4.4"
+	config  EMBTK_LIBX11_VERSION_1_4_3
+		bool "libX11-1.4.3"
+	config  EMBTK_LIBX11_VERSION_1_4_1
+		bool "libX11-1.4.1"
+	config  EMBTK_LIBX11_VERSION_1_3_6
+		bool "libX11-1.3.6"
+	config  EMBTK_LIBX11_VERSION_1_3_5
+		bool "libX11-1.3.5"
+	config  EMBTK_LIBX11_VERSION_1_3_4
+		bool "libX11-1.3.4"
+	config  EMBTK_LIBX11_VERSION_1_3_3
+		bool "libX11-1.3.3"
+endchoice
+
+config EMBTK_LIBX11_VERSION_STRING
+	string
+	default "1.4.4"		if EMBTK_LIBX11_VERSION_1_4_4
+	default "1.4.3"		if EMBTK_LIBX11_VERSION_1_4_3
+	default "1.4.1"		if EMBTK_LIBX11_VERSION_1_4_1
+	default "1.3.6"		if EMBTK_LIBX11_VERSION_1_3_6
+	default "1.3.5"		if EMBTK_LIBX11_VERSION_1_3_5
+	default "1.3.4"		if EMBTK_LIBX11_VERSION_1_3_4
+	default "1.3.3"		if EMBTK_LIBX11_VERSION_1_3_3
+
+config EMBTK_LIBX11_NEED_PATCH
+	bool
+config EMBTK_LIBX11_NEED_AUTORECONF
+	bool
+config EMBTK_LIBX11_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBX11_PKG_IS_TARBZ2
+	bool

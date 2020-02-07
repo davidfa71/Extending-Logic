@@ -1,0 +1,180 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         directfb.kconfig
+# \brief	directfb.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         October 2009
+################################################################################
+
+config EMBTK_HAVE_DIRECTFB
+	bool "Have DirectFB"
+	select EMBTK_HAVE_LIBPNG
+	select EMBTK_HAVE_LIBJPEG
+	select EMBTK_HAVE_FREETYPE
+	help
+		DirectFB is a graphics library which was designed with embedded
+		systems in mind. It offers maximum hardware accelerated
+		performance at a minimum of resource usage and overhead.
+		Check http://www.directfb.org/ for more and up to date info.
+
+choice
+	prompt "DirectFB version you wish"
+	depends on EMBTK_HAVE_DIRECTFB
+	help
+	 Here you can choose which version of DirectFB you want to use.
+
+	config  EMBTK_DIRECTFB_VERSION_1_4_3
+		bool "DirectFB-1.4.3"
+	config  EMBTK_DIRECTFB_VERSION_1_4_2
+		bool "DirectFB-1.4.2"
+endchoice
+
+menu "DirectFB Configuration"
+depends on EMBTK_HAVE_DIRECTFB
+
+comment "----------------------"
+comment "DirectFB Graphic drivers"
+comment "----------------------"
+	config EMBTK_DIRECTFB_GRAPHIC_ATI128
+		bool "Build DirectFB ATI Rage 128 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_CLE266
+		bool "Build DirectFB VIA CLE266 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_CYBER5K
+		bool "Build DirectFB TVIA CyberPro graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_DAVINCI
+		bool "Build DirectFB TI Davinci graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_EP9X
+		bool "Build DirectFB Cirrus EP9X graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_GL
+		bool "Build DirectFB gl graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_I810
+		bool "Build DirectFB Intel i810 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_I830
+		bool "Build DirectFB Intel i830 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_MACH64
+		bool "Build DirectFB ATI Mach64 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_MATROX
+		bool "Build DirectFB matrox graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_NEOMAGIC
+		bool "Build DirectFB NeoMagic graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_NSC
+		bool "Build DirectFB nsc graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_NVIDIA
+		bool "Build DirectFB nVidia graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_OMAP
+		bool "Build DirectFB TI OMAP graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_PXA3XX
+		bool "Build DirectFB PXA 3xx graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_RADEON
+		bool "Build DirectFB ATI Radeon graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_SAVAGE
+		bool "Build DirectFB S3 Savage graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_SH772X
+		bool "Build DirectFB Renesas SH7722/SH772 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_SIS315
+		bool "Build DirectFB sis315 graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_TDFX
+		bool "Build DirectFB 3Dfx Voodoo graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_UNICHROME
+		bool "Build DirectFB VIA UniChrome graphic driver"
+
+	config EMBTK_DIRECTFB_GRAPHIC_VMWARE
+		bool "Build DirectFB vmware graphic driver"
+comment "----------------------"
+comment "DirectFB Input drivers"
+comment "----------------------"
+	config EMBTK_DIRECTFB_INPUT_DBOX2REMOTE
+		bool "DBox2 Remote"
+	config EMBTK_DIRECTFB_INPUT_DBOXREMOTE
+		bool "DreamBox Remote"
+	config EMBTK_DIRECTFB_INPUT_DYNAPRO
+		bool "Dynapro Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_ELOINPUT
+		bool "ELO Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_GUNZE
+		bool "Gunze Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_H3600TS
+		bool "H3600 Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_JOYSTICK
+		bool "Joystick"
+	config EMBTK_DIRECTFB_INPUT_KEYBOARD
+		bool "Keyboard"
+	config EMBTK_DIRECTFB_INPUT_LINUXINPUT
+		bool "Linux Input"
+	config EMBTK_DIRECTFB_INPUT_LIRC
+		bool "LiRC"
+	config EMBTK_DIRECTFB_INPUT_MUTOUCH
+		bool "MuTouch touchscreen"
+	config EMBTK_DIRECTFB_INPUT_PENMOUNT
+		bool "penmount"
+	config EMBTK_DIRECTFB_INPUT_PS2MOUSE
+		bool "PS/2 Mouse"
+	config EMBTK_DIRECTFB_INPUT_SERIALMOUSE
+		bool "Serial Mouse"
+	config EMBTK_DIRECTFB_INPUT_SONYPIJOGDIAL
+		bool "SonyPI Jogdial"
+	config EMBTK_DIRECTFB_INPUT_TSLIB
+		bool "tslib"
+		select EMBTK_HAVE_TSLIB
+	config EMBTK_DIRECTFB_INPUT_UC1X00
+		bool "ucb1x00 Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_WM97XX
+		bool "WM97xx Touchscreen"
+	config EMBTK_DIRECTFB_INPUT_ZYTRONIC
+		bool "Zytronic touchscreen"
+endmenu
+config EMBTK_DIRECTFB_VERSION_STRING
+	string
+	default "1.4.3"	if EMBTK_DIRECTFB_VERSION_1_4_3
+	default "1.4.2"	if EMBTK_DIRECTFB_VERSION_1_4_2
+
+config EMBTK_DIRECTFB_BRANCH_VERSION_STRING
+	string
+	default "DirectFB-1.4"	if EMBTK_DIRECTFB_VERSION_1_4_3
+	default "DirectFB-1.4"	if EMBTK_DIRECTFB_VERSION_1_4_2
+
+config EMBTK_DIRECTFB_NEED_PATCH
+	bool
+config EMBTK_DIRECTFB_NEED_AUTORECONF
+	bool
+config EMBTK_DIRECTFB_PKG_IS_TARGZ
+	bool
+config EMBTK_DIRECTFB_PKG_IS_TARBZ2
+	bool

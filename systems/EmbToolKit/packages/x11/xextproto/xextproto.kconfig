@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xextproto.kconfig
+# \brief	xextproto.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XEXTPROTO
+	bool "Have xextproto"
+	help
+		xextproto for X window system
+choice
+	prompt "xextproto version you wish"
+	depends on EMBTK_HAVE_XEXTPROTO
+	help
+		Here you can choose which version of xextproto you want to use.
+
+	config  EMBTK_XEXTPROTO_VERSION_7_1_2
+		bool "xextproto-7.1.2"
+	config  EMBTK_XEXTPROTO_VERSION_7_1_1
+		bool "xextproto-7.1.1"
+endchoice
+
+config EMBTK_XEXTPROTO_VERSION_STRING
+	string
+	default "7.1.2"		if EMBTK_XEXTPROTO_VERSION_7_1_2
+	default "7.1.1"		if EMBTK_XEXTPROTO_VERSION_7_1_1
+
+config EMBTK_XEXTPROTO_NEED_PATCH
+	bool
+config EMBTK_XEXTPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_XEXTPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_XEXTPROTO_PKG_IS_TARBZ2
+	bool

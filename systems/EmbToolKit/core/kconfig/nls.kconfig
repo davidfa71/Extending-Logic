@@ -1,0 +1,333 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 3 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; If not, see <http://www.gnu.org/licenses/>.
+################################################################################
+#
+# \file         nls.kconfig
+# \brief	nls.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_NLS_AF
+	bool "af"
+config EMBTK_HAVE_NLS_AM
+	bool "am"
+config EMBTK_HAVE_NLS_ANG
+	bool "ang"
+config EMBTK_HAVE_NLS_AR
+	bool "ar"
+config EMBTK_HAVE_NLS_AS
+	bool "as"
+config EMBTK_HAVE_NLS_AST
+	bool "ast"
+config EMBTK_HAVE_NLS_AZ
+	bool "az"
+config EMBTK_HAVE_NLS_AZ_IR
+	bool "az_IR"
+config EMBTK_HAVE_NLS_BE
+	bool "be"
+config EMBTK_HAVE_NLS_BE_LATIN
+	bool "be@latin"
+config EMBTK_HAVE_NLS_BG
+	bool "bg"
+config EMBTK_HAVE_NLS_BN
+	bool "bn"
+config EMBTK_HAVE_NLS_BN_IN
+	bool "bn_IN"
+config EMBTK_HAVE_NLS_BR
+	bool "br"
+config EMBTK_HAVE_NLS_BS
+	bool "bs"
+config EMBTK_HAVE_NLS_CA
+	bool "ca"
+config EMBTK_HAVE_NLS_CA_VALENCIA
+	bool "ca@valencia"
+config EMBTK_HAVE_NLS_CRH
+	bool "crh"
+config EMBTK_HAVE_NLS_CS
+	bool "cs"
+config EMBTK_HAVE_NLS_CY
+	bool "cy"
+config EMBTK_HAVE_NLS_DA
+	bool "da"
+config EMBTK_HAVE_NLS_DE
+	bool "de"
+config EMBTK_HAVE_NLS_DZ
+	bool "dz"
+config EMBTK_HAVE_NLS_EL
+	bool "el"
+config EMBTK_HAVE_NLS_EN_CA
+	bool "en_CA"
+config EMBTK_HAVE_NLS_EN_GB
+	bool "en_GB"
+config EMBTK_HAVE_NLS_EO
+	bool "eo"
+config EMBTK_HAVE_NLS_ES
+	bool "es"
+config EMBTK_HAVE_NLS_ET
+	bool "et"
+config EMBTK_HAVE_NLS_EU
+	bool "eu"
+config EMBTK_HAVE_NLS_FA
+	bool "fa"
+config EMBTK_HAVE_NLS_FI
+	bool "fi"
+config EMBTK_HAVE_NLS_FR
+	bool "fr"
+config EMBTK_HAVE_NLS_GA
+	bool "ga"
+config EMBTK_HAVE_NLS_GL
+	bool "gl"
+config EMBTK_HAVE_NLS_GU
+	bool "gu"
+config EMBTK_HAVE_NLS_HE
+	bool "he"
+config EMBTK_HAVE_NLS_HI
+	bool "hi"
+config EMBTK_HAVE_NLS_HR
+	bool "hr"
+config EMBTK_HAVE_NLS_HU
+	bool "hu"
+config EMBTK_HAVE_NLS_HY
+	bool "hy"
+config EMBTK_HAVE_NLS_IA
+	bool "ia"
+config EMBTK_HAVE_NLS_ID
+	bool "id"
+config EMBTK_HAVE_NLS_IO
+	bool "io"
+config EMBTK_HAVE_NLS_IS
+	bool "is"
+config EMBTK_HAVE_NLS_IT
+	bool "it"
+config EMBTK_HAVE_NLS_JA
+	bool "ja"
+config EMBTK_HAVE_NLS_KA
+	bool "ka"
+config EMBTK_HAVE_NLS_KN
+	bool "kn"
+config EMBTK_HAVE_NLS_KO
+	bool "ko"
+config EMBTK_HAVE_NLS_KU
+	bool "ku"
+config EMBTK_HAVE_NLS_LI
+	bool "li"
+config EMBTK_HAVE_NLS_LT
+	bool "lt"
+config EMBTK_HAVE_NLS_LV
+	bool "lv"
+config EMBTK_HAVE_NLS_MAI
+	bool "mai"
+config EMBTK_HAVE_NLS_MI
+	bool "mi"
+config EMBTK_HAVE_NLS_MK
+	bool "mk"
+config EMBTK_HAVE_NLS_ML
+	bool "ml"
+config EMBTK_HAVE_NLS_MN
+	bool "mn"
+config EMBTK_HAVE_NLS_MR
+	bool "mr"
+config EMBTK_HAVE_NLS_MS
+	bool "ms"
+config EMBTK_HAVE_NLS_NB
+	bool "nb"
+config EMBTK_HAVE_NLS_NDS
+	bool "nds"
+config EMBTK_HAVE_NLS_NE
+	bool "ne"
+config EMBTK_HAVE_NLS_NL
+	bool "nl"
+config EMBTK_HAVE_NLS_NN
+	bool "nn"
+config EMBTK_HAVE_NLS_NSO
+	bool "nso"
+config EMBTK_HAVE_NLS_OC
+	bool "oc"
+config EMBTK_HAVE_NLS_OR
+	bool "or"
+config EMBTK_HAVE_NLS_PA
+	bool "pa"
+config EMBTK_HAVE_NLS_PL
+	bool "pl"
+config EMBTK_HAVE_NLS_PS
+	bool "ps"
+config EMBTK_HAVE_NLS_PT
+	bool "pt"
+config EMBTK_HAVE_NLS_PT_BR
+	bool "pt_BR"
+config EMBTK_HAVE_NLS_RO
+	bool "ro"
+config EMBTK_HAVE_NLS_RU
+	bool "ru"
+config EMBTK_HAVE_NLS_RW
+	bool "rw"
+config EMBTK_HAVE_NLS_SI
+	bool "si"
+config EMBTK_HAVE_NLS_SK
+	bool "sk"
+config EMBTK_HAVE_NLS_SL
+	bool "sl"
+config EMBTK_HAVE_NLS_SQ
+	bool "sq"
+config EMBTK_HAVE_NLS_SR
+	bool "sr"
+config EMBTK_HAVE_NLS_SR_LATIN
+	bool "sr@latin"
+config EMBTK_HAVE_NLS_SR_IJE
+	bool "sr@ije"
+config EMBTK_HAVE_NLS_SV
+	bool "sv"
+config EMBTK_HAVE_NLS_TA
+	bool "ta"
+config EMBTK_HAVE_NLS_TE
+	bool "te"
+config EMBTK_HAVE_NLS_TH
+	bool "th"
+config EMBTK_HAVE_NLS_TK
+	bool "tk"
+config EMBTK_HAVE_NLS_TR
+	bool "tr"
+config EMBTK_HAVE_NLS_TT
+	bool "tt"
+config EMBTK_HAVE_NLS_UK
+	bool "uk"
+config EMBTK_HAVE_NLS_UR
+	bool "ur"
+config EMBTK_HAVE_NLS_UZ
+	bool "uz"
+config EMBTK_HAVE_NLS_UZ_CYRILLIC
+	bool "uz@cyrillic"
+config EMBTK_HAVE_NLS_VI
+	bool "vi"
+config EMBTK_HAVE_NLS_WA
+	bool "wa"
+config EMBTK_HAVE_NLS_XH
+	bool "xh"
+config EMBTK_HAVE_NLS_YI
+	bool "yi"
+config EMBTK_HAVE_NLS_ZH_CN
+	bool "zh_CN"
+config EMBTK_HAVE_NLS_ZH_HK
+	bool "zh_HK"
+config EMBTK_HAVE_NLS_ZH_TW
+	bool "zh_TW"
+
+config EMBTK_NLS_STRING
+	string
+	default "af"		if EMBTK_HAVE_NLS_AF
+	default "am"		if EMBTK_HAVE_NLS_AM
+	default "ang"		if EMBTK_HAVE_NLS_ANG
+	default "ar"		if EMBTK_HAVE_NLS_AR
+	default "as"		if EMBTK_HAVE_NLS_AS
+	default "ast"		if EMBTK_HAVE_NLS_AST
+	default "az"		if EMBTK_HAVE_NLS_AZ
+	default "az_IR"		if EMBTK_HAVE_NLS_AZ_IR
+	default "be"		if EMBTK_HAVE_NLS_BE
+	default "be@latin"	if EMBTK_HAVE_NLS_BE_LATIN
+	default "bg"		if EMBTK_HAVE_NLS_BG
+	default "bn"		if EMBTK_HAVE_NLS_BN
+	default "bn_IN"		if EMBTK_HAVE_NLS_BN_IN
+	default "br"		if EMBTK_HAVE_NLS_BR
+	default "bs"		if EMBTK_HAVE_NLS_BS
+	default "ca"		if EMBTK_HAVE_NLS_CA
+	default "ca@valencia"	if EMBTK_HAVE_NLS_CA_VALENCIA
+	default "crh"		if EMBTK_HAVE_NLS_CRH
+	default "cs"		if EMBTK_HAVE_NLS_CS
+	default "cy"		if EMBTK_HAVE_NLS_CY
+	default "da"		if EMBTK_HAVE_NLS_DA
+	default "de"		if EMBTK_HAVE_NLS_DE
+	default "dz"		if EMBTK_HAVE_NLS_DZ
+	default "el"		if EMBTK_HAVE_NLS_EL
+	default "en_CA"		if EMBTK_HAVE_NLS_EN_CA
+	default "en_GB"		if EMBTK_HAVE_NLS_EN_GB
+	default "eo"		if EMBTK_HAVE_NLS_EO
+	default "es"		if EMBTK_HAVE_NLS_ES
+	default "et"		if EMBTK_HAVE_NLS_ET
+	default "eu"		if EMBTK_HAVE_NLS_EU
+	default "fa"		if EMBTK_HAVE_NLS_AZ
+	default "fi"		if EMBTK_HAVE_NLS_FI
+	default "fr"		if EMBTK_HAVE_NLS_FR
+	default "ga"		if EMBTK_HAVE_NLS_GA
+	default "gl"		if EMBTK_HAVE_NLS_GL
+	default "gu"		if EMBTK_HAVE_NLS_GU
+	default "he"		if EMBTK_HAVE_NLS_HE
+	default "hi"		if EMBTK_HAVE_NLS_HI
+	default "hr"		if EMBTK_HAVE_NLS_HR
+	default "hu"		if EMBTK_HAVE_NLS_HU
+	default "hy"		if EMBTK_HAVE_NLS_HY
+	default "ia"		if EMBTK_HAVE_NLS_IA
+	default "id"		if EMBTK_HAVE_NLS_ID
+	default "io"		if EMBTK_HAVE_NLS_IO
+	default "is"		if EMBTK_HAVE_NLS_IS
+	default "it"		if EMBTK_HAVE_NLS_IT
+	default "ja"		if EMBTK_HAVE_NLS_JA
+	default "ka"		if EMBTK_HAVE_NLS_KA
+	default "kn"		if EMBTK_HAVE_NLS_KN
+	default "ko"		if EMBTK_HAVE_NLS_KO
+	default "ku"		if EMBTK_HAVE_NLS_KU
+	default "li"		if EMBTK_HAVE_NLS_LI
+	default "lt"		if EMBTK_HAVE_NLS_LT
+	default "lv"		if EMBTK_HAVE_NLS_LV
+	default "mai"		if EMBTK_HAVE_NLS_MAI
+	default "mi"		if EMBTK_HAVE_NLS_MI
+	default "mk"		if EMBTK_HAVE_NLS_MK
+	default "ml"		if EMBTK_HAVE_NLS_ML
+	default "mn"		if EMBTK_HAVE_NLS_MN
+	default "mr"		if EMBTK_HAVE_NLS_MR
+	default "ms"		if EMBTK_HAVE_NLS_MS
+	default "nb"		if EMBTK_HAVE_NLS_NB
+	default "nds"		if EMBTK_HAVE_NLS_NDS
+	default "ne"		if EMBTK_HAVE_NLS_NE
+	default "nl"		if EMBTK_HAVE_NLS_NL
+	default "nn"		if EMBTK_HAVE_NLS_NN
+	default "nso"		if EMBTK_HAVE_NLS_NSO
+	default "oc"		if EMBTK_HAVE_NLS_OC
+	default "or"		if EMBTK_HAVE_NLS_OR
+	default "pa"		if EMBTK_HAVE_NLS_PA
+	default "pl"		if EMBTK_HAVE_NLS_PL
+	default "ps"		if EMBTK_HAVE_NLS_PS
+	default "pt"		if EMBTK_HAVE_NLS_PT
+	default "pt_BR"		if EMBTK_HAVE_NLS_PT_BR
+	default "ro"		if EMBTK_HAVE_NLS_RO
+	default "ru"		if EMBTK_HAVE_NLS_RU
+	default "rw"		if EMBTK_HAVE_NLS_RW
+	default "si"		if EMBTK_HAVE_NLS_SI
+	default "sk"		if EMBTK_HAVE_NLS_SK
+	default "sl"		if EMBTK_HAVE_NLS_SL
+	default "sq"		if EMBTK_HAVE_NLS_SQ
+	default "sr"		if EMBTK_HAVE_NLS_SR
+	default "sr@latin"	if EMBTK_HAVE_NLS_SR_LATIN
+	default "sr@ije"	if EMBTK_HAVE_NLS_SR_IJE
+	default "sv"		if EMBTK_HAVE_NLS_SV
+	default "ta"		if EMBTK_HAVE_NLS_TA
+	default "te"		if EMBTK_HAVE_NLS_TE
+	default "th"		if EMBTK_HAVE_NLS_TH
+	default "tk"		if EMBTK_HAVE_NLS_TK
+	default "tr"		if EMBTK_HAVE_NLS_TR
+	default "tt"		if EMBTK_HAVE_NLS_TT
+	default "uk"		if EMBTK_HAVE_NLS_UK
+	default "ur"		if EMBTK_HAVE_NLS_UR
+	default "uz"		if EMBTK_HAVE_NLS_UZ
+	default "uz@cyrillic"	if EMBTK_HAVE_NLS_UZ_CYRILLIC
+	default "vi"		if EMBTK_HAVE_NLS_VI
+	default "wa"		if EMBTK_HAVE_NLS_WA
+	default "xh"		if EMBTK_HAVE_NLS_XH
+	default "yi"		if EMBTK_HAVE_NLS_YI
+	default "zh_CN"		if EMBTK_HAVE_NLS_ZH_CN
+	default "zh_HK"		if EMBTK_HAVE_NLS_ZH_HK
+	default "zh_TW"		if EMBTK_HAVE_NLS_ZH_TW
+

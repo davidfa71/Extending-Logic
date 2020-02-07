@@ -1,0 +1,111 @@
+#
+# For a description of the syntax of this configuration file,
+# see scripts/kbuild/config-language.txt.
+#
+
+comment "-------------------------------------------------"
+comment "SELinux Utilities"
+comment "-------------------------------------------------"
+	depends on KEMBTK_BUSYB_SELINUX
+
+
+config KEMBTK_BUSYB_CHCON
+	bool "chcon"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to change the security context of file.
+
+config KEMBTK_BUSYB_FEATURE_CHCON_LONG_OPTIONS
+	bool "Enable long options"
+	default y
+	depends on KEMBTK_BUSYB_CHCON && KEMBTK_BUSYB_LONG_OPTS
+	help
+	  Support long options for the chcon applet.
+
+config KEMBTK_BUSYB_GETENFORCE
+	bool "getenforce"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to get the current mode of SELinux.
+
+config KEMBTK_BUSYB_GETSEBOOL
+	bool "getsebool"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to get SELinux boolean values.
+
+config KEMBTK_BUSYB_LOAD_POLICY
+	bool "load_policy"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to load SELinux policy.
+
+config KEMBTK_BUSYB_MATCHPATHCON
+	bool "matchpathcon"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to get default security context of the
+	  specified path from the file contexts configuration.
+
+config KEMBTK_BUSYB_RESTORECON
+	bool "restorecon"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to relabel files. The feature is almost
+	  the same as setfiles, but usage is a little different.
+
+config KEMBTK_BUSYB_RUNCON
+	bool "runcon"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to run command in speficied security context.
+
+config KEMBTK_BUSYB_FEATURE_RUNCON_LONG_OPTIONS
+	bool "Enable long options"
+	default y
+	depends on KEMBTK_BUSYB_RUNCON && KEMBTK_BUSYB_LONG_OPTS
+	help
+	  Support long options for the runcon applet.
+
+config KEMBTK_BUSYB_SELINUXENABLED
+	bool "selinuxenabled"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support for this command to be used within shell scripts
+	  to determine if selinux is enabled.
+
+config KEMBTK_BUSYB_SETENFORCE
+	bool "setenforce"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to modify the mode SELinux is running in.
+
+config KEMBTK_BUSYB_SETFILES
+	bool "setfiles"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support to modify to relabel files.
+	  Notice: If you built libselinux with -D_FILE_OFFSET_BITS=64,
+	  (It is default in libselinux's Makefile), you _must_ enable
+	  CONFIG_LFS.
+
+config KEMBTK_BUSYB_FEATURE_SETFILES_CHECK_OPTION
+	bool "Enable check option"
+	depends on KEMBTK_BUSYB_SETFILES
+	help
+	  Support "-c" option (check the validity of the contexts against
+	  the specified binary policy) for setfiles. Requires libsepol.
+
+config KEMBTK_BUSYB_SETSEBOOL
+	bool "setsebool"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Enable support for change boolean.
+	  semanage and -P option is not supported yet.
+
+config KEMBTK_BUSYB_SESTATUS
+	bool "sestatus"
+	depends on KEMBTK_BUSYB_SELINUX
+	help
+	  Displays the status of SELinux.
+

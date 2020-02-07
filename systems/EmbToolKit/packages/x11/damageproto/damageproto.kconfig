@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 2 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+################################################################################
+#
+# \file         damageproto.kconfig
+# \brief	damageproto.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         February 2010
+################################################################################
+
+config EMBTK_HAVE_DAMAGEPROTO
+	bool "Have damageproto"
+	help
+		damageproto for X windowing system
+choice
+	prompt "damageproto version you wish"
+	depends on EMBTK_HAVE_DAMAGEPROTO
+	help
+		Here you can choose which version of damageproto you want to
+		use.
+
+	config  EMBTK_DAMAGEPROTO_VERSION_1_2_1
+		bool "damageproto-1.2.1"
+	config  EMBTK_DAMAGEPROTO_VERSION_1_2_0
+		bool "damageproto-1.2.0"
+endchoice
+
+config EMBTK_DAMAGEPROTO_VERSION_STRING
+	string
+	default "1.2.1"	if EMBTK_DAMAGEPROTO_VERSION_1_2_1
+	default "1.2.0"	if EMBTK_DAMAGEPROTO_VERSION_1_2_0
+
+config EMBTK_DAMAGEPROTO_NEED_PATCH
+	bool
+config EMBTK_DAMAGEPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_DAMAGEPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_DAMAGEPROTO_PKG_IS_TARBZ2
+	bool

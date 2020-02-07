@@ -1,0 +1,52 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         dropbear.kconfig
+# \brief	dropbear.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2014
+################################################################################
+
+config EMBTK_HAVE_DROPBEAR
+	bool "Have Dropbear"
+	select EMBTK_HAVE_ZLIB
+	help
+	 Dropbear is a relatively small SSH server and client.
+	 It runs on a variety of POSIX-based platforms.
+	 Dropbear is particularly useful for "embedded"-type
+	 Linux (or other Unix) systems, such as wireless routers.
+
+choice
+	prompt "dropbear version you wish"
+	depends on EMBTK_HAVE_DROPBEAR
+	help
+	 Here you can choose which version of dropbear you want to use.
+
+	config  EMBTK_DROPBEAR_VERSION_2014_63
+		bool "dropbear-2014.63"
+endchoice
+
+config EMBTK_DROPBEAR_VERSION_STRING
+	string
+	default "2014.63"	if EMBTK_DROPBEAR_VERSION_2014_63
+
+config EMBTK_DROPBEAR_NEED_PATCH
+	bool
+config EMBTK_DROPBEAR_NEED_AUTORECONF
+	bool

@@ -1,0 +1,76 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         cairo.kconfig
+# \brief	cairo.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HAVE_CAIRO
+	bool "Have cairo"
+	select EMBTK_HAVE_PIXMAN
+
+	help
+		Cairo is a 2D graphics library with support for multiple output
+		devices. Currently supported output targets include the X Window
+		System, Quartz, Win32, image buffers, PostScript, PDF, and SVG
+		file output.
+		Cairo is designed to produce consistent output on all output
+		media while taking advantage of display hardware acceleration
+		when available (eg. through the X Render Extension).
+
+config EMBTK_HAVE_CAIRO_WITH_DIRECTFB
+	bool "Build cairo with DirectFB support"
+	depends on EMBTK_HAVE_CAIRO
+	select EMBTK_HAVE_DIRECTFB
+
+config EMBTK_HAVE_CAIRO_WITH_LIBXCB
+	bool "Build cairo with XCB support"
+	depends on EMBTK_HAVE_CAIRO
+	select EMBTK_HAVE_XCBUTIL
+
+choice
+	prompt "Cairo version you wish"
+	depends on EMBTK_HAVE_CAIRO
+	help
+	 Here you can choose which version of cairo you want to use.
+
+	config  EMBTK_CAIRO_VERSION_1_8_10
+		bool "cairo-1.8.10"
+	config  EMBTK_CAIRO_VERSION_1_8_9
+		bool "cairo-1.8.9"
+	config  EMBTK_CAIRO_VERSION_1_8_8
+		bool "cairo-1.8.8"
+endchoice
+
+config EMBTK_CAIRO_VERSION_STRING
+	string
+	default "1.8.10"	if EMBTK_CAIRO_VERSION_1_8_10
+	default "1.8.9"		if EMBTK_CAIRO_VERSION_1_8_9
+	default "1.8.8"		if EMBTK_CAIRO_VERSION_1_8_8
+
+config EMBTK_CAIRO_NEED_PATCH
+	bool
+config EMBTK_CAIRO_NEED_AUTORECONF
+	bool
+config EMBTK_CAIRO_PKG_IS_TARGZ
+	bool
+config EMBTK_CAIRO_PKG_IS_TARBZ2
+	bool

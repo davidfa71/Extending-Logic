@@ -1,0 +1,90 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2013 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         arch.kconfig
+# \brief	arch.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+
+choice
+	prompt "Architecture"
+	help
+	 Select the architecture you wish.
+	config EMBTK_ARCH_ARM
+		bool "ARM"
+		select EMBTK_TARGET_ARCH_32BITS
+		select EMBTK_32BITS_FS
+	config EMBTK_ARCH_MIPS
+		bool "MIPS"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+#	config EMBTK_ARCH_M68k
+#		bool "M68k (unsupported yet)"
+#	config EMBTK_ARCH_POWERPC
+#		bool "PowerPC (unsupported yet)"
+#	config EMBTK_ARCH_SUPERH
+#		bool "SuperH (unsupported yet)"
+#	config EMBTK_ARCH_X86
+#		bool "x86 (unsupported yet)"
+#	config EMBTK_ARCH_X86_64
+#		bool "x86_64 (unsupported yet)"
+endchoice
+
+config EMBTK_TARGET_ARCH_64BITS
+	bool
+	help
+	 Processor is 64bits
+
+config EMBTK_TARGET_ARCH_32BITS
+	bool
+	help
+	 Processor is 32bits
+
+config EMBTK_32BITS_FS
+	bool
+	help
+	 we will build 32bits filesystem layout
+
+config EMBTK_64BITS_FS
+	bool
+	help
+	 we will build 64bits filesystem layout
+
+config EMBTK_64BITS_FS_COMPAT32
+	depends on !EMBTK_32BITS_FS
+	bool
+	help
+	 we will build 64bits filesystem layout, with 32 compatibility
+
+config EMBTK_TARGET_ARCH_LITTLE_ENDIAN
+	bool
+	select KEMBTK_UCLIBC_ARCH_WANTS_LITTLE_ENDIAN if EMBTK_CLIB_UCLIBC
+	help
+		Little endian target
+
+config EMBTK_TARGET_ARCH_BIG_ENDIAN
+	bool
+	select KEMBTK_UCLIBC_ARCH_WANTS_BIG_ENDIAN if EMBTK_CLIB_UCLIBC
+	help
+		Big endian target
+
+config EMBTK_TARGET_ARCH_MAYUSE_FPU
+	bool
+	help
+		Selected if the arch may optionally use an fpu.

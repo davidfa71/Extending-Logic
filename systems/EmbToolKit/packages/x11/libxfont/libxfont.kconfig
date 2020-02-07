@@ -1,0 +1,62 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libxfont.kconfig
+# \brief	libxfont.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_LIBXFONT
+	bool "Have libxfont"
+	select EMBTK_HAVE_LIBFONTENC
+	select EMBTK_HAVE_FREETYPE
+	help
+		libXfont for X windowing system
+choice
+	prompt "libxfont version you wish"
+	depends on EMBTK_HAVE_LIBXFONT
+	help
+	 Here you can choose which version of libxfont you want to use.
+
+	config  EMBTK_LIBXFONT_VERSION_1_4_4
+		bool "libXfont-1.4.4"
+	config  EMBTK_LIBXFONT_VERSION_1_4_3
+		bool "libXfont-1.4.3"
+	config  EMBTK_LIBXFONT_VERSION_1_4_2
+		bool "libXfont-1.4.2"
+	config  EMBTK_LIBXFONT_VERSION_1_4_1
+		bool "libXfont-1.4.1"
+endchoice
+
+config EMBTK_LIBXFONT_VERSION_STRING
+	string
+	default "1.4.4"		if EMBTK_LIBXFONT_VERSION_1_4_4
+	default "1.4.3"		if EMBTK_LIBXFONT_VERSION_1_4_3
+	default "1.4.2"		if EMBTK_LIBXFONT_VERSION_1_4_2
+	default "1.4.1"		if EMBTK_LIBXFONT_VERSION_1_4_1
+
+config EMBTK_LIBXFONT_NEED_PATCH
+	bool
+config EMBTK_LIBXFONT_NEED_AUTORECONF
+	bool
+config EMBTK_LIBXFONT_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBXFONT_PKG_IS_TARBZ2
+	bool

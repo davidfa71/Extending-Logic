@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libnl.kconfig
+# \brief	libnl.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2012
+################################################################################
+
+config EMBTK_HAVE_LIBNL
+	bool "Have libnl"
+	depends on EMBTK_OS_LINUX
+	help
+		The libnl suite is a collection of libraries providing APIs to
+		netlink protocol based Linux kernel interfaces.
+		Netlink is a IPC mechanism primarly between the kernel and user
+		space processes.
+		It was designed to be a more flexible successor
+		to ioctl to provide mainly networking related kernel
+		configuration and monitoring interfaces.
+
+choice
+	prompt "libnl version you wish"
+	depends on EMBTK_HAVE_LIBNL
+	help
+	 Here you can choose which version of libnl you want to use.
+
+	config  EMBTK_LIBNL_VERSION_3_2_11
+		bool "libnl-3.2.11"
+endchoice
+
+config EMBTK_LIBNL_VERSION_STRING
+	string
+	default "3.2.11"	if EMBTK_LIBNL_VERSION_3_2_11
+
+config EMBTK_LIBNL_NEED_PATCH
+	bool
+config EMBTK_LIBNL_NEED_AUTORECONF
+	bool

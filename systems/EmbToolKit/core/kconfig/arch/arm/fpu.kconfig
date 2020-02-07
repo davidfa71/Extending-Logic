@@ -1,0 +1,132 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         fpu.kconfig
+# \brief	fpu.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2012
+################################################################################
+
+config EMBTK_ARCH_ARM_MAYUSE_FPU_ALL
+	bool
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFP
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_FP16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16FP16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XD
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XDFP16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4_D16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_FPV4_SPD16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_NEON
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_FP16
+	select EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_VFPV4
+
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFP
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_FP16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16FP16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XD
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XDFP16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4_D16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_FPV4_SPD16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_NEON
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_FP16
+	bool
+config EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_VFPV4
+	bool
+
+choice
+	prompt "FPU variant in the target"
+
+	config EMBTK_ARCH_ARM_FPU_VFP
+		bool "vfp"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFP
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3
+		bool "vfpv3"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3_FP16
+		bool "vfpv3 FP16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_FP16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3_D16
+		bool "vfpv3 D16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3_D16FP16
+		bool "vfpv3 D16/FP16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_D16FP16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3_XD
+		bool "vfpv3 XD"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XD
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_VFPV3_XDFP16
+		bool "vfpv3 XD/FP16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV3_XDFP16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_VFPV4
+		bool "vfpv4"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_VFPV4_D16
+		bool "vfpv4 D16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_VFPV4_D16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_FPV4_SPD16
+		bool "fpv4 SP/D16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_FPV4_SPD16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_NEON
+		bool "neon"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_NEON
+
+	config EMBTK_ARCH_ARM_FPU_NEON_FP16
+		bool "neon-fp16"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_FP16
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+
+	config EMBTK_ARCH_ARM_FPU_NEON_VFPV4
+		bool "neon-vfpv4"
+		depends on EMBTK_ARCH_ARM_MAYUSE_FPU_NEON_VFPV4
+#		depends on EMBTK_GCC_VERSION_INT > 4400
+endchoice

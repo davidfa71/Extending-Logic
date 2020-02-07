@@ -1,0 +1,59 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         rootfs-config.kconfig
+# \brief	Various RootFS configuration parameters
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         April 2014
+################################################################################
+
+
+menu "Root filesystem configuration"
+
+comment "Console configuration"
+config EMBTK_ROOTFS_TTY
+	string "tty device for console"
+	default "ttyS0"
+
+choice
+	prompt "tty device baudrate"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_KERNEL
+		bool "Baudrate set in kernel"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_9600
+		bool "9600"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_19200
+		bool "19200"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_38400
+		bool "38400"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_57600
+		bool "57600"
+	config EMBTK_ROOTFS_TTY_BAUDRATE_115200
+		bool "115200"
+endchoice
+config EMBTK_ROOTFS_TTY_BAUDRATE
+	string
+	default "0"		if EMBTK_ROOTFS_TTY_BAUDRATE_KERNEL
+	default "9600"		if EMBTK_ROOTFS_TTY_BAUDRATE_9600
+	default "19200"		if EMBTK_ROOTFS_TTY_BAUDRATE_19200
+	default "38400"		if EMBTK_ROOTFS_TTY_BAUDRATE_38400
+	default "57600"		if EMBTK_ROOTFS_TTY_BAUDRATE_57600
+	default "115200"	if EMBTK_ROOTFS_TTY_BAUDRATE_115200
+
+
+endmenu

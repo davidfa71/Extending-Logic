@@ -1,0 +1,58 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         randrproto.kconfig
+# \brief	randrproto.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         February 2010
+################################################################################
+
+config EMBTK_HAVE_RANDRPROTO
+	bool "Have randrproto"
+	help
+		randrproto for X windowing system.
+		This extension defines a protocol for clients to dynamically
+		change X screens, so as to resize, rotate and reflect the root
+		window of a screen.
+
+choice
+	prompt "randrproto version you wish"
+	depends on EMBTK_HAVE_RANDRPROTO
+	help
+	 Here you can choose which version of randrproto you want to use.
+
+	config  EMBTK_RANDRPROTO_VERSION_1_3_2
+		bool "randrproto-1.3.2"
+	config  EMBTK_RANDRPROTO_VERSION_1_3_1
+		bool "randrproto-1.3.1"
+endchoice
+
+config EMBTK_RANDRPROTO_VERSION_STRING
+	string
+	default "1.3.2"		if EMBTK_RANDRPROTO_VERSION_1_3_2
+	default "1.3.1"		if EMBTK_RANDRPROTO_VERSION_1_3_1
+
+config EMBTK_RANDRPROTO_NEED_PATCH
+	bool
+config EMBTK_RANDRPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_RANDRPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_RANDRPROTO_PKG_IS_TARBZ2
+	bool

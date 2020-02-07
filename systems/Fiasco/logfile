@@ -1,0 +1,244 @@
+KCONFIG_SEED=0x7BE09C9A
+Generated value OTHERVAL for environment config KERNELVERSION
+Generated value (null) for environment config INCLUDE_PPC32
+/Users/david/product_lines/Implementacion/myKconf/systems/fiasco/Kconfig:9:warning: environment variable INCLUDE_PPC32 undefined
+Generated value (null) for environment config INCLUDE_SPARC
+/Users/david/product_lines/Implementacion/myKconf/systems/fiasco/Kconfig:15:warning: environment variable INCLUDE_SPARC undefined
+.config:9:warning: unexpected data
+.config:13:warning: unexpected data
+.config:14:warning: unexpected data
+.config:20:warning: unexpected data
+.config:29:warning: unexpected data
+.config:37:warning: unexpected data
+.config:39:warning: unexpected data
+.config:40:warning: unexpected data
+.config:41:warning: unexpected data
+.config:42:warning: unexpected data
+.config:47:warning: unexpected data
+.config:48:warning: unexpected data
+.config:50:warning: unexpected data
+.config:52:warning: unexpected data
+.config:56:warning: unexpected data
+.config:60:warning: unexpected data
+.config:65:warning: unexpected data
+.config:66:warning: unexpected data
+.config:67:warning: unexpected data
+.config:68:warning: unexpected data
+.config:70:warning: unexpected data
+.config:72:warning: unexpected data
+.config:73:warning: unexpected data
+.config:74:warning: unexpected data
+.config:75:warning: unexpected data
+.config:76:warning: unexpected data
+.config:77:warning: unexpected data
+*
+* Fiasco configuration
+*
+*
+* Target configuration
+*
+Architecture
+> 1. Intel IA-32 processor family (IA32) (NEW)
+  2. AMD64 processor family (AMD64) (NEW)
+  3. ARM processor family (ARM) (NEW)
+choice[1-3]: 3
+Enable alignment check (ARM_ALIGNMENT_CHECK) [N/y/?] y
+Execution Model
+> 1. Standard mode (ARM_EM_STD) (NEW)
+choice[1]: 1
+Enable FPU co-processor (FPU) [Y/n/?] n
+Enable CPU errata workarounds (ARM_CPU_ERRATA) [N/y] y
+*
+* Kernel options
+*
+Fine-grained CPU time (FINE_GRAINED_CPUTIME) [N/y/?] y
+Scheduler
+> 1. Fixed priority scheduler (SCHED_FIXED_PRIO) (NEW)
+choice[1]: 1
+*
+* Debugging
+*
+Generate inline code (INLINE) [Y/n/?] y
+Do not compile assertions (NDEBUG) [N/y/?] n
+Compile without frame pointer (NO_FRAME_PTR) [Y/n/?] y
+Measure stack depth of threads (STACK_DEPTH) [N/y/?] y
+Sanity checks in low level allocator (LIST_ALLOC_SANITY) [N/y/?] y
+Support for debugging over serial line (SERIAL) [Y/n/?] n
+*
+* JDB kernel debugger
+*
+JDB kernel debugger (JDB) [Y/n/?] n
+Run test for Vmem_alloc allocator (VMEM_ALLOC_TEST) [N/y] y
+Debugging of kernel page-faults (DEBUG_KERNEL_PAGE_FAULTS) [N/y/?] y
+Warn levels
+  1. Do not show show any kernel warning (WARN_NONE) (NEW)
+> 2. Show messages of warning level (WARN_WARNING) (NEW)
+  3. Show all kernel warnings (WARN_ANY) (NEW)
+choice[1-3]: Related gcc
+Related g++
+Related gcc
+Related g++
+1
+*
+* Compiling
+*
+C compiler (CC) [gcc] gcc
+C++ compiler (CXX) [g++] OTHERVAL
+C host compiler (HOST_CC) [gcc] gcc
+C++ host compiler (HOST_CXX) [g++] g++
+Do additional checks at build time (MAINTAINER_MODE) [N/y/?] n
+Configuration label (LABEL) [] OTHERVAL
+Prompt for experimental features (EXPERIMENTAL) [N/y/?] n
+#
+# configuration written to .config
+#
+Logic2BDD -min-nodes 10000 -base fiasco.2 -cudd -constraint-reorder minspan fiasco.2.var fiasco.2.exp 
+Read 1247 expressions
+There are 1247 expressions 
+Simplify Constraints.There are 1247 constraints to simplify
+2 We set var                                           PERF_CNT from                                                     PERF_CNT to false  expression (1) not PERF_CNT
+1 We set var                                              BIT32 from                                                        BIT32 to true  expression (2) BIT32
+2 We set var                                        MP_MAX_CPUS from                                                  MP_MAX_CPUS to false  expression (3) not MP_MAX_CPUS
+2 We set var                                              BIT64 from                                                        BIT64 to false  expression (4) not BIT64
+2 We set var                                       EXPERIMENTAL from                                                 EXPERIMENTAL to false  expression (5) not EXPERIMENTAL
+2 We set var                                      ARM_CORTEX_A9 from                                                ARM_CORTEX_A9 to false  expression (6) not ARM_CORTEX_A9
+2 We set var                            WORKAROUND_AMD_FPU_LEAK from                                      WORKAROUND_AMD_FPU_LEAK to false  expression (7) not WORKAROUND_AMD_FPU_LEAK
+2 We set var                                           REGPARM3 from                                                     REGPARM3 to false  expression (8) not REGPARM3
+2 We set var                             CAN_ARM_CPU_CORTEX_A15 from                                       CAN_ARM_CPU_CORTEX_A15 to false  expression (9) not CAN_ARM_CPU_CORTEX_A15
+2 We set var                                   ARM_CACHE_L2CXX0 from                                             ARM_CACHE_L2CXX0 to false  expression (10) not ARM_CACHE_L2CXX0
+2 We set var                                         SCHED_HPET from                                                   SCHED_HPET to false  expression (11) not SCHED_HPET
+2 We set var                               CAN_ARM_CACHE_L2CXX0 from                                         CAN_ARM_CACHE_L2CXX0 to false  expression (12) not CAN_ARM_CACHE_L2CXX0
+2 We set var                                         SCHED_APIC from                                                   SCHED_APIC to false  expression (13) not SCHED_APIC
+1 We set var                                          ABI_EQ_vf from                                                    ABI_EQ_vf to true  expression (14) ABI_EQ_vf
+2 We set var                                            IA32_K7 from                                                      IA32_K7 to false  expression (15) not IA32_K7
+1 We set var                                    CXX_EQ_OTHERVAL from                                              CXX_EQ_OTHERVAL to true  expression (16) CXX_EQ_OTHERVAL
+2 We set var                                             UX_NET from                                                       UX_NET to false  expression (17) not UX_NET
+2 We set var                                        IA32_CORE_I from                                                  IA32_CORE_I to false  expression (18) not IA32_CORE_I
+1 We set var                                  LABEL_EQ_OTHERVAL from                                            LABEL_EQ_OTHERVAL to true  expression (19) LABEL_EQ_OTHERVAL
+2 We set var                              CAN_ARM_CPU_CORTEX_A9 from                                        CAN_ARM_CPU_CORTEX_A9 to false  expression (20) not CAN_ARM_CPU_CORTEX_A9
+2 We set var                                            IA32_P2 from                                                      IA32_P2 to false  expression (21) not IA32_P2
+2 We set var                                         BIG_ENDIAN from                                                   BIG_ENDIAN to false  expression (22) not BIG_ENDIAN
+2 We set var                                          SCHED_PIT from                                                    SCHED_PIT to false  expression (23) not SCHED_PIT
+2 We set var                                          ARM_EM_TZ from                                                    ARM_EM_TZ to false  expression (24) not ARM_EM_TZ
+2 We set var                                         PPC32_603e from                                                   PPC32_603e to false  expression (25) not PPC32_603e
+2 We set var                                     ARM_ENABLE_SWP from                                               ARM_ENABLE_SWP to false  expression (26) not ARM_ENABLE_SWP
+2 We set var                                      UNAME_RELEASE from                                                UNAME_RELEASE to false  expression (27) not UNAME_RELEASE
+2 We set var                                             ARM_V7 from                                                       ARM_V7 to false  expression (28) not ARM_V7
+1 We set var                                                ARM from                                                          ARM to true  expression (29) ARM
+2 We set var                                                JDB from                                                          JDB to false  expression (30) not JDB
+2 We set var                                                FPU from                                                          FPU to false  expression (31) not FPU
+2 We set var                                           SLOW_RTC from                                                     SLOW_RTC to false  expression (32) not SLOW_RTC
+2 We set var                                          SCHED_RTC from                                                    SCHED_RTC to false  expression (33) not SCHED_RTC
+2 We set var                                       WARN_WARNING from                                                 WARN_WARNING to false  expression (34) not WARN_WARNING
+2 We set var                                      INCLUDE_SPARC from                                                INCLUDE_SPARC to false  expression (35) not INCLUDE_SPARC
+2 We set var                                           JDB_GZIP from                                                     JDB_GZIP to false  expression (36) not JDB_GZIP
+2 We set var                                         AMD64_ATOM from                                                   AMD64_ATOM to false  expression (37) not AMD64_ATOM
+2 We set var                                           IA32_686 from                                                     IA32_686 to false  expression (38) not IA32_686
+2 We set var                                             GSTABS from                                                       GSTABS to false  expression (39) not GSTABS
+2 We set var                                              PF_PC from                                                        PF_PC to false  expression (40) not PF_PC
+1 We set var                                   SCHED_FIXED_PRIO from                                             SCHED_FIXED_PRIO to true  expression (41) SCHED_FIXED_PRIO
+2 We set var                              CAN_ARM_CPU_CORTEX_A7 from                                        CAN_ARM_CPU_CORTEX_A7 to false  expression (42) not CAN_ARM_CPU_CORTEX_A7
+2 We set var                                            IA32_P4 from                                                      IA32_P4 to false  expression (43) not IA32_P4
+2 We set var                                              AMD64 from                                                        AMD64 to false  expression (44) not AMD64
+2 We set var                                     ARM_CORTEX_A15 from                                               ARM_CORTEX_A15 to false  expression (45) not ARM_CORTEX_A15
+1 We set var                                         CONTEXT_4K from                                                   CONTEXT_4K to true  expression (46) CONTEXT_4K
+2 We set var                                 CAN_ARM_CPU_MPCORE from                                           CAN_ARM_CPU_MPCORE to false  expression (47) not CAN_ARM_CPU_MPCORE
+2 We set var                                           AMD64_K8 from                                                     AMD64_K8 to false  expression (48) not AMD64_K8
+1 We set var                                     HOST_CC_EQ_gcc from                                               HOST_CC_EQ_gcc to true  expression (49) HOST_CC_EQ_gcc
+2 We set var                                                 MP from                                                           MP to false  expression (50) not MP
+2 We set var                                   CAN_ARM_CPU_920T from                                             CAN_ARM_CPU_920T to false  expression (51) not CAN_ARM_CPU_920T
+2 We set var                                       AMD64_CORE_I from                                                 AMD64_CORE_I to false  expression (52) not AMD64_CORE_I
+2 We set var                                         IA32_CORE2 from                                                   IA32_CORE2 to false  expression (53) not IA32_CORE2
+2 We set var                                      ARM_CORTEX_A8 from                                                ARM_CORTEX_A8 to false  expression (54) not ARM_CORTEX_A8
+1 We set var                                             ABI_VF from                                                       ABI_VF to true  expression (55) ABI_VF
+1 We set var                                       NO_FRAME_PTR from                                                 NO_FRAME_PTR to true  expression (56) NO_FRAME_PTR
+2 We set var                                           IA32_486 from                                                     IA32_486 to false  expression (57) not IA32_486
+1 We set var                                        STACK_DEPTH from                                                  STACK_DEPTH to true  expression (58) STACK_DEPTH
+2 We set var                                          IA32_ATOM from                                                    IA32_ATOM to false  expression (59) not IA32_ATOM
+2 We set var                                      ARM_CORTEX_A5 from                                                ARM_CORTEX_A5 to false  expression (60) not ARM_CORTEX_A5
+2 We set var                                           ONE_SHOT from                                                     ONE_SHOT to false  expression (61) not ONE_SHOT
+2 We set var                              CAN_ARM_CPU_CORTEX_A8 from                                        CAN_ARM_CPU_CORTEX_A8 to false  expression (62) not CAN_ARM_CPU_CORTEX_A8
+1 We set var                                          WARN_NONE from                                                    WARN_NONE to true  expression (63) WARN_NONE
+2 We set var                                          ARM_EM_NS from                                                    ARM_EM_NS to false  expression (64) not ARM_EM_NS
+1 We set var                           DEBUG_KERNEL_PAGE_FAULTS from                                     DEBUG_KERNEL_PAGE_FAULTS to true  expression (65) DEBUG_KERNEL_PAGE_FAULTS
+2 We set var                                        AMD64_CORE2 from                                                  AMD64_CORE2 to false  expression (66) not AMD64_CORE2
+2 We set var                                         ARM_V6PLUS from                                                   ARM_V6PLUS to false  expression (67) not ARM_V6PLUS
+2 We set var                                    CAN_ARM_CPU_926 from                                              CAN_ARM_CPU_926 to false  expression (68) not CAN_ARM_CPU_926
+2 We set var                                      INCLUDE_PPC32 from                                                INCLUDE_PPC32 to false  expression (69) not INCLUDE_PPC32
+2 We set var                                           WATCHDOG from                                                     WATCHDOG to false  expression (70) not WATCHDOG
+2 We set var                                           WARN_ANY from                                                     WARN_ANY to false  expression (71) not WARN_ANY
+2 We set var                                            ARM_PXA from                                                      ARM_PXA to false  expression (72) not ARM_PXA
+2 We set var                                       SCHED_FP_WFQ from                                                 SCHED_FP_WFQ to false  expression (73) not SCHED_FP_WFQ
+1 We set var                                    VMEM_ALLOC_TEST from                                              VMEM_ALLOC_TEST to true  expression (74) VMEM_ALLOC_TEST
+2 We set var                                          SCHED_WFQ from                                                    SCHED_WFQ to false  expression (75) not SCHED_WFQ
+2 We set var                                 CAN_ARM_CPU_SA1100 from                                           CAN_ARM_CPU_SA1100 to false  expression (76) not CAN_ARM_CPU_SA1100
+2 We set var                                            IA32_PM from                                                      IA32_PM to false  expression (77) not IA32_PM
+2 We set var                                              PPC32 from                                                        PPC32 to false  expression (78) not PPC32
+2 We set var                                             NDEBUG from                                                       NDEBUG to false  expression (79) not NDEBUG
+1 We set var                                             INLINE from                                                       INLINE to true  expression (80) INLINE
+2 We set var                                         ARM_MPCORE from                                                   ARM_MPCORE to false  expression (81) not ARM_MPCORE
+2 We set var                                           IA32_586 from                                                     IA32_586 to false  expression (82) not IA32_586
+2 We set var                                           JDB_MISC from                                                     JDB_MISC to false  expression (83) not JDB_MISC
+2 We set var                                             SERIAL from                                                       SERIAL to false  expression (84) not SERIAL
+2 We set var                                              LEON3 from                                                        LEON3 to false  expression (85) not LEON3
+2 We set var                                           ARM_920T from                                                     ARM_920T to false  expression (86) not ARM_920T
+1 We set var                          KERNELVERSION_EQ_OTHERVAL from                                    KERNELVERSION_EQ_OTHERVAL to true  expression (87) KERNELVERSION_EQ_OTHERVAL
+2 We set var                                           ARM_LPAE from                                                     ARM_LPAE to false  expression (88) not ARM_LPAE
+2 We set var                                    MAINTAINER_MODE from                                              MAINTAINER_MODE to false  expression (89) not MAINTAINER_MODE
+2 We set var                                  POWERSAVE_GETCHAR from                                            POWERSAVE_GETCHAR to false  expression (90) not POWERSAVE_GETCHAR
+2 We set var                                        IA32_TARGET from                                                  IA32_TARGET to false  expression (91) not IA32_TARGET
+1 We set var                                  LIST_ALLOC_SANITY from                                            LIST_ALLOC_SANITY to true  expression (92) LIST_ALLOC_SANITY
+2 We set var                                         CONTEXT_8K from                                                   CONTEXT_8K to false  expression (93) not CONTEXT_8K
+2 We set var                                  PF_ARM_MP_CAPABLE from                                            PF_ARM_MP_CAPABLE to false  expression (94) not PF_ARM_MP_CAPABLE
+2 We set var                                           CPU_VIRT from                                                     CPU_VIRT to false  expression (95) not CPU_VIRT
+2 We set var                                 BEFORE_IRET_SANITY from                                           BEFORE_IRET_SANITY to false  expression (96) not BEFORE_IRET_SANITY
+1 We set var                               FINE_GRAINED_CPUTIME from                                         FINE_GRAINED_CPUTIME to true  expression (97) FINE_GRAINED_CPUTIME
+2 We set var                                         JDB_DISASM from                                                   JDB_DISASM to false  expression (98) not JDB_DISASM
+2 We set var                                            IA32_K6 from                                                      IA32_K6 to false  expression (99) not IA32_K6
+2 We set var                                               IA32 from                                                         IA32 to false  expression (100) not IA32
+2 We set var                                            ARM_926 from                                                      ARM_926 to false  expression (101) not ARM_926
+2 We set var                                      ARM_CORTEX_A7 from                                                ARM_CORTEX_A7 to false  expression (102) not ARM_CORTEX_A7
+2 We set var                                              PF_UX from                                                        PF_UX to false  expression (103) not PF_UX
+2 We set var                                            IA32_P3 from                                                      IA32_P3 to false  expression (104) not IA32_P3
+2 We set var                                             ARM_SA from                                                       ARM_SA to false  expression (105) not ARM_SA
+2 We set var                                            IA32_K8 from                                                      IA32_K8 to false  expression (106) not IA32_K8
+2 We set var                                              SPARC from                                                        SPARC to false  expression (107) not SPARC
+2 We set var                                    ARM_SECMONIF_TL from                                              ARM_SECMONIF_TL to false  expression (108) not ARM_SECMONIF_TL
+2 We set var                                  ARM_SECMONIF_NONE from                                            ARM_SECMONIF_NONE to false  expression (109) not ARM_SECMONIF_NONE
+1 We set var                                       XARCH_EQ_arm from                                                 XARCH_EQ_arm to true  expression (110) XARCH_EQ_arm
+2 We set var                                             ARM_V6 from                                                       ARM_V6 to false  expression (111) not ARM_V6
+1 We set var                                          CC_EQ_gcc from                                                    CC_EQ_gcc to true  expression (112) CC_EQ_gcc
+2 We set var                                             UX_CON from                                                       UX_CON to false  expression (113) not UX_CON
+1 We set var                                    HOST_CXX_EQ_g++ from                                              HOST_CXX_EQ_g++ to true  expression (114) HOST_CXX_EQ_g++
+2 We set var                                        JDB_LOGGING from                                                  JDB_LOGGING to false  expression (115) not JDB_LOGGING
+1 We set var                                     ARM_CPU_ERRATA from                                               ARM_CPU_ERRATA to true  expression (116) ARM_CPU_ERRATA
+2 We set var                              CAN_ARM_CPU_CORTEX_A5 from                                        CAN_ARM_CPU_CORTEX_A5 to false  expression (117) not CAN_ARM_CPU_CORTEX_A5
+2 We set var                                           SYNC_TSC from                                                     SYNC_TSC to false  expression (118) not SYNC_TSC
+2 We set var                                           ARM_1176 from                                                     ARM_1176 to false  expression (119) not ARM_1176
+1 We set var                                    WARN_LEVEL_EQ_0 from                                              WARN_LEVEL_EQ_0 to true  expression (120) WARN_LEVEL_EQ_0
+2 We set var                                     JDB_ACCOUNTING from                                               JDB_ACCOUNTING to false  expression (121) not JDB_ACCOUNTING
+2 We set var                             DISABLE_VIRT_OBJ_SPACE from                                       DISABLE_VIRT_OBJ_SPACE to false  expression (122) not DISABLE_VIRT_OBJ_SPACE
+1 We set var                                ARM_ALIGNMENT_CHECK from                                          ARM_ALIGNMENT_CHECK to true  expression (123) ARM_ALIGNMENT_CHECK
+2 We set var                                 CAN_ARM_CPU_XSCALE from                                           CAN_ARM_CPU_XSCALE to false  expression (124) not CAN_ARM_CPU_XSCALE
+2 We set var                                   CAN_ARM_CPU_1176 from                                             CAN_ARM_CPU_1176 to false  expression (125) not CAN_ARM_CPU_1176
+2 We set var                                           IA32_K10 from                                                     IA32_K10 to false  expression (126) not IA32_K10
+2 We set var                                           ARM_1136 from                                                     ARM_1136 to false  expression (127) not ARM_1136
+2 We set var                                     VIRT_OBJ_SPACE from                                               VIRT_OBJ_SPACE to false  expression (128) not VIRT_OBJ_SPACE
+2 We set var                                   CAN_ARM_CPU_1136 from                                             CAN_ARM_CPU_1136 to false  expression (129) not CAN_ARM_CPU_1136
+2 We set var                                          AMD64_K10 from                                                    AMD64_K10 to false  expression (130) not AMD64_K10
+2 We set var                                    ARM_SECMONIF_MC from                                              ARM_SECMONIF_MC to false  expression (131) not ARM_SECMONIF_MC
+1 We set var                                         ARM_EM_STD from                                                   ARM_EM_STD to true  expression (132) ARM_EM_STD
+2 We set var                           ARM_1176_CACHE_ALIAS_FIX from                                     ARM_1176_CACHE_ALIAS_FIX to false  expression (133) not ARM_1176_CACHE_ALIAS_FIX
+2 We set var                                        IRQ_SPINNER from                                                  IRQ_SPINNER to false  expression (134) not IRQ_SPINNER
+1 We set var                                                 CC from                                                           CC to true  expression (234) CC
+1 We set var                                           CHOICE_1 from                                                     CHOICE_1 to true  expression (242) CHOICE_1
+1 We set var                                           CHOICE_2 from                                                     CHOICE_2 to true  expression (243) CHOICE_2
+1 We set var                                           CHOICE_3 from                                                     CHOICE_3 to true  expression (244) CHOICE_3
+1 We set var                                           CHOICE_7 from                                                     CHOICE_7 to true  expression (257) CHOICE_7
+1 We set var                                           CHOICE_8 from                                                     CHOICE_8 to true  expression (258) CHOICE_8
+1 We set var                                                CXX from                                                          CXX to true  expression (268) CXX
+1 We set var                                            HOST_CC from                                                      HOST_CC to true  expression (285) HOST_CC
+1 We set var                                           HOST_CXX from                                                     HOST_CXX to true  expression (293) HOST_CXX
+1 We set var                                              LABEL from                                                        LABEL to true  expression (489) LABEL
+libc++abi.dylib: terminating with uncaught exception of type std::logic_error: There was a contradiction simplifying PF_PC or PF_UX or not CHOICE_2 to false
+

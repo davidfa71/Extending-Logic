@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         imlib2.kconfig
+# \brief	imlib2.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2010
+################################################################################
+
+config EMBTK_HAVE_IMLIB2
+	bool "Have imlib2"
+	select EMBTK_HAVE_FREETYPE
+	select EMBTK_HAVE_LIBPNG
+	select EMBTK_HAVE_LIBJPEG
+	help
+		Imlib2 is a graphics library for fast file loading, saving,
+		rendering and manipulation.
+choice
+	prompt "imlib2 version you wish"
+	depends on EMBTK_HAVE_IMLIB2
+	help
+	 Here you can choose which version of imlib2 you want to use.
+
+	config  EMBTK_IMLIB2_VERSION_1_4_4
+		bool "imlib2-1.4.4"
+endchoice
+
+config EMBTK_IMLIB2_VERSION_STRING
+	string
+	default "1.4.4"	if EMBTK_IMLIB2_VERSION_1_4_4
+
+config EMBTK_IMLIB2_NEED_PATCH
+	bool
+config EMBTK_IMLIB2_NEED_AUTORECONF
+	bool
+config EMBTK_IMLIB2_PKG_IS_TARGZ
+	bool
+config EMBTK_IMLIB2_PKG_IS_TARBZ2
+	bool

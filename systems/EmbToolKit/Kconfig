@@ -1,0 +1,115 @@
+################################################################################
+# Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         Kconfig
+# \brief	Kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+mainmenu "Embedded systems toolkit - v$EMBTK_VERSION - configuration "
+
+config EMBTK_DOTCONFIG
+	bool
+	default y
+
+config EMBTK_DEFAULT_DL
+	string
+	option env="EMBTK_DEFAULT_DL"
+
+config EMBTK_VERSION
+	string
+	option env="EMBTK_VERSION"
+choice
+prompt "Which OS type?"
+
+config EMBTK_HOST_OSTYPE_EQ_bsd
+	bool "OSTYPE bsd"
+
+config EMBTK_HOST_OSTYPE_EQ_macos
+       bool "OSTYPE macos"
+
+endchoice
+	
+
+config EMBTK_HOST_OS
+	string
+	option env="EMBTK_HOST_OS"
+
+menu "Target OS Selection"
+choice
+	prompt "Choose target OS"
+
+	config EMBTK_OS_LINUX
+		bool "Linux"
+endchoice
+endmenu
+
+menu "Target Architecture/variants/options Selection"
+source "core/kconfig/arch.kconfig"
+source "core/kconfig/arch-variant.kconfig"
+endmenu
+
+# Give ability to build (or hide) old packages, instead of remove them in Embtk.
+config EMBTK_OLDPACKAGES
+	bool "Show old revisions of some packages"
+	help
+	 This will allow you to build old revisions of some packages.
+
+menu "Toolchain configuration"
+source "core/toolchain/toolchain.kconfig"
+endmenu
+
+menu "Toolchain Addons - Debugging systems"
+source "core/toolchain/addons/gdb/gdb.kconfig"
+source "packages/misc/ncurses/ncurses.kconfig"
+source "core/toolchain/addons/ltrace/ltrace.kconfig"
+source "core/toolchain/addons/strace/strace.kconfig"
+endmenu
+
+menu "Target build options"
+source "core/kconfig/targetbuildopts.kconfig"
+endmenu
+
+menu "Embtoolkit build options and host tools"
+source "packages/htools/hosttools-buildopts.kconfig"
+endmenu
+
+if EMBTK_OS_LINUX
+config EMBTK_BUILD_LINUX_KERNEL
+	bool "Build linux kernel image"
+	select EMBTK_HOST_HAVE_LIBELF if EMBTK_HOST_OS=macos
+
+if EMBTK_BUILD_LINUX_KERNEL
+source "core/kconfig/linux-kernel-build.kconfig"
+endif
+
+endif
+
+config EMBTK_HAVE_ROOTFS
+	bool "Build root filesystem"
+	default y
+	help
+	 If you want to build a root filesystem for your target, and include
+	 some packages within it, you must say yes here.
+	 Select the root filesystem type in "Type of root filesystem to build".
+	 Select packages in "Packages to include in your root filesystem".
+
+if EMBTK_HAVE_ROOTFS
+source "core/kconfig/rootfs/rootfs.kconfig"
+endif

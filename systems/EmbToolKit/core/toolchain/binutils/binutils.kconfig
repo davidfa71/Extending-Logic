@@ -1,0 +1,81 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         binutils.kconfig
+# \brief	binutils.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+###############################################################################
+
+config EMBTK_HAVE_BINUTILS
+	bool
+	default y
+
+choice
+	prompt "Version of binutils you wish"
+	depends on EMBTK_HAVE_BINUTILS
+	help
+	 Here you can choose which version of binutils your toochain will use.
+
+	config EMBTK_BINUTILS_VERSION_2_24
+		bool "binutils-2.24"
+		select EMBTK_BINUTILS_NEED_PATCH
+	config EMBTK_BINUTILS_VERSION_2_23_2
+		bool "binutils-2.23.2"
+		select EMBTK_BINUTILS_NEED_PATCH
+	config EMBTK_BINUTILS_VERSION_GIT
+		bool "Use binutils git repository"
+		help
+		 Answer Y here if you want to build your toolchain based on
+		 binutils sources from its GIT repository.
+		 See http://sourceware.org/git/?p=binutils-gdb.git
+endchoice
+
+#
+# GIT repository options
+#
+config EMBTK_BINUTILS_GIT_BRANCH
+	string "Branch to use"
+	default "master"
+	depends on EMBTK_BINUTILS_VERSION_GIT
+	help
+	 The branch of the git repository to use, the default is master.
+
+config EMBTK_BINUTILS_GIT_REVISION
+	string "Checkout a specific revision instead of the latest"
+	depends on EMBTK_BINUTILS_VERSION_GIT
+	help
+	 Chechout a specific revision instead of the latest.
+
+config EMBTK_BINUTILS_REFSPEC
+	string
+	default "toolchain"
+
+#
+# Versions strings
+#
+config EMBTK_BINUTILS_VERSION_STRING
+	string
+	default "2.24"		if EMBTK_BINUTILS_VERSION_2_24
+	default "2.23.2"	if EMBTK_BINUTILS_VERSION_2_23_2
+
+config EMBTK_BINUTILS_NEED_PATCH
+	bool
+config EMBTK_BINUTILS_NEED_AUTORECONF
+	bool

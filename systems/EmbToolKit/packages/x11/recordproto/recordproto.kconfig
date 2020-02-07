@@ -1,0 +1,58 @@
+################################################################################
+# GAYE Abdoulaye Walsimou, <awg@embtoolkit.org>
+# Copyright(C) 2010-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         recordproto.kconfig
+# \brief	recordproto.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <awg@embtoolkit.org>
+# \date         June 2010
+################################################################################
+
+config EMBTK_HAVE_RECORDPROTO
+	bool "Have recordproto"
+	help
+		recordproto for X windowing system.
+		This extension defines a protocol for the recording and playback
+		of user actions in the X Window System.
+
+choice
+	prompt "recordproto version you wish"
+	depends on EMBTK_HAVE_RECORDPROTO
+	help
+		Here you can choose which version of recordproto you want to
+		use.
+
+	config  EMBTK_RECORDPROTO_VERSION_1_14_1
+		bool "recordproto-1.14.1"
+	config  EMBTK_RECORDPROTO_VERSION_1_14
+		bool "recordproto-1.14"
+endchoice
+
+config EMBTK_RECORDPROTO_VERSION_STRING
+	string
+	default "1.14.1"	if EMBTK_RECORDPROTO_VERSION_1_14_1
+	default "1.14"		if EMBTK_RECORDPROTO_VERSION_1_14
+
+config EMBTK_RECORDPROTO_NEED_PATCH
+	bool
+config EMBTK_RECORDPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_RECORDPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_RECORDPROTO_PKG_IS_TARBZ2
+	bool

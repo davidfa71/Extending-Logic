@@ -1,0 +1,57 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         dbus.kconfig
+# \brief	dbus.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2010
+################################################################################
+
+config EMBTK_HAVE_DBUS
+	bool "Have D-bus"
+	select EMBTK_HAVE_LIBXML2
+	help
+		D-Bus is a message bus system, a simple way for applications to
+		talk to one another. In addition to interprocess communication,
+		D-Bus helps coordinate process lifecycle; it makes it simple and
+		reliable to code a "single instance" application or daemon, and
+		to launch applications and daemons on demand when their services
+		are needed.
+choice
+	prompt "D-bus version you wish"
+	depends on EMBTK_HAVE_DBUS
+	help
+	 Here you can choose which version of D-bus you want to use.
+
+	config  EMBTK_DBUS_VERSION_1_2_28
+		bool "dbus-1.2.28"
+endchoice
+
+config EMBTK_DBUS_VERSION_STRING
+	string
+	default "1.2.28"	if EMBTK_DBUS_VERSION_1_2_28
+
+config EMBTK_DBUS_NEED_PATCH
+	bool
+config EMBTK_DBUS_NEED_AUTORECONF
+	bool
+config EMBTK_DBUS_PKG_IS_TARGZ
+	bool
+config EMBTK_DBUS_PKG_IS_TARBZ2
+	bool

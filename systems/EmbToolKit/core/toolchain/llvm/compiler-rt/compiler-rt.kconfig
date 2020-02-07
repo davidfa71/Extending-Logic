@@ -1,0 +1,77 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012-2013 Abdoulaye Walsimou GAYE <awg@embtoolkit.org>.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         compiler-rt.kconfig
+# \brief	compiler-rt.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2012
+################################################################################
+
+config EMBTK_HAVE_COMPILER-RT
+	bool
+	default y
+	select EMBTK_COMPILER-RT_VERSION_3_3
+
+#
+# compiler-rt versions
+#
+config EMBTK_COMPILER-RT_VERSION_3_3
+	bool
+	select EMBTK_COMPILER-RT_NEED_PATCH
+
+config EMBTK_COMPILER-RT_VERSION_GIT
+	bool
+	help
+	 Answer Y here if you want to build your toolchain based on
+	 compiler-rt sources from its GIT repository.
+
+#
+# GIT repository options
+#
+config EMBTK_COMPILER-RT_GIT_BRANCH
+	string "compiler-rt Branch to use"
+	default "master"
+	depends on EMBTK_COMPILER-RT_VERSION_GIT
+	help
+	 The branch of the git repository to use, the default is master.
+
+config EMBTK_COMPILER-RT_GIT_REVISION
+	string "compiler-rt revision to Checkout instead of the latest"
+	depends on EMBTK_COMPILER-RT_VERSION_GIT
+	help
+	 Chechout a specific revision instead of the latest.
+
+config EMBTK_COMPILER-RT_REFSPEC
+	string
+	default "toolchain"
+
+#
+# Versions strings for tarball packages.
+#
+config EMBTK_COMPILER-RT_VERSION_STRING
+	string
+	default "embtk-3.3"	if EMBTK_COMPILER-RT_VERSION_3_3
+	default "git"		if EMBTK_COMPILER-RT_VERSION_GIT
+
+
+config EMBTK_COMPILER-RT_NEED_PATCH
+	bool
+config EMBTK_COMPILER-RT_NEED_AUTORECONF
+	bool
+

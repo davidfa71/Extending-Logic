@@ -1,0 +1,99 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012-2013 Abdoulaye Walsimou GAYE <awg@embtoolkit.org>.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gcc-options.kconfig
+# \brief	gcc-options.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         February 2012
+################################################################################
+
+config EMBTK_GCC_LANGUAGE_CPP
+	bool "Support C++"
+	select EMBTK_GCC1_LANGUAGE_CPP
+	select EMBTK_GCC2_LANGUAGE_CPP
+	select EMBTK_GCC3_LANGUAGE_CPP
+	select KEMBTK_UCLIBC_UCLIBC_HAS_FLOATS if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_SUSV3_LEGACY if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_CTOR_DTOR if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_DYNAMIC_ATEXIT if EMBTK_CLIB_UCLIBC
+	select KEMBTK_EGLIBC_OPTION_EGLIBC_LIBM if EMBTK_CLIB_EGLIBC
+	select KEMBTK_EGLIBC_OPTION_POSIX_C_LANG_WIDE_CHAR if EMBTK_CLIB_EGLIBC
+	select KEMBTK_EGLIBC_OPTION_POSIX_WIDE_CHAR_DEVICE_IO if EMBTK_CLIB_EGLIBC
+	help
+	 Your toolchain will be able to build C++ source code
+choice
+	prompt "C++ standard library implementation"
+	depends on EMBTK_GCC_LANGUAGE_CPP
+	help
+	 Here you can choose which GCC series you want to use.
+
+	config EMBTK_CXXLIB_GCC_LIBSTDCXX
+		bool "GCC libstdc++"
+		help
+		 GCC C++ standard library implementation, under GPLv3 with
+		 runtime exception (see http://gcc.gnu.org/onlinedocs for more
+		 details).
+
+endchoice
+
+config EMBTK_CXXLIB_LLVM_LIBCXX
+	bool
+	depends on (EMBTK_LLVM_ONLY_TOOLCHAIN || EMBTK_GCC_AND_LLVM_TOOLCHAIN) && (EMBTK_ARCH_MIPS && EMBTK_TARGET_ARCH_32BITS)
+	help
+	 LLVM C++ standard library implementation, under
+	 the MIT license and the UIUC License (a BSD-like license).
+	 See http://libcxx.llvm.org
+
+source "core/toolchain/llvm/libc++/libcxx.kconfig"
+source "core/toolchain/libcxxrt/libcxxrt.kconfig"
+
+#config EMBTK_GCC_LANGUAGE_JAVA
+#	bool "Support Java"
+#	help
+#	 Your toolchain will be able to build Java source code
+
+config EMBTK_GCC_LANGUAGE_OBJECTIVEC
+	bool "Support Objective-C"
+	depends on !EMBTK_CLIB_UCLIBC
+	select EMBTK_GCC1_LANGUAGE_OBJECTIVEC
+	select EMBTK_GCC2_LANGUAGE_OBJECTIVEC
+	select EMBTK_GCC3_LANGUAGE_OBJECTIVEC
+	help
+	 Your toolchain will be able to build Objective-C source code
+
+config EMBTK_GCC_LANGUAGE_OBJECTIVECPP
+	bool "Support Objective-C++"
+	depends on !EMBTK_CLIB_UCLIBC
+	select EMBTK_GCC1_LANGUAGE_OBJECTIVECPP
+	select EMBTK_GCC2_LANGUAGE_OBJECTIVECPP
+	select EMBTK_GCC3_LANGUAGE_OBJECTIVECPP
+	help
+	 Your toolchain will be able to build Objective-C source code
+
+if EMBTK_GCC_ONLY_TOOLCHAIN || EMBTK_GCC_AND_LLVM_TOOLCHAIN
+config EMBTK_GCC_LANGUAGE_FORTRAN
+	bool "Support Fortran"
+	help
+	 Your toolchain will be able to build fortran source code
+endif
+
+#config EMBTK_GCC_LANGUAGE_ADA
+#	bool "Support Ada"
+#	help
+#	 Your toolchain will be able to build Ada source code

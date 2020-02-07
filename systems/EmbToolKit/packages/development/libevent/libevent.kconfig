@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2013 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libevent.kconfig
+# \brief	libevent.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2010
+################################################################################
+
+config EMBTK_HAVE_LIBEVENT
+	bool "Have libevent"
+	help
+	 The libevent API provides a mechanism to execute a callback function
+	 when a specific event occurs on a file descriptor or after a timeout
+	 has been reached. Furthermore, libevent also support callbacks due to
+	 signals or regular timeouts.
+
+choice
+	prompt "libevent version you wish"
+	depends on EMBTK_HAVE_LIBEVENT
+	help
+	 Here you can choose which version of libevent you want to use.
+
+	config  EMBTK_LIBEVENT_VERSION_2_0_STABLE
+		bool "libevent-2.0.21-stable"
+	config  EMBTK_LIBEVENT_VERSION_1_4_STABLE
+		bool "libevent-1.4.13-stable"
+endchoice
+
+config EMBTK_LIBEVENT_VERSION_STRING
+	string
+	default "2.0.21-stable"		if EMBTK_LIBEVENT_VERSION_2_0_STABLE
+	default "1.4.14b-stable"	if EMBTK_LIBEVENT_VERSION_1_4_STABLE
+
+config EMBTK_LIBEVENT_NEED_PATCH
+	bool
+config EMBTK_LIBEVENT_NEED_AUTORECONF
+	bool

@@ -1,0 +1,1 @@
+export CFLAGS="-g -O0 -DDD_DEBUG -DDD_VERBOSE -DDD_STATS -DDD_CACHE_PROFILE -DDD_UNIQUE_PROFILE -DDD_COUNT -DMTR_DEBUG" ; ./configure CC=clang CXX=clang++ CFLAGS='-g -O0 -DDD_DEBUG -DDD_VERBOSE -DDD_STATS -DDD_CACHE_PROFILE -DDD_UNIQUE_PROFILE -DDD_COUNT -DMTR_DEBUG' CXXFLAGS='-std=c++11 -stdlib=libc++ -O0 -g' --enable-shared --enable-obj --enable-dddmp

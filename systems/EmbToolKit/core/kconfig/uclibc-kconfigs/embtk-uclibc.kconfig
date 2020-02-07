@@ -1,0 +1,98 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         uclibc.kconfig
+# \brief	uclibc.kconfig of Embtoolkit, similar to Configs/Config.in
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         September 2009
+################################################################################
+
+
+#
+# Embtk specific
+#
+
+comment "----------------------------------------------------------------------"
+comment "----- uClibc C library configuration"
+comment "----------------------------------------------------------------------"
+
+choice
+	prompt "uClibc version to use"
+	help
+	 Which uClibc version to use.
+
+	config EMBTK_UCLIBC_VERSION_0_9_33_2
+		bool "uClibc-0.9.33.2"
+		select EMBTK_UCLIBC_NEED_PATCH
+	config EMBTK_UCLIBC_VERSION_GIT
+		bool "Use a branch of uClibc git repository"
+		help
+			see http://git.uclibc.org/uClibc
+endchoice
+
+config EMBTK_UCLIBC_VERSION_STRING
+	string
+	default "0.9.33.2"	if EMBTK_UCLIBC_VERSION_0_9_33_2
+	default "git"		if EMBTK_UCLIBC_VERSION_GIT
+
+config EMBTK_UCLIBC_REFSPEC
+	string
+	default "toolchain"
+
+config EMBTK_UCLIBC_GIT_BRANCH
+	string "Branch to use"
+	default "master"
+	depends on EMBTK_UCLIBC_VERSION_GIT
+	help
+	 The branch of the git repository to use, the default is master.
+
+config EMBTK_UCLIBC_GIT_REVISION
+	string "Checkout a specific revision instead of the latest"
+	depends on EMBTK_UCLIBC_VERSION_GIT
+	help
+	 Chechout a specific revision instead of the latest.
+
+config EMBTK_UCLIBC_NEED_PATCH
+	bool
+	select EMBTK_UCLIBC_HEADERS_NEED_PATCH
+
+
+config EMBTK_UCLIBC_HEADERS_VERSION_STRING
+	string
+	default EMBTK_UCLIBC_VERSION_STRING
+
+config EMBTK_UCLIBC_HEADERS_REFSPEC
+	string
+	default EMBTK_UCLIBC_REFSPEC
+
+config EMBTK_UCLIBC_HEADERS_GIT_BRANCH
+	string
+	default EMBTK_UCLIBC_GIT_BRANCH
+
+config EMBTK_UCLIBC_HEADERS_GIT_REVISION
+	string
+	default EMBTK_UCLIBC_GIT_REVISION
+
+config EMBTK_UCLIBC_HEADERS_NEED_PATCH
+	bool
+
+#
+# uClibc specific
+#
+source core/kconfig/uclibc-kconfigs/uclibc.kconfig

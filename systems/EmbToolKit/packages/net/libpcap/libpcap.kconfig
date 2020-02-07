@@ -1,0 +1,51 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libpcap.kconfig
+# \brief	libpcap.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2012
+################################################################################
+
+config EMBTK_HAVE_LIBPCAP
+	bool "Have libpcap"
+	help
+	 libpcap, a system-independent interface for user-level packet capture.
+	 libpcap provides a portable framework for low-level network monitoring.
+	 Applications include network statistics collection, securitymonitoring,
+	 network debugging, etc.
+
+choice
+	prompt "libpcap version you wish"
+	depends on EMBTK_HAVE_LIBPCAP
+	help
+	 Here you can choose which version of libpcap you want to use.
+
+	config  EMBTK_LIBPCAP_VERSION_1_3_0
+		bool "libpcap-1.3.0"
+endchoice
+
+config EMBTK_LIBPCAP_VERSION_STRING
+	string
+	default "1.3.0"		if EMBTK_LIBPCAP_VERSION_1_3_0
+
+config EMBTK_LIBPCAP_NEED_PATCH
+	bool
+config EMBTK_LIBPCAP_NEED_AUTORECONF
+	bool

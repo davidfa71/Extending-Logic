@@ -1,0 +1,136 @@
+#include "Objective.hpp"
+
+void	Objective::setMin(int xmin) { min = xmin; }
+void	Objective::setMax(int xmax) { max = xmax; }
+int	Objective::getMin() { return min; }
+int 	Objective::getMax() { return max; }
+void   Objective::translate(std::vector<int>& tr) {
+    std::set<std::pair<double, std::set<int>>> fun2;
+    for(std::set<std::pair<double, std::set<int>>>::iterator it = fun.begin(); it != fun.end(); it++) {
+      std::set<int> temp;
+      for(auto v :  it->second) 
+        temp.insert(tr[v]);
+  
+       fun2.insert(std::pair<double, std::set<int>>(it->first, temp));
+    }   
+  fun = fun2;
+}
+double Objective::getIndependent() { return independent; }
+
+void Objective::add(double d, std::set<int> v) { 
+  if (v.empty())
+    independent += d;
+  else
+     fun.insert(std::pair<double, std::set<int>>(d, v));
+}
+
+int  Objective::size() { return fun.size(); };
+
+std::ostream& operator<<(std::ostream& os, Objective& obj) {
+  bool first = true;
+  os << obj.getIndependent() << " ";
+  for(auto p : obj.fun) {
+    if (p.first >= 0)
+       os << "+" << p.first << " ";
+    else
+       os << " " << p.first << " ";
+    for(int x : p.second)
+      os << " * " << x;
+  }
+  return os;
+}
+// Evaluates the objective function according to a set of variables
+double Objective::evaluate(std::vector<char> values) {
+  double total = independent;
+  for(auto p : fun) {
+    bool allOk = true;
+    for(int x : p.second)
+      if (values[x] == 'f') {
+        allOk = false;
+        break;
+      }
+    if (allOk) total += p.first;
+  }
+  return total;
+}
+
+// Filters an objective function to the interesting part for a group of variables
+// does not carry over the independent coefficient if there is one
+Objective Objective::filter(std::set<int> variables) {
+  Objective res;
+  for(auto p : fun) {
+    bool allOk = true;
+    // Not the independent coefficient, please
+    if (!p.second.empty()) {
+      for(int x : p.second)
+	if (variables.find(x) == variables.end()) {
+	  allOk = false;
+	  break;
+	}
+      if (allOk)
+	res.add(p.first, p.second);
+    }
+  }
+  return res;
+}
+
+Objective       Objective::filter(int minVar, int maxVar) {
+  Objective res;
+  for(auto p : fun) {
+    bool allOk = true;
+    // Not the independent coefficient, please
+    if (!p.second.empty()) {
+      for(int x : p.second)
+        if (x < minVar || x > maxVar) {
+          allOk = false;
+          break;
+        }
+      if (allOk)
+        res.add(p.first, p.second);
+    }
+  }
+  return res;
+}
+
+
+void Objective::add(double coef, std::vector<int> factors) {
+  std::set<int> temp;
+  if (factors.empty())
+    independent = coef;
+  else {
+    for(auto x : factors) temp.insert(x);
+      fun.insert(std::pair<double, std::set<int>>(coef, temp));
+  }
+}
+
+std::vector<int> Objective::getFactors(int i) {
+   int c = 0;
+   std::vector<int> v;
+   for(auto q : fun) 
+     if (c++ == i) {
+       for(auto x : q.second)
+         v.push_back(x);
+       return v;
+     }
+  return v;
+}
+
+Objective    Objective::simplify(const std::vector<char>& v) {
+   Objective result;
+   result.independent = independent;
+   for(auto pair : fun) {
+     std::set<int> temp;
+     bool ok = true;
+     for(auto n : pair.second)
+        if (v[n] == 'f') { 
+          ok = false;
+          break;
+        }
+        else
+          if (v[n] != 't') temp.insert(n);
+     
+     if (ok) result.add(pair.first, temp);
+   }
+  return result;
+}
+

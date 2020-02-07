@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2013 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libunwind.kconfig
+# \brief	libunwind.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         January 2013
+################################################################################
+
+config EMBTK_HAVE_LIBUNWIND
+	bool "Have libunwind"
+	help
+	 libunwind is a portable and efficient C programming interface (API) to
+	 determine the call-chain of a program.
+	 The API additionally provides the means to manipulate the preserved
+	 (callee-saved) state of each call-frame and to resume execution at any
+	 point in the call-chain (non-local goto). The API supports both local
+	 (same-process) and remote (across-process) operation.
+	 As such, the API is useful in a number of applications. Some examples
+	 include: exception handling, debuggers, introspection, setjmp().
+
+choice
+	prompt "libunwind version you wish"
+	depends on EMBTK_HAVE_LIBUNWIND
+	help
+	 Here you can choose which version of libunwind you want to use.
+
+	config  EMBTK_LIBUNWIND_VERSION_1_1
+		bool "libunwind-1.1"
+endchoice
+
+config EMBTK_LIBUNWIND_VERSION_STRING
+	string
+	default "1.1"		if EMBTK_LIBUNWIND_VERSION_1_1
+
+config EMBTK_LIBUNWIND_NEED_PATCH
+	bool
+config EMBTK_LIBUNWIND_NEED_AUTORECONF
+	bool

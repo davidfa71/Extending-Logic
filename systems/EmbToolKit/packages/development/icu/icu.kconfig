@@ -1,0 +1,65 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         icu.kconfig
+# \brief        icu.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         May 2014
+################################################################################
+
+config EMBTK_HOST_HAVE_ICU
+	bool
+
+config EMBTK_HAVE_ICU
+	bool "Have icu"
+	select EMBTK_HOST_HAVE_ICU
+	select EMBTK_GCC_LANGUAGE_CPP
+	select KEMBTK_UCLIBC_UCLIBC_HAS_WCHAR if EMBTK_CLIB_UCLIBC
+	help
+	 ICU is a mature, widely used set of C/C++ and Java libraries providing
+	 Unicode and Globalization support for software applications.
+	 ICU is widely portable and gives applications the same results on all
+	 platforms and between C/C++ and Java software.
+	 See http://site.icu-project.org
+
+choice
+	prompt "icu version to use"
+	depends on EMBTK_HAVE_ICU || EMBTK_HOST_HAVE_ICU
+	help
+	 icu version to use
+
+	config EMBTK_ICU_VERSION_53_1
+		bool "icu-53.1"
+endchoice
+
+config EMBTK_ICU_VERSION_STRING
+	string
+	default "53.1"		if EMBTK_ICU_VERSION_53_1
+
+config EMBTK_ICU_NEED_PATCH
+	bool
+	select EMBTK_ICU_HOST_NEED_PATCH
+config EMBTK_ICU_NEED_AUTORECONF
+	bool
+	select EMBTK_ICU_HOST_NEED_AUTORECONF
+
+config EMBTK_ICU_HOST_NEED_PATCH
+	bool
+config EMBTK_ICU_HOST_NEED_AUTORECONF
+	bool

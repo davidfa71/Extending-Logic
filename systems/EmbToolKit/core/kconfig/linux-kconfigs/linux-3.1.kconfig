@@ -1,0 +1,42 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         linux-3.1.kconfig
+# \brief	linux v3.1.x series
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         February 2012
+################################################################################
+
+choice
+	prompt "Linux v3.1.x series exact version to use."
+	help
+		Linux v3.1.x series exact version to use.
+
+	config EMBTK_LINUX_VERSION_3_1_10
+		bool "linux-3.1.10"
+endchoice
+
+config EMBTK_LINUX_VERSION_STRING
+	string
+	default "3.1.10"	if EMBTK_LINUX_VERSION_3_1_10
+
+config EMBTK_LINUX_MAJOR_VERSION_STRING
+	string
+	default "v3.0"
+

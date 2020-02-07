@@ -1,0 +1,276 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         arch-variant-arm.kconfig
+# \brief	ARM architecture kconfig options
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         August 2009
+################################################################################
+
+choice
+	prompt "ARM Endian"
+	depends on EMBTK_ARCH_ARM
+	help
+	 Select your ARM core endian
+
+	config EMBTK_ARCH_ARM_LITTLE_ENDIAN
+		bool "armel: Little endian"
+		select EMBTK_TARGET_ARCH_LITTLE_ENDIAN
+		help
+		 Your ARM MCU is little endian
+	config EMBTK_ARCH_ARM_BIG_ENDIAN
+		bool "armeb: Big endian"
+		select EMBTK_TARGET_ARCH_BIG_ENDIAN
+		help
+		 Your ARM MCU is big endian
+endchoice
+
+choice
+	prompt "ARM ABI to use"
+	depends on EMBTK_ARCH_ARM
+	help
+	 Select ARM abi to use.
+
+	config EMBTK_ARCH_ARM_ABI_EABI
+		bool "eabi"
+endchoice
+
+choice
+	prompt "ARM Family"
+	depends on EMBTK_ARCH_ARM
+	default EMBTK_ARCH_ARM_FAMILY_ARM9TDMI
+	help
+	 Select ARM core family you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM7TDMI
+		bool "[arm7tdmi  Architecture: ARMv4t    ]"
+
+	config EMBTK_ARCH_ARM_FAMILY_STRONGARM
+		bool "[StrongARM Architecture: ARMv4     ]"
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM8
+		bool "[arm8      Architecture: ARMv4     ]"
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM9TDMI
+		bool "[arm9tdmi  Architecture: ARMv4t    ]"
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM9E
+		bool "[arm9e     Architecture: ARMv5tej  ]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM10E
+		bool "[arm10e    Architecture: ARMv5te{j}]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+
+	config EMBTK_ARCH_ARM_FAMILY_XSCALE
+		bool "[xscale    Architecture: ARMv5te   ]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM11
+		bool "[arm11     Architecture: ARMv6     ]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX
+		bool "[cortex    Architecture: ARMv7-A   ]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+
+	config EMBTK_ARCH_ARM_FAMILY_IWMMXT
+		bool "[iwmmxt    Architecture: iwmmxt    ]"
+		select EMBTK_TARGET_ARCH_MAYUSE_FPU
+		select EMBTK_ARCH_ARM_MAYUSE_FPU_ALL if EMBTK_HARDFLOAT
+endchoice
+
+choice
+	prompt "ARM arm7tdmi core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM7TDMI
+	help
+	 Please choose which arm7tdmi core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM7TDMI
+		bool "arm7tdmi"
+	config EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM710T
+		bool "arm710t"
+	config EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM720T
+		bool "arm720t"
+endchoice
+
+choice
+	prompt "StrongARM core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_STRONGARM
+	help
+	 Please choose which StrongARM core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA
+		bool "strongarm"
+	config EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-110
+		bool "strongarm110"
+	config EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-1100
+		bool "strongarm1100"
+	config EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-1110
+		bool "strongarm1110"
+endchoice
+
+choice
+	prompt "ARM arm8 core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM8
+	help
+	 Please choose which arm8 core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM8_ARM810
+		bool "arm810"
+endchoice
+
+choice
+	prompt "ARM arm9tdmi core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM9TDMI
+	help
+	 Please choose which arm9tdmi core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM9TDMI
+		bool "arm9tdmi"
+	config EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM920T
+		bool "arm920t"
+	config EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM922T
+		bool "arm922t"
+endchoice
+
+choice
+	prompt "ARM arm9e core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM9E
+	help
+	 Please choose which arm9e core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM9E_ARM926EJ-S
+		bool "arm926ej-s"
+endchoice
+
+choice
+	prompt "ARM arm10e core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM10E
+	help
+	 Please choose which arm10e core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1020E
+		bool "arm1020e"
+	config EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1022E
+		bool "arm1022e"
+	config EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1026EJ-S
+		bool "arm1026ej-s"
+endchoice
+
+choice
+	prompt "ARM xscale core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_XSCALE
+	help
+	 Please choose which xscale core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_XSCALE_XSCALE
+		bool "xscale"
+endchoice
+
+choice
+	prompt "ARM arm11 core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_ARM11
+	help
+	 Please choose which arm11 core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1136J-S
+		bool "arm1136j-s"
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1136JF-S
+		bool "arm1136jf-s"
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1156T2-S
+		bool "arm1156t2-s"
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1176JZ-S
+		bool "arm1176jz-s"
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1176JZF-S
+		bool "arm1176jzf-s"
+	config EMBTK_ARCH_ARM_FAMILY_ARM11_MPCORE
+		bool "mpcore"
+endchoice
+
+choice
+	prompt "ARM cortex core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_CORTEX
+	help
+	 Please choose which cortex core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A5
+		bool "cortex-a5"
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A7
+		bool "cortex-a7"
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A8
+		bool "cortex-a8"
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A9
+		bool "cortex-a9"
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-12
+		bool "cortex-a12"
+	config EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A15
+		bool "cortex-a15"
+endchoice
+
+choice
+	prompt "ARM iwmmxt core in the target"
+	depends on EMBTK_ARCH_ARM_FAMILY_IWMMXT
+	help
+	 Please choose which iwmmxt core you want to use.
+
+	config EMBTK_ARCH_ARM_FAMILY_IWMMXT_IWMMXT
+		bool "iwmmxt"
+	config EMBTK_ARCH_ARM_FAMILY_IWMMXT_IWMMXT2
+		bool "iwmmxt2"
+endchoice
+
+config EMBTK_ARM_MCU_STRING
+	depends on EMBTK_ARCH_ARM
+	string
+	default "arm7tdmi"	if EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM7TDMI
+	default "arm710t"	if EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM710T
+	default "arm720t"	if EMBTK_ARCH_ARM_FAMILY_ARM7TDMI_ARM720T
+	default "strongarm"	if EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA
+	default "strongarm110"	if EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-110
+	default "strongarm1100"	if EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-1100
+	default "strongarm1110"	if EMBTK_ARCH_ARM_FAMILY_STRONGARM_SA-1110
+	default "arm810"	if EMBTK_ARCH_ARM_FAMILY_ARM8_ARM810
+	default "arm9tdmi"	if EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM9TDMI
+	default "arm920t"	if EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM920T
+	default "arm922t"	if EMBTK_ARCH_ARM_FAMILY_ARM9TDMI_ARM922T
+	default "arm926ej-s"	if EMBTK_ARCH_ARM_FAMILY_ARM9E_ARM926EJ-S
+	default "arm1020e"	if EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1020E
+	default "arm1022e" 	if EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1022E
+	default "arm1026ej-s"	if EMBTK_ARCH_ARM_FAMILY_ARM10E_ARM1026EJ-S
+	default "xscale"	if EMBTK_ARCH_ARM_FAMILY_XSCALE_XSCALE
+	default "arm1136j-s"	if EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1136J-S
+	default "arm1136jf-s"	if EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1136JF-S
+	default "arm1156t2-s"	if EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1156T2-S
+	default "arm1176jz-s"	if EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1176JZ-S
+	default "arm1176jzf-s"	if EMBTK_ARCH_ARM_FAMILY_ARM11_ARM1176JZF-S
+	default "mpcore"	if EMBTK_ARCH_ARM_FAMILY_ARM11_MPCORE
+	default "cortex-a5"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A5
+	default "cortex-a7"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A7
+	default "cortex-a8"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A8
+	default "cortex-a9"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A9
+	default "cortex-a12"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A12
+	default "cortex-a15"	if EMBTK_ARCH_ARM_FAMILY_CORTEX_CORTEX-A15
+	default "iwmmxt"	if EMBTK_ARCH_ARM_FAMILY_IWMMXT_IWMMXT
+	default "iwmmxt2"	if EMBTK_ARCH_ARM_FAMILY_IWMMXT_IWMMXT2

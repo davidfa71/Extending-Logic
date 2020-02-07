@@ -1,0 +1,124 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         eglibc.kconfig
+# \brief	eglibc.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+
+config EMBTK_EGLIBC_VERSION_SVN
+	bool
+	default y
+
+config EMBTK_EGLIBC_REFSPEC
+	string
+	default "toolchain"
+
+choice
+	prompt "EGLIBC branch to checkout"
+	help
+	 EGLIBC branch to use.
+
+	config EMBTK_EGLIBC_VERSION_2_19
+		bool "eglibc-2.19"
+	config EMBTK_EGLIBC_VERSION_2_17
+		bool "eglibc-2.17"
+	config EMBTK_EGLIBC_VERSION_TRUNK
+		bool "trunk (development version)"
+endchoice
+
+config EMBTK_EGLIBC_SVN_REVISION
+	int "EGLIBC SVN revision to checkout (Please read the help below)"
+	help
+	 EGLIBC svn revision to use.
+	 This revision is the latest at EmbToolkit release.
+	 If at the moment you build your toolchain new revision is available,
+	 you can increase this value.
+
+	default 25890	if EMBTK_EGLIBC_VERSION_2_19
+	default 25892	if EMBTK_EGLIBC_VERSION_2_17
+	default 25237	if EMBTK_EGLIBC_VERSION_TRUNK
+
+comment "At EmbToolkit release, valid eglibc svn revisions are:"
+comment "svn revision 25890	for eglibc-2.19"
+comment "svn revision 25892	for eglibc-2.17"
+comment "svn revision 25237	for eglibc-trunk (development version)"
+comment ""
+
+config EMBTK_EGLIBC_SVN_BRANCH
+	string
+	default "branches/eglibc-2_19"		if EMBTK_EGLIBC_VERSION_2_19
+	default "branches/eglibc-2_17"		if EMBTK_EGLIBC_VERSION_2_17
+	default "trunk"				if EMBTK_EGLIBC_VERSION_TRUNK
+
+config EMBTK_EGLIBC_VERSION_STRING
+	string
+	default "2.19"		if EMBTK_EGLIBC_VERSION_2_19
+	default "2.17"		if EMBTK_EGLIBC_VERSION_2_17
+	default "trunk"		if EMBTK_EGLIBC_VERSION_TRUNK
+
+#Does we need patches?
+config EMBTK_EGLIBC_NEED_PATCH
+	bool
+	default y
+
+config EMBTK_EGLIBC_HEADERS_SVN_REVISION
+	int
+	default EMBTK_EGLIBC_SVN_REVISION
+config EMBTK_EGLIBC_HEADERS_SVN_BRANCH
+	string
+	default EMBTK_EGLIBC_SVN_BRANCH
+config EMBTK_EGLIBC_HEADEERS_VERSION_STRING
+	string
+	default EMBTK_EGLIBC_VERSION_STRING
+config EMBTK_EGLIBC_HEADERS_NEED_PATCH
+	bool
+	default EMBTK_EGLIBC_NEED_PATCH
+config EMBTK_EGLIBC_HEADERS_VERSION_SVN
+	bool
+	default EMBTK_EGLIBC_VERSION_SVN
+
+comment "------------------------------------"
+comment "----- EGLIBC options configuration"
+comment "------------------------------------"
+
+config EMBTK_EGLIBC_DISABLE_VERSIONING
+	bool
+	help
+	 EGLIBC supports building the library without compatibility code
+	 and symbol versioning.
+	 This feature allows reduction of EGLIBC's footprint by omitting
+	 functionality that implements older APIs.
+	 To build EGLIBC without compatibility code and symbol
+	 versioning, answer yes here.
+
+
+if EMBTK_EGLIBC_VERSION_2_19
+source "core/kconfig/eglibc-kconfigs/eglibc-2.19.kconfig"
+endif
+
+if EMBTK_EGLIBC_VERSION_2_17
+source "core/kconfig/eglibc-kconfigs/eglibc-2.17.kconfig"
+endif
+
+if EMBTK_EGLIBC_VERSION_TRUNK
+source "core/kconfig/eglibc-kconfigs/eglibc-trunk.kconfig"
+endif
+

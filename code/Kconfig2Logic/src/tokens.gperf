@@ -1,0 +1,51 @@
+%{
+#include "parser.hpp"
+#include "kconf_id.hpp"
+%}
+%language=C++
+%define hash-function-name kconf_id_hash
+%define lookup-function-name kconf_id_lookup
+%define string-pool-name kconf_id_strings
+%compare-strncmp
+%enum
+%pic
+%struct-type
+struct kconf_id;
+
+%%
+mainmenu,       token::T_MAINMENU,              TF_COMMAND
+menu,           token::T_MENU,                  TF_COMMAND
+endmenu,        token::T_ENDMENU,               TF_COMMAND
+source,         token::T_SOURCE,                TF_COMMAND
+choice,         token::T_CHOICE,                TF_COMMAND
+endchoice,      token::T_ENDCHOICE,             TF_COMMAND
+comment,        token::T_COMMENT,               TF_COMMAND
+config,         token::T_CONFIG,                TF_COMMAND
+menuconfig,     token::T_MENUCONFIG,            TF_COMMAND
+help,           token::T_HELP,                  TF_COMMAND
+if,             token::T_IF,                    TF_COMMAND|TF_PARAM
+endif,          token::T_ENDIF,                 TF_COMMAND
+depends,        token::T_DEPENDS,               TF_COMMAND
+optional,       token::T_OPTIONAL,              TF_COMMAND
+default,        token::T_DEFAULT,               TF_COMMAND, S_UNKNOWN
+prompt,         token::T_PROMPT,                TF_COMMAND
+tristate,       token::T_TYPE,                  TF_COMMAND, S_TRISTATE
+def_tristate,	token::T_DEFAULT,               TF_COMMAND, S_TRISTATE
+bool,           token::T_TYPE,                  TF_COMMAND, S_BOOLEAN
+boolean,        token::T_TYPE,                  TF_COMMAND, S_BOOLEAN
+def_bool,       token::T_DEFAULT,               TF_COMMAND, S_BOOLEAN
+int,            token::T_TYPE,                  TF_COMMAND, S_INT
+hex,            token::T_TYPE,                  TF_COMMAND, S_HEX
+string,         token::T_TYPE,                  TF_COMMAND, S_STRING
+select,         token::T_SELECT,                TF_COMMAND
+range,          token::T_RANGE,                 TF_COMMAND
+visible,        token::T_VISIBLE,               TF_COMMAND
+option,         token::T_OPTION,                TF_COMMAND
+on,             token::T_ON,                    TF_PARAM
+modules,        token::T_OPT_MODULES,           TF_OPTION
+defconfig_list,	token::T_OPT_DEFCONFIG_LIST,    TF_OPTION
+env,            token::T_OPT_ENV,               TF_OPTION
+INSERT,		token::T_INSERT,		TF_COMMAND
+%%
+
+

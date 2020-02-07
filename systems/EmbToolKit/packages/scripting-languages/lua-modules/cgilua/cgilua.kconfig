@@ -1,0 +1,57 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         cgilua.kconfig
+# \brief	cgilua.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         April 2012
+################################################################################
+
+config EMBTK_HAVE_CGILUA
+	bool "Have cgilua module"
+	depends on EMBTK_HAVE_LUA
+	select EMBTK_HAVE_RINGS
+	select EMBTK_HAVE_LUAFILESYSTEM
+	select EMBTK_CGILUA_NEED_PATCH
+	help
+		CGILua is a tool for creating dynamic Web pages and manipulating
+		input data from Web forms. CGILua allows the separation of logic
+		and data handling from the generation of pages, making it easy
+		to develop web applications with Lua.
+		One of advantages of CGILua is its abstraction of the underlying
+		Web server. CGILua can be used with a variety of Web servers
+		and, for each server, with different launchers. A launcher is
+		responsible for the interaction of CGILua and the Web server.
+
+choice
+	prompt "cgilua version you wish"
+	depends on EMBTK_HAVE_CGILUA
+	help
+	 Here you can choose which version of cgilua you want to use.
+
+	config  EMBTK_CGILUA_VERSION_5_1_4
+		bool "cgilua-5.1.4"
+endchoice
+
+config EMBTK_CGILUA_VERSION_STRING
+	string
+	default "5.1.4"		if EMBTK_CGILUA_VERSION_5_1_4
+
+config EMBTK_CGILUA_NEED_PATCH
+	bool

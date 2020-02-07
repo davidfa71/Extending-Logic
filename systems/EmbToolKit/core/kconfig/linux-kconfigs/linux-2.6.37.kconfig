@@ -1,0 +1,41 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         linux-2.6.37.kconfig
+# \brief	linux v2.6.37.x series
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2011
+################################################################################
+
+choice
+	prompt "Linux v2.6.37.x series exact version to use."
+	help
+		Linux v2.6.37.x series exact version to use.
+
+	config EMBTK_LINUX_VERSION_2_6_37_6
+		bool "linux-2.6.37.6"
+endchoice
+
+config EMBTK_LINUX_VERSION_STRING
+	string
+	default "2.6.37.6"		if EMBTK_LINUX_VERSION_2_6_37_6
+
+config EMBTK_LINUX_MAJOR_VERSION_STRING
+	string
+	default "v2.6"

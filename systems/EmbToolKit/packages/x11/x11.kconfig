@@ -1,0 +1,77 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         packages.kconfig
+# \brief	packages.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         March 2010
+################################################################################
+
+menu "X windowing system tools"
+source packages/x11/utilmacros/utilmacros.kconfig
+source packages/x11/xcbutil/xcbutil.kconfig
+endmenu
+
+menu "X windowing system prototype packages"
+source packages/x11/bigreqsproto/bigreqsproto.kconfig
+source packages/x11/compositeproto/compositeproto.kconfig
+source packages/x11/damageproto/damageproto.kconfig
+source packages/x11/fixesproto/fixesproto.kconfig
+source packages/x11/fontsproto/fontsproto.kconfig
+source packages/x11/inputproto/inputproto.kconfig
+source packages/x11/kbproto/kbproto.kconfig
+source packages/x11/randrproto/randrproto.kconfig
+source packages/x11/recordproto/recordproto.kconfig
+source packages/x11/renderproto/renderproto.kconfig
+source packages/x11/resourceproto/resourceproto.kconfig
+source packages/x11/videoproto/videoproto.kconfig
+source packages/x11/xcbproto/xcbproto.kconfig
+source packages/x11/xcmiscproto/xcmiscproto.kconfig
+source packages/x11/xextproto/xextproto.kconfig
+source packages/x11/xproto/xproto.kconfig
+endmenu
+
+menu "X windowing system library packages"
+source packages/x11/libfontenc/libfontenc.kconfig
+source packages/x11/libpciaccess/libpciaccess.kconfig
+source packages/x11/libpthreadstubs/libpthreadstubs.kconfig
+source packages/x11/libx11/libx11.kconfig
+source packages/x11/libxau/libxau.kconfig
+source packages/x11/libxi/libxi.kconfig
+source packages/x11/libxcb/libxcb.kconfig
+source packages/x11/libxcomposite/libxcomposite.kconfig
+source packages/x11/libxext/libxext.kconfig
+source packages/x11/libxfixes/libxfixes.kconfig
+source packages/x11/libxfont/libxfont.kconfig
+source packages/x11/libxft/libxft.kconfig
+source packages/x11/libxkbfile/libxkbfile.kconfig
+source packages/x11/libxrandr/libxrandr.kconfig
+source packages/x11/libxrender/libxrender.kconfig
+endmenu
+
+menu "X windowing system application packages"
+source packages/x11/xinput/xinput.kconfig
+source packages/x11/xkeyboardconfig/xkeyboardconfig.kconfig
+source packages/x11/xkbcomp/xkbcomp.kconfig
+source packages/x11/xtrans/xtrans.kconfig
+endmenu
+
+menu "X windowing server and drivers"
+source packages/x11/xserver/xserver.kconfig
+endmenu

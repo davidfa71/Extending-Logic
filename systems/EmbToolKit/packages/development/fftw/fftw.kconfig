@@ -1,0 +1,51 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         fftw.kconfig
+# \brief        fftw.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         April 2014
+################################################################################
+
+config EMBTK_HAVE_FFTW
+	bool "Have fftw"
+	help
+	 FFTW is a C subroutine library for computing the discrete Fourier
+	 transform (DFT) in one or more dimensions, of arbitrary input size, and
+	 of both real and complex data (as well as of even/odd data, i.e. the
+	 discrete cosine/sine transforms or DCT/DST).
+
+choice
+	prompt "fftw version to use"
+	depends on EMBTK_HAVE_FFTW
+	help
+	 fftw version to use
+
+	config EMBTK_FFTW_VERSION_3_3_4
+		bool "fftw-3.3.4"
+endchoice
+
+config EMBTK_FFTW_VERSION_STRING
+    string
+    default "3.3.4"	if EMBTK_FFTW_VERSION_3_3_4
+
+config EMBTK_FFTW_NEED_PATCH
+    bool
+config EMBTK_FFTW_NEED_AUTORECONF
+    bool

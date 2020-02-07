@@ -1,0 +1,43 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2011-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gperf_host.kconfig
+# \brief	gperf_host.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2011
+################################################################################
+
+config EMBTK_HOST_HAVE_GPERF
+	bool
+	help
+	 This is GNU gperf. It is a program that generates perfect hash
+	 functions for sets of key words.
+	 A perfect hash function is:
+	 A hash function and a data structure that allows recognition of a key
+	 word in a set of words using exactly 1 probe into the data structure.
+
+if EMBTK_HOST_HAVE_GPERF
+config EMBTK_GPERF_HOST_VERSION_STRING
+	string
+	default "3.0.4"
+config EMBTK_GPERF_HOST_NEED_PATCH
+	bool
+config EMBTK_GPERF_HOST_NEED_AUTORECONF
+	bool
+endif

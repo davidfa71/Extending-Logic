@@ -1,0 +1,66 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xkbcomp.kconfig
+# \brief	xkbcomp.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XKBCOMP
+	bool "Have xkbcomp"
+	select EMBTK_HAVE_LIBXKBFILE
+	help
+		xkbcomp for X windowing system.
+		xkbcomp is executed by the X server when loading or switching
+		keyboard layouts to compile the XKB keyboard configuration data
+		files into the binary format that the X server reads.
+
+choice
+	prompt "xkbcomp version you wish"
+	depends on EMBTK_HAVE_XKBCOMP
+	help
+		Here you can choose which version of xkbcomp you want to use.
+
+	config  EMBTK_XKBCOMP_VERSION_1_2_3
+		bool "xkbcomp-1.2.3"
+	config  EMBTK_XKBCOMP_VERSION_1_2_1
+		bool "xkbcomp-1.2.1"
+	config  EMBTK_XKBCOMP_VERSION_1_2_0
+		bool "xkbcomp-1.2.0"
+		select EMBTK_XKBCOMP_NEED_PATCH
+	config  EMBTK_XKBCOMP_VERSION_1_1_1
+		bool "xkbcomp-1.1.1"
+endchoice
+
+config EMBTK_XKBCOMP_VERSION_STRING
+	string
+	default "1.2.3"		if EMBTK_XKBCOMP_VERSION_1_2_3
+	default "1.2.1"		if EMBTK_XKBCOMP_VERSION_1_2_1
+	default "1.2.0"		if EMBTK_XKBCOMP_VERSION_1_2_0
+	default "1.1.1"		if EMBTK_XKBCOMP_VERSION_1_1_1
+
+config EMBTK_XKBCOMP_NEED_PATCH
+	bool
+config EMBTK_XKBCOMP_NEED_AUTORECONF
+	bool
+config EMBTK_XKBCOMP_PKG_IS_TARGZ
+	bool
+config EMBTK_XKBCOMP_PKG_IS_TARBZ2
+	bool

@@ -1,0 +1,129 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gdb.kconfig
+# \brief	gdb.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2009
+################################################################################
+
+config EMBTK_HAVE_GDB_SYSTEM
+	bool "Have GDB: Gnu debugging system"
+	select EMBTK_HAVE_NCURSES
+	select KEMBTK_UCLIBC_PTHREADS_DEBUG_SUPPORT if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_HAS_WCHAR if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_SUSV3_LEGACY if EMBTK_CLIB_UCLIBC
+	help
+	 Have GNU debugger components in your embedded target and/or in your
+	 development machine.
+
+choice
+	prompt "GDB version to use"
+	depends on EMBTK_HAVE_GDB_SYSTEM
+	help
+	 Choose which version of gdb to use.
+
+	config EMBTK_GDB_VERSION_7_8_1
+		bool "gdb-7.8.1"
+		select EMBTK_GDB_NEED_PATCH
+	config EMBTK_GDB_VERSION_7_7_1
+		bool "gdb-7.7.1"
+		select EMBTK_GDB_NEED_PATCH
+endchoice
+
+choice
+	prompt "GDB on your target system"
+	depends on EMBTK_HAVE_GDB_SYSTEM
+	config EMBTK_HAVE_GDBSERVER
+		bool "Have gdbserver on target"
+		help
+		 Say yes if you want to have only gdbserver in your embedded
+		 system target.
+
+	config EMBTK_HAVE_GDB
+		bool "Have gdb on target"
+		help
+		 Say yes if you want to have full gdb in your embedded system
+		 target.
+endchoice
+
+config EMBTK_HOST_HAVE_GDB
+	bool "Have gdb on your host development machine"
+	depends on EMBTK_HAVE_GDB_SYSTEM
+	help
+	 Say yes if you want to have gdb in your host development machine.
+
+#
+# GDB virtual package
+#
+config EMBTK_GDB_VERSION_STRING
+	string
+	default "7.8.1"		if EMBTK_GDB_VERSION_7_8_1
+	default "7.7.1"		if EMBTK_GDB_VERSION_7_7_1
+
+config EMBTK_GDB_CATEGORY
+	string
+	depends on EMBTK_HAVE_GDB_SYSTEM
+	default "toolchain_addons"
+
+config EMBTK_GDB_NEED_PATCH
+	bool
+	select EMBTK_GDBSERVER_NEED_PATCH	if EMBTK_HAVE_GDBSERVER
+	select EMBTK_GDB_HOST_NEED_PATCH	if EMBTK_HOST_HAVE_GDB
+
+config EMBTK_GDB_NEED_AUTORECONF
+	bool
+	select EMBTK_GDBSERVER_NEED_AUTORECONF	if EMBTK_HAVE_GDBSERVER
+	select EMBTK_GDB_HOST_NEED_AUTORECONF	if EMBTK_HOST_HAVE_GDB
+
+#
+# GDBSERVER virtual package
+#
+config EMBTK_GDBSERVER_VERSION_STRING
+	string
+	depends on EMBTK_HAVE_GDBSERVER
+	default EMBTK_GDB_VERSION_STRING
+
+config EMBTK_GDBSERVER_CATEGORY
+	string
+	depends on EMBTK_HAVE_GDBSERVER
+	default EMBTK_GDB_CATEGORY
+
+config EMBTK_GDBSERVER_NEED_PATCH
+	bool
+config EMBTK_GDBSERVER_NEED_AUTORECONF
+	bool
+
+#
+# GDB_HOST virtual package
+#
+config EMBTK_GDB_HOST_VERSION_STRING
+	string
+	depends on EMBTK_HOST_HAVE_GDB
+	default EMBTK_GDB_VERSION_STRING
+
+config EMBTK_GDB_HOST_CATEGORY
+	string
+	depends on EMBTK_HOST_HAVE_GDB
+	default EMBTK_GDB_CATEGORY
+
+config EMBTK_GDB_HOST_NEED_PATCH
+	bool
+config EMBTK_GDB_HOST_NEED_AUTORECONF
+	bool

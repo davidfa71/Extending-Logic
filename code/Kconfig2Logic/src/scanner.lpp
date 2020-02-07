@@ -1,0 +1,420 @@
+/* $Id: scanner.ll 44 2008-10-23 09:03:19Z tb $ -*- mode: c++ -*- */
+/** \file scanner.ll Define the kconf Flex lexical scanner */
+
+%{ /*** C/C++ Declarations ***/
+
+#include <string>
+#include <vector>
+#include <fstream>
+#include <stdio.h>
+#include <iomanip>
+
+#include "scanner.hpp"
+#include "mytime.hpp"
+
+/* import the parser's token type into a local typedef */
+typedef kconf::Parser::token token;
+typedef kconf::Parser::token_type token_type;
+
+/* By default yylex returns int, we use token_type. Unfortunately yyterminate
+ * by default returns 0, which is not of token_type. */
+#define yyterminate() { return Parser::make_T_EOF(loc); }
+
+/* This disables inclusion of unistd.h, which is not available under Visual C++
+ * on Win32. The C++ scanner uses STL streams instead. */
+#define YY_NO_UNISTD_H
+    
+    std::string text;
+    int last_ts, first_ts;
+    
+    // The location of the current token.
+    static kconf::location loc;
+%}
+
+/*** Flex Declarations and Options ***/
+
+/* enable c++ scanner class generation */
+%option c++
+
+/* change the name of the scanner class. results in "KconfFlexLexer" */
+%option prefix="Kconf"
+
+/* the manual says "somewhat more optimized" */
+%option batch
+
+/* enable scanner to generate debug output. disable this for release
+ * versions. */
+%option debug
+
+/* enables the use of start condition stacks */
+%option stack
+
+/* We'll handle the files manually */
+%option noyywrap
+
+%x COMMAND HELP STRING PARAM
+
+
+ws	[ \n\t]
+n	[A-Za-z0-9_]
+
+%{
+    // Code run each time a pattern is matched.
+    # define YY_USER_ACTION  loc.columns (yyleng);
+ 
+%}
+
+%% /*** Regular Expressions Part ***/
+
+%{
+    // Code run each time yylex is called.
+    loc.step ();
+    text.clear();
+%}
+
+    int str = 0;
+    int ts = 0, i = 0;
+
+[ \t]*#.*\n	|
+[ \t]*\n	{
+    loc.lines(1);loc.step();
+	return Parser::make_T_EOL(loc);
+}
+[ \t]*#.*
+
+
+[ \t]+	{
+	BEGIN(COMMAND);
+}
+
+.	{
+	unput(yytext[0]);
+	BEGIN(COMMAND);
+}
+
+
+<COMMAND>{
+	{n}+	{
+        kconf_id *&& id = Perfect_Hash::kconf_id_lookup(yytext, yyleng);
+		BEGIN(PARAM);
+		if (id && id->flags & TF_COMMAND) {
+            return Parser::symbol_type(id->token,(kconf_id*&&) id, (kconf::location&&) loc);
+ 		}
+        return Parser::make_T_WORD(yytext, loc);
+	}
+	.
+	\n	{
+		BEGIN(INITIAL);
+        loc.lines(1);
+		return Parser::make_T_EOL(loc);
+	}
+}
+
+<PARAM>{
+	"&&"	return Parser::make_T_AND(loc);
+	"||"	return Parser::make_T_OR(loc);
+	"("     return Parser::make_T_OPEN_PAREN(loc);
+	")"     return Parser::make_T_CLOSE_PAREN(loc);
+	"!"     return Parser::make_T_NOT(loc);
+	"="     return Parser::make_T_EQUAL(loc);
+	"!="	return Parser::make_T_UNEQUAL(loc);
+	\"|\'	{
+    str = yytext[0];
+    BEGIN(STRING);
+}
+\n	BEGIN(INITIAL); loc.lines(1); return Parser::make_T_EOL(loc);
+---	/* ignore */
+({n}|[-/.])+	{
+    kconf_id *id = Perfect_Hash::kconf_id_lookup(yytext, yyleng);
+    if (id && id->flags & TF_PARAM) {
+        return Parser::symbol_type(id->token,(kconf_id*&&) id, (kconf::location&&) loc);
+    }
+    return Parser::make_T_WORD(yytext, loc);
+}
+#.*	/* comment */
+\\\n	   loc.lines(1);
+.
+<<EOF>> {
+    BEGIN(INITIAL);
+    }
+}
+
+<STRING>{
+	[^'"\\\n]+/\n	{
+     text += yytext;
+     return Parser::make_T_WORD_QUOTE(text, loc);
+     }
+     [^'"\\\n]+	{
+      text += yytext;
+      }
+      \\.?/\n	{
+      text += std::string(yytext, 1, yyleng -1);
+      return Parser::make_T_WORD_QUOTE(text, loc);
+      }
+      \\.?	{
+      text += std::string(yytext, 1, yyleng -1);
+      }
+      \'|\"	{
+      if (str == yytext[0]) {
+      BEGIN(PARAM);
+      return Parser::make_T_WORD_QUOTE(text, loc);
+      } else
+            text += yytext[0];
+      ;
+      }
+      \n	{ loc.lines(1);
+      
+      BEGIN(INITIAL);
+      return Parser::make_T_EOL(loc);
+      }
+      <<EOF>>	{
+      BEGIN(INITIAL);
+      }
+}
+      
+      <HELP>{
+      [ \t]+	{ // Line start, spaces and tabs
+      ts = 0;
+      for (i = 0; i < yyleng; i++) {
+          if (yytext[i] == '\t')
+                ts = (ts & ~7) + 8;
+          else
+                ts++;
+      }
+      last_ts = ts;
+      // If indentation has dimished, helptext ends
+      if (first_ts) {
+          if (ts < first_ts) {
+               BEGIN(INITIAL);
+              return Parser::make_T_HELPTEXT(text, loc);
+          }
+          ts -= first_ts;
+          while (ts > 8) {
+              text += "        ";
+              ts -= 8;
+          }
+      text += std::string("        ",0,ts);
+      }
+
+      }
+
+      [ \t]*\n/[^ \t\n] { // End of the line and the next line has no indentation -> the end of the help text
+                          // Doesn't seem to work if the trailing context is across the EOF
+                          
+      loc.lines(1);
+
+       BEGIN(INITIAL);
+      return Parser::make_T_HELPTEXT(text, loc);
+      }
+      [ \t]*\n	{ // End of the line, but next line has indentation. Gobble it up.
+            loc.lines(1);
+
+      text += "\n";
+      }
+      [^ \t\n].* { // The text.  No leading spaces or tabs or newlines
+      while (yyleng) { // Trailing spaces and tabs removed
+      if ((yytext[yyleng-1] != ' ') && (yytext[yyleng-1] != '\t'))
+            break;
+      yyleng--;
+      }
+      text += std::string(yytext, 0, yyleng);
+
+      // first_ts points to initial indentation of text
+      if (!first_ts)
+      first_ts = last_ts;
+      }
+      <<EOF>>	{
+          endfile();
+                    return Parser::make_T_HELPTEXT(text, loc);
+      }
+}
+      
+<<EOF>>	{ if (endfile() == 1) {
+            if (firstPass) {
+                firstPass = false;
+                // Delete the file from the stack
+                nameStack.pop_back();
+                nextfile(initialFile);
+                return Parser::make_T_EOP(loc);
+            }
+            else {
+                yyterminate();
+            }
+        }
+}
+
+
+
+%% /*** Additional Code ***/
+      
+
+namespace kconf {
+      
+  Scanner::Scanner(std::string bd, std::string name, std::istream* in, std::ostream* out)
+      : KconfFlexLexer(in, out) {
+          firstPass   = true;
+          initialFile = name;
+          lastTime    = get_cpu_time();
+          numFiles    = 1;
+          workingdir  = bd;
+          temp = new std::string(name);
+          nameStack.push_back(*temp);
+          loc.initialize(temp);
+      }
+      
+      
+ void Scanner::starthelp() {
+    last_ts = first_ts = 0;
+    BEGIN(HELP);
+ }
+     
+    
+    int Scanner::checkNextFiles(std::string name) {
+        filename  = workingdir + "/" + name;
+        globindex = 0;
+        glob(filename.c_str(), 0, NULL, &myglob);
+        //std::cout << "Filenames matching: " << filename << ":" << myglob.gl_matchc << std::endl;
+        std::vector<std::string> gnames;
+#ifdef __MACH__
+        for(int i = 0; i < myglob.gl_matchc;i++) {
+#else
+ 		for(int i = 0; i < myglob.gl_pathc;i++) {
+#endif
+            //std::cout << "Match " << i << " is " << myglob.gl_pathv[i] << std::endl;
+            gnames.push_back(myglob.gl_pathv[i]);
+        }
+        
+ #ifdef __MACH__
+        globStack.push_back(globcontrol(myglob.gl_matchc, gnames));
+        if (myglob.gl_matchc > 0)
+#else
+		globStack.push_back(globcontrol(myglob.gl_pathc, gnames));
+		if (myglob.gl_pathc > 0)
+#endif
+            nextfile(myglob.gl_pathv[0]);
+        else {
+            std::cerr << "Can't open file \"" << filename << "\"" << std::endl;
+            std::cerr << "File stack trace:" << std::endl;
+            std::copy(nameStack.begin(),
+                      nameStack.end(),
+                      std::ostream_iterator<std::string>(std::cerr, "\n")
+                     );
+                    //exit(1);
+        }
+        //std::cerr << "CheckNextFiles: " << name << " : " << myglob.gl_matchc << std::endl;
+#ifdef __MACH__
+        return myglob.gl_matchc;
+#else
+		return myglob.gl_pathc;
+#endif
+    }
+    
+    
+      void Scanner::nextfile(std::string name) {
+          if (find (nameStack.begin(), nameStack.end(), name) != nameStack.end()) {
+            std::cerr << "Recursive inclusion detected: " << name << std::endl;
+            exit(-1);
+        }
+        if (yy_flex_debug) {
+            std::cout << "Opening " << std::string(nameStack.size(), ' ') <<  name;
+            
+            int tops = 80 - name.size() - nameStack.size();
+            if (tops > 1)
+                for(int i = 1; i < tops; i++) std::cout << " ";
+            else std::cout << " ";
+            
+            std::cout << std::setw(4) << numFiles << std::endl;
+        }
+       
+        numFiles++;
+        std::ifstream* infile = new std::ifstream(name);
+        if (!infile->good()) {
+            std::cerr <<  "Can't open file \"" << name << "\"" << std::endl;
+            std::cerr << "File stack trace:" << std::endl;
+            std::copy(  nameStack.begin(),
+                        nameStack.end(),
+                        std::ostream_iterator<std::string>(std::cerr, "\n")
+                        );
+            exit(1);
+        }
+        locStack.push_back(loc);
+        temp = new std::string(name);
+        loc.initialize(temp);
+
+        YY_BUFFER_STATE bf = yy_create_buffer(infile, YY_BUF_SIZE);
+        yypush_buffer_state(bf);
+        streamStack.push_back(infile);
+        nameStack.push_back(name);
+        //std::cerr << "Stack trace after opening:" << std::endl;
+        //std::copy(nameStack.rbegin(), nameStack.rend(),
+        //std::ostream_iterator<std::string>(std::cerr, "\n"));
+    }
+
+      
+    Scanner::~Scanner()
+{
+}
+
+void Scanner::set_debug(bool b)
+{
+    yy_flex_debug = b;
+}
+
+void Scanner::fileHelper() {
+    yypop_buffer_state();
+    std::ifstream *fs = streamStack.back();
+    streamStack.pop_back();
+    loc = locStack.back();
+    locStack.pop_back();
+    fs->close();
+    delete fs;
+    nameStack.pop_back();
+
+}
+
+int Scanner::endfile()
+{
+    //std::cerr << "In yywrap. nameStack back " << nameStack.back() << " size "
+    //          << nameStack.size() << std::endl;
+    //std::cout << std::endl << "Closing " << std::string(nameStack.size(), ' ') << nameStack.back() << std::endl;
+    BEGIN(INITIAL);
+    
+    // Handle next file in globbing
+    if (globStack.size() > 0) {
+        //std::cerr << "globindex " << globStack.back().globindex
+        //<< " matchc "   << globStack.back().globmatches
+        //<< " globStack size " << globStack.size() << std::endl;
+        globStack.back().globindex++;
+        if (globStack.back().globindex < globStack.back().globmatches) {
+            fileHelper();
+            nextfile(globStack.back().globnames[globStack.back().globindex]);
+            return 0;
+        }
+        
+        globStack.pop_back();
+    }
+    // No globbing is involved
+    if (nameStack.size() > 1) {
+        fileHelper();
+        return 0;
+    }
+    
+    return 1;
+   
+}
+
+} // namespace Kconf
+
+/* This implementation of KconfFlexLexer::yylex() is required to fill the
+ * vtable of the class KconfFlexLexer. We define the scanner's main yylex
+ * function via YY_DECL to reside in the Scanner class instead. */
+
+#ifdef yylex
+#undef yylex
+#endif
+
+int KconfFlexLexer::yylex()
+{
+    std::cerr << "in KconfFlexLexer::yylex() !" << std::endl;
+    return 0;
+}

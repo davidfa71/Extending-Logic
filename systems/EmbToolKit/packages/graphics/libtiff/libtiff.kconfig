@@ -1,0 +1,73 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libtiff.kconfig
+# \brief	libtiff.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HOST_HAVE_LIBTIFF
+	bool
+	help
+		libtiff for host development machine.
+
+config EMBTK_HAVE_LIBTIFF
+	bool "Have libtiff"
+	help
+		libtiff provides support for the Tag Image File Format (TIFF), a
+		widely used format for storing image data.
+		The library, along with associated tool programs, should handle
+		most of your needs for reading and writing TIFF images on 32-
+		and 64-bit machines. This software can also be used on older
+		16-bit systems though it may require some effort and you may
+		need to leave out some of the compression support.
+choice
+	prompt "libtiff version you wish"
+	depends on EMBTK_HAVE_LIBTIFF || EMBTK_HOST_HAVE_LIBTIFF
+	help
+		Here you can choose which version of libtiff you want to use.
+
+	config  EMBTK_LIBTIFF_VERSION_3_9_2
+		bool "libtiff-3.9.2"
+endchoice
+
+config EMBTK_LIBTIFF_VERSION_STRING
+	string
+	default "3.9.2"		if EMBTK_LIBTIFF_VERSION_3_9_2
+
+config EMBTK_LIBTIFF_NEED_PATCH
+	bool
+	select EMBTK_LIBTIFF_HOST_NEED_PATCH
+config EMBTK_LIBTIFF_NEED_AUTORECONF
+	bool
+	select EMBTK_LIBTIFF_HOST_NEED_AUTORECONF
+config EMBTK_LIBTIFF_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBTIFF_PKG_IS_TARBZ2
+	bool
+
+config EMBTK_LIBTIFF_HOST_NEED_PATCH
+	bool
+config EMBTK_LIBTIFF_HOST_NEED_AUTORECONF
+	bool
+config EMBTK_LIBTIFF_HOST_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBTIFF_HOST_PKG_IS_TARBZ2
+	bool

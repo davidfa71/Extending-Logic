@@ -1,0 +1,50 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         armadillo.kconfig
+# \brief        armadillo.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         May 2014
+################################################################################
+
+config EMBTK_HAVE_ARMADILLO
+	bool "Have armadillo in target"
+	depends on EMBTK_HAVE_OPENBLAS
+	select EMBTK_GCC_LANGUAGE_CPP
+	help
+	 Armadillo is a C++ linear algebra library (matrix maths) aiming towards
+	 a good balance between speed and ease of use.
+	 The syntax (API) is deliberately similar to Matlab.
+
+choice
+	prompt "armadillo version to use"
+	depends on EMBTK_HAVE_ARMADILLO
+	help
+	 armadillo version to use
+
+	config EMBTK_ARMADILLO_VERSION_4_300_2
+		bool "armadillo-4.300.2"
+endchoice
+
+config EMBTK_ARMADILLO_VERSION_STRING
+	string
+	default "4.300.2"       if EMBTK_ARMADILLO_VERSION_4_300_2
+
+config EMBTK_ARMADILLO_NEED_PATCH
+	bool

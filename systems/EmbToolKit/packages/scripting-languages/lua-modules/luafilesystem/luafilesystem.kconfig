@@ -1,0 +1,52 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         luafilesystem.kconfig
+# \brief	luafilesystem.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         April 2012
+################################################################################
+
+config EMBTK_HAVE_LUAFILESYSTEM
+	bool "Have LuaFileSystem module"
+	depends on EMBTK_HAVE_LUA
+	select EMBTK_LUAFILESYSTEM_NEED_PATCH
+	help
+		LuaFileSystem is a Lua library developed to complement the set
+		of functions related to file systems offered by the standard Lua
+		distribution.
+		LuaFileSystem offers a portable way to access the underlying
+		directory structure and file attributes.
+
+choice
+	prompt "LuaFileSystem version you wish"
+	depends on EMBTK_HAVE_LUAFILESYSTEM
+	help
+	 Here you can choose which version of LuaFileSystem you want to use.
+
+	config  EMBTK_LUAFILESYSTEM_VERSION_1_5_0
+		bool "LuaFileSystem-1.5.0"
+endchoice
+
+config EMBTK_LUAFILESYSTEM_VERSION_STRING
+	string
+	default "1.5.0"		if EMBTK_LUAFILESYSTEM_VERSION_1_5_0
+
+config EMBTK_LUAFILESYSTEM_NEED_PATCH
+	bool

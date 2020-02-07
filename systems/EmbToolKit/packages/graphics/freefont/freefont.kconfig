@@ -1,0 +1,57 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 2 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+################################################################################
+#
+# \file         freefont.kconfig
+# \brief	freefont.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         January 2010
+################################################################################
+
+#
+# FreeFont: TrueType
+#
+config EMBTK_HAVE_FREEFONT_TTF
+	bool "Have GNU FreeFont: TrueType format"
+	select EMBTK_HAVE_FREETYPE
+	help
+		GNU FreeFont is a free family of scalable outline fonts,
+		suitable for general use on computers and for desktop
+		publishing. It is Unicode-encoded for compatability with all
+		modern operating systems.
+choice
+	prompt "FreeFont version you wish: TrueType format"
+	depends on EMBTK_HAVE_FREEFONT_TTF
+	help
+	 Here you can choose which version of FreeFont you want to use.
+
+	config  EMBTK_FREEFONT_TTF_VERSION_20100919
+		bool "freefont-ttf-20100919"
+endchoice
+
+config EMBTK_FREEFONT_TTF_VERSION_STRING
+	string
+	default "20100919"	if EMBTK_FREEFONT_TTF_VERSION_20100919
+
+config EMBTK_FREEFONT_TTF_NEED_PATCH
+	bool
+config EMBTK_FREEFONT_TTF_NEED_AUTORECONF
+	bool
+config EMBTK_FREEFONT_TTF_PKG_IS_TARGZ
+	bool
+config EMBTK_FREEFONT_TTF_PKG_IS_TARBZ2
+	bool

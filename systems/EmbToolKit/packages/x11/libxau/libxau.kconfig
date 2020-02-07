@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libxau.kconfig
+# \brief	libxau.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         February 2010
+################################################################################
+
+config EMBTK_HAVE_LIBXAU
+	bool "Have libxau"
+	select EMBTK_HAVE_XPROTO
+	help
+		X authorization file management libary
+choice
+	prompt "libxau version you wish"
+	depends on EMBTK_HAVE_LIBXAU
+	help
+	 Here you can choose which version of libxau you want to use.
+
+	config  EMBTK_LIBXAU_VERSION_1_0_6
+		bool "libxau-1.0.6"
+	config  EMBTK_LIBXAU_VERSION_1_0_5
+		bool "libxau-1.0.5"
+endchoice
+
+config EMBTK_LIBXAU_VERSION_STRING
+	string
+	default "1.0.6"		if EMBTK_LIBXAU_VERSION_1_0_6
+	default "1.0.5"		if EMBTK_LIBXAU_VERSION_1_0_5
+
+config EMBTK_LIBXAU_NEED_PATCH
+	bool
+config EMBTK_LIBXAU_NEED_AUTORECONF
+	bool
+config EMBTK_LIBXAU_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBXAU_PKG_IS_TARBZ2
+	bool

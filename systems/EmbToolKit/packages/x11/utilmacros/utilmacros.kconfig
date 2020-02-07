@@ -1,0 +1,76 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         utilmacros.kconfig
+# \brief	utilmacros.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_UTILMACROS
+	bool "Have utilmacros"
+	help
+		util-macros for X windowing system.
+		This is a set of autoconf macros used by the configure.ac
+		scripts in other Xorg modular packages, and is needed to
+		generate new versions of their configure scripts with autoconf.
+
+choice
+	prompt "utilmacros version you wish"
+	depends on EMBTK_HAVE_UTILMACROS
+	help
+		Here you can choose which version of utilmacros you want to use.
+
+	config  EMBTK_UTILMACROS_VERSION_1_11_0
+		bool "util-macros-1.11.0"
+	config  EMBTK_UTILMACROS_VERSION_1_10_1
+		bool "util-macros-1.10.1"
+	config  EMBTK_UTILMACROS_VERSION_1_10_0
+		bool "util-macros-1.10.0"
+	config  EMBTK_UTILMACROS_VERSION_1_9_0
+		bool "util-macros-1.9.0"
+	config  EMBTK_UTILMACROS_VERSION_1_8_0
+		bool "util-macros-1.8.0"
+	config  EMBTK_UTILMACROS_VERSION_1_7_0
+		bool "util-macros-1.7.0"
+	config  EMBTK_UTILMACROS_VERSION_1_6_1
+		bool "util-macros-1.6.1"
+	config  EMBTK_UTILMACROS_VERSION_1_6_0
+		bool "util-macros-1.6.0"
+endchoice
+
+config EMBTK_UTILMACROS_VERSION_STRING
+	string
+	default "1.11.0"	if EMBTK_UTILMACROS_VERSION_1_11_0
+	default "1.10.1"	if EMBTK_UTILMACROS_VERSION_1_10_1
+	default "1.10.0"	if EMBTK_UTILMACROS_VERSION_1_10_0
+	default "1.9.0"		if EMBTK_UTILMACROS_VERSION_1_9_0
+	default "1.8.0"		if EMBTK_UTILMACROS_VERSION_1_8_0
+	default "1.7.0"		if EMBTK_UTILMACROS_VERSION_1_7_0
+	default "1.6.1"		if EMBTK_UTILMACROS_VERSION_1_6_1
+	default "1.6.0"		if EMBTK_UTILMACROS_VERSION_1_6_0
+
+config EMBTK_UTILMACROS_NEED_PATCH
+	bool
+config EMBTK_UTILMACROS_NEED_AUTORECONF
+	bool
+config EMBTK_UTILMACROS_PKG_IS_TARGZ
+	bool
+config EMBTK_UTILMACROS_PKG_IS_TARBZ2
+	bool

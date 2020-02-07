@@ -1,0 +1,78 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         jack2.kconfig
+# \brief        jack2.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         Oct 2014
+################################################################################
+
+config EMBTK_HAVE_JACK2
+	bool "Have jack2"
+	select EMBTK_HAVE_LIBSNDFILE
+	select EMBTK_HAVE_LIBSAMPLERATE
+	help
+	 JACK Audio Connection Kit - Have you ever wanted to take the audio
+	 output of one piece of software and send it to another? How about
+	 taking the output of that same program and send it to two others,
+	 then record the result in the first program? Or maybe you're a
+	 programmer who writes real-time audio and music applications and
+	 who is looking for a cross-platform API that enables not only
+	 device sharing but also inter-application audio routing, and is
+	 incredibly easy to learn and use? If so, JACK may be what you've
+	 been looking for.
+
+choice
+	prompt "jack2 version to use"
+	depends on EMBTK_HAVE_JACK2
+	help
+	 jack2 version to use
+
+	config EMBTK_JACK2_VERSION_1_9_10
+		bool "jack2-1.9.10"
+endchoice
+
+if EMBTK_HAVE_JACK2
+comment "JACK2 options"
+config EMBTK_JACK2_WITH_ALSA
+	bool "Build JACK2 with alsa driver support"
+	select EMBTK_HAVE_ALSA-LIB
+#config EMBTK_JACK2_WITH_DBUS
+#	bool "Build JACK2 with D-Bus support"
+# TODO: solve dependencies
+#config EMBTK_JACK2_WITH_IIO
+#	bool "Build JACK2 with IIO driver support"
+#config EMBTK_JACK2_WITH_FIREWIRE
+#	bool "Build JACK2 with FireWire (FFADO) driver support"
+#config EMBTK_JACK2_WITH_FREEBOB
+#	bool "Build JACK2 with FreeBob driver support"
+#config EMBTK_JACK2_WITH_PORTAUDIO
+#	bool "Build JACK2 with Portaudio driver support"
+endif
+
+config EMBTK_JACK2_VERSION_STRING
+	string
+	default "1.9.10"	if EMBTK_JACK2_VERSION_1_9_10
+
+config EMBTK_JACK2_NEED_PATCH
+	bool
+
+config EMBTK_JACK2_USE_WAF
+	bool
+	default y

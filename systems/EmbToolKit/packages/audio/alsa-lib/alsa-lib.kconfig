@@ -1,0 +1,49 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         alsa-lib.kconfig
+# \brief        alsa-lib.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         Nov 2014
+################################################################################
+
+config EMBTK_HAVE_ALSA-LIB
+	bool "Have alsa-lib"
+	help
+	 The Advanced Linux Sound Architecture (ALSA) provides audio
+	 and MIDI functionality to the Linux operating system.
+	 The User space library (alsa-lib) is used to simplify application
+	 programming and provide higher level functionality.
+
+choice
+	prompt "alsa-lib version to use"
+	depends on EMBTK_HAVE_ALSA-LIB
+	help
+	 alsa-lib version to use
+
+	config EMBTK_ALSA-LIB_VERSION_1_0_28
+		bool "alsa-lib-1.0.28"
+endchoice
+
+config EMBTK_ALSA-LIB_VERSION_STRING
+	string
+	default "1.0.28"	if EMBTK_ALSA-LIB_VERSION_1_0_28
+
+config EMBTK_ALSA-LIB_NEED_PATCH
+	bool

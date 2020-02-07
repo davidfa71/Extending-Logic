@@ -1,0 +1,181 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         toolchain.kconfig
+# \brief	toolchain.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2009
+################################################################################
+
+menu "Cross Compiler environment"
+choice
+	prompt "Cross Compiler environment setup"
+	help
+	 Choose your cross compiler environment setup combination between
+	 clang/llvm and GCC.
+
+	config EMBTK_GCC_ONLY_TOOLCHAIN
+		bool "GCC only"
+		help
+		 Choose this configuration if you want to use only traditional
+		 GCC cross compiler environment.
+
+	config EMBTK_LLVM_ONLY_TOOLCHAIN
+		bool "clang/llvm only"
+		depends on EMBTK_ARCH_ARM || (EMBTK_ARCH_MIPS && EMBTK_TARGET_ARCH_32BITS)
+		help
+		 Choose this configuration if you want to use only clang/llvm
+		 cross compiler environment.
+		 With this configuration:
+		  * All userspace packages will use clang as compiler.
+		  * A bare metal gcc compiler will still be built, but you will
+		  be able to only build linux kernel/u-boot etc. with this gcc.
+
+	config EMBTK_GCC_AND_LLVM_TOOLCHAIN
+		bool "clang/llvm and GCC"
+		depends on EMBTK_ARCH_ARM || (EMBTK_ARCH_MIPS && EMBTK_TARGET_ARCH_32BITS)
+		help
+		 With this configuration you will have full clang/llvm and GGC
+		 built and available to build your userspace packages.
+
+endchoice
+
+choice
+	prompt "Default cross compiler to build packages"
+	depends on EMBTK_GCC_AND_LLVM_TOOLCHAIN
+	help
+	 Choose which cross compiler environment to use by default to build
+	 packages.
+
+	config EMBTK_LLVM_DEFAULT_TOOLCHAIN
+		bool "clang/llvm"
+		help
+		 Userspace packages will be built with clang by default.
+
+	config EMBTK_GCC_DEFAULT_TOOLCHAIN
+		bool "GCC"
+		help
+		 Userspace packages will be built with clang by default.
+
+endchoice
+
+comment "------------------------------------------"
+comment "--- GCC versions"
+comment "------------------------------------------"
+source core/toolchain/gcc/gcc.kconfig
+
+if EMBTK_LLVM_ONLY_TOOLCHAIN || EMBTK_GCC_AND_LLVM_TOOLCHAIN
+comment "------------------------------------------"
+comment "--- clang/llvm versions"
+comment "------------------------------------------"
+source core/toolchain/llvm/clang-llvm.kconfig
+source core/toolchain/llvm/llvm/llvm.kconfig
+source core/toolchain/llvm/clang/clang.kconfig
+source core/toolchain/llvm/compiler-rt/compiler-rt.kconfig
+endif
+
+comment "------------------------------------------"
+comment "--- Additional programming languages"
+comment "------------------------------------------"
+source core/toolchain/compiler-options.kconfig
+
+endmenu
+
+menu "C library to use"
+choice
+	prompt "Choose which C library to use"
+	help
+	 Choose here which C library your toolchain will use.
+
+	config EMBTK_CLIB_EGLIBC
+		bool "eglibc"
+		help
+		 EGLIBC is suitable for source and binary compatibility with
+		 glibc, but care is also taken to satisfy embedded systems
+		 constraints.
+
+		 see http://www.eglibc.org for more information about eglibc.
+
+	config EMBTK_CLIB_GLIBC
+		bool "glibc"
+		help
+		 GNU GLIBC is the well known general purpose c library found on
+		 most general purpose GNU Linux distribution.
+
+		 See http://www.gnu.org/software/libc for more information about
+		 glibc.
+
+	config EMBTK_CLIB_MUSL
+		bool "musl"
+		depends on EMBTK_TARGET_ARCH_32BITS && (EMBTK_GCC_VERSION_4_8_X || EMBTK_GCC_VERSION_4_9_X)
+		help
+		 musl is a new general-purpose implementation of the C library.
+		 It is lightweight, fast, simple, free, and aims to be correct
+		 in the sense of standards-conformance and safety.
+
+		 see http://www.musl-libc.org for more information about musl.
+
+	config EMBTK_CLIB_UCLIBC
+		bool "uClibc"
+		help
+		 uClibc is suitable for high memory constraints and MMU-less
+		 embedded systems. But compatibility with glibc is not guaranted
+		 and even between different uClibc versions.
+		 see http://www.uclibc.org for more information about uClibc.
+
+
+endchoice
+
+
+if EMBTK_CLIB_EGLIBC
+source "core/kconfig/eglibc.kconfig"
+endif
+
+if EMBTK_CLIB_GLIBC
+source "core/kconfig/glibc.kconfig"
+endif
+
+if EMBTK_CLIB_MUSL
+source "core/kconfig/musl.kconfig"
+endif
+
+if EMBTK_CLIB_UCLIBC
+source "core/kconfig/uclibc-kconfigs/embtk-uclibc.kconfig"
+endif
+
+endmenu
+
+menu "Binutils"
+source "core/toolchain/binutils/binutils.kconfig"
+endmenu
+
+menu "Linux kernel headers"
+source "core/kconfig/linux.kconfig"
+endmenu
+
+#
+# Select of optional features
+#
+config EMBTK_TOOLCHAIN_PREDEP_GPERF_HOST
+	bool
+	default y	if KEMBTK_EGLIBC_OPTION_EGLIBC_LOCALE_CODE
+	select EMBTK_HOST_HAVE_GPERF
+	help
+		select gperf for host if needed to build the toolchain.
+

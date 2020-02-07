@@ -1,0 +1,69 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libnih.kconfig
+# \brief	libnih.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HAVE_LIBNIH
+	bool "Have libnih"
+	select EMBTK_HAVE_DBUS
+	help
+		libnih is a small library for C application development
+		containing functions that, despite its name, are not implemented
+		elsewhere in the standard library set.
+
+		libnih is roughly equivalent to other C libraries such as glib,
+		except that its focus is on a small size and intended for
+		applications that sit very low in the software stack, especially
+		outside of /usr.
+
+		It expressly does not reimplement functions that already exist
+		in libraries ordinarily shipped in /lib such libc6, and does not
+		do foolish things like invent arbitrary typedefs for perfectly
+		good C types.
+
+choice
+	prompt "libnih version you wish"
+	depends on EMBTK_HAVE_LIBNIH
+	help
+	 Here you can choose which version of libnih you want to use.
+
+	config  EMBTK_LIBNIH_VERSION_1_0_2
+		bool "libnih-1.0.2"
+endchoice
+
+config EMBTK_LIBNIH_MAJOR_VERSION_STRING
+	string
+	default "1.0"		if EMBTK_LIBNIH_VERSION_1_0_2
+
+config EMBTK_LIBNIH_VERSION_STRING
+	string
+	default "1.0.2"		if EMBTK_LIBNIH_VERSION_1_0_2
+
+config EMBTK_LIBNIH_NEED_PATCH
+	bool
+config EMBTK_LIBNIH_NEED_AUTORECONF
+	bool
+config EMBTK_LIBNIH_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBNIH_PKG_IS_TARBZ2
+	bool

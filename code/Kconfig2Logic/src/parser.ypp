@@ -1,0 +1,1151 @@
+%{ /*** C/C++ Declarations ***/
+
+#include <stdio.h>
+#include <string>
+#include <vector>
+#include <list>
+#include <set>
+#include <sstream>
+
+#include "varInfo.hpp"
+#include "configInfo.hpp"
+#include "choiceInfo.hpp"
+#include "ifInfo.hpp"
+#include "symbolTable.hpp"
+#include "driver.hpp"
+
+std::vector<synExp*>      depStack;
+std::vector<varInfo*>     configStack;
+std::vector<configInfo*>  menuStack;
+std::vector<choiceInfo*>  choiceStack;
+std::set<std::string>     repeats;
+int                       depAdded;
+configInfo *coninf = NULL;
+choiceInfo *choinf = NULL;
+
+int choiceNameCounter = 0;
+
+void addDepStack(synExp* s) {
+    if (s != synTrue)
+    depStack.push_back(s);
+    if (s->isSymbol()) {
+        std::string sym = s->getSymbol();
+    }
+}
+
+void delDepStack(varInfo* v) {
+    int l = v->getDepLength();
+    if (l > depStack.size())
+    throw std::logic_error("Error managing dependency stack");
+    else {
+        int dif = depStack.size() - l;
+        for(int x = 0; x < dif ; x++)
+        depStack.pop_back();
+    }
+}
+
+void handle_config_start(std::string theConf, kconf::Driver& driver) {
+    synExp* dep = synTrue;
+    synExp* vis = synTrue;
+    if (! configStack.empty()) {
+        dep = configStack.back()->getDependsVar();
+        vis = configStack.back()->getVisibility();
+    }
+    coninf = new configInfo();
+    coninf->setDepLength(depStack.size());
+    coninf->setHasConfig();
+    // If there is already a value... we keep it
+    // and if there is a type... same thing
+    configInfo *c = symbolTable::getSymbol(theConf);
+    coninf->setName(theConf);
+    if (c != NULL) {
+        coninf->setValue(c->getValue());
+    }
+
+    // If the config is inside a choice, visibility is not inherited
+    // Likewise, dependencies are also not inherited
+    
+    // We use this info in case the depended config is in a choice to
+    // break the group of the depended if necessary
+    for(std::string var : dep->giveSymbols()) {
+        configInfo *c = symbolTable::getSymbol(var);
+        if (c != NULL)
+            c->addIsDependedBy(theConf);
+        coninf->addDependsOn(var);
+    }
+    
+    if (choiceStack.empty()) {
+        coninf->addVisibility(vis->copy_exp());
+        coninf->addDepends(dep->copy_exp());
+    }
+    else {
+        coninf->setChoiceMember();
+    }
+    
+    // If the type is unknown we check the symbol table
+    // to see if it has been declared with a type before
+    // and take it from there
+    if (coninf->getVartype() == "") {
+        configInfo *ci = symbolTable::getSymbol(theConf);
+        if (ci != NULL) {
+            coninf->setVartype(ci->getVartype());
+        }
+    }
+    
+    if (!menuStack.empty())
+        coninf->setMenuName(menuStack.back()->getPrompText());
+    
+    coninf->setFile(driver.lexer->curfile());
+    configStack.push_back(coninf);
+}
+
+void handle_config_stmt(kconf::Driver& driver) {   // 1
+    coninf->setDependStack(depStack);
+    if (!choiceStack.empty()) {
+        // Berger says choices are boolean by default.
+        // It is not true: linux/drivers/usb/musb/Kconfig
+        // There's a choice with no type and all the members
+        // are tristate
+        
+        driver.increaseChoiceMembers();
+        // Type compatibility check 1
+        if (choiceStack.back()->getVartype() == "boolean" &&
+        coninf->getVartype() == "tristate") {
+            std::cerr << "The choice is boolean and the member is tristate" << std::endl;
+            std::cerr << "The choice:" << std::endl
+            << choiceStack.back() << std::endl;
+            std::cerr << "The member:" << configStack.back()
+            << std::endl;
+            exit(-1);
+        }
+        // If the type is not specified, we inherit it from the choice
+        if (coninf->getVartype() == "")
+            coninf->setVartype(choiceStack.back()->getVartype());
+        
+        if (choiceStack.back()->getVartype() == "")
+            choiceStack.back()->setVartype("boolean");
+        
+        //If the choice member depends on the previous choice member...
+        // it is not really a choice member so we don't push it as such
+        
+        //Also, it the choice member does not have a prompt, it is also
+        // not a freaking choice member
+        if (choiceStack.back()->checkDeps(coninf->getDependsVar()->giveSymbols(), coninf->getName()) && coninf->isPrompt())
+            choiceStack.back()->push_symbol(coninf);
+        else {
+            // Get your attributes back...
+            coninf->addVisibility(choiceStack.back()->getVisibility());
+            coninf->addDepends(choiceStack.back()->getDependsVar());
+        }
+        
+        // If the choice type is not specified, we take it from THE members:
+        // If all boolean, boolean then, if any of them is tristate, then tristate it is
+        if (choiceStack.back()->getVartype() == "boolean" &&
+        configStack.back()->getVartype() == "tristate")
+        choiceStack.back()->setVartype("tristate");
+    }
+    
+    if (coninf->getVartype() == "boolean"
+    || coninf->getVartype() == "tristate")
+    if (repeats.find(coninf->getName()) == repeats.end()) {
+        repeats.insert(coninf->getName());
+        for(configInfo* c : menuStack) {
+            c->addToMenu(coninf->getName());
+        }
+        for(choiceInfo* c : choiceStack) {
+            c->addToMenu(coninf->getName());
+        }
+        driver.addToDirFile(coninf);
+    }
+    
+    // configs taken from the environment are added
+    // to the symbol table,
+    // They HAVE to be translated, because the may be
+    // of type string and at the least, the variants
+    // need to be exclusive
+    driver.increaseConfigs();
+    symbolTable::declareSymbol(coninf->getName(), coninf);
+    
+    // We do not want to include them twice
+    if (choiceStack.empty())
+        driver.add(coninf);
+        
+    configInfo::addAlternative(coninf->getName(), coninf);
+    // We count how many times a config name depends on each symbol
+    // to use it to simplify dependencies later
+    for (auto s : coninf->getDependsVar()->giveSymbols())
+        configInfo::timesDependsOn[std::pair<std::string, std::string>(coninf->getName(), s)]++;
+        
+    delDepStack(coninf);
+    configStack.pop_back();
+    configInfo::useXOR = driver.useXOR;
+
+
+}
+
+synExp* handle_equality(synExp* dollar1, synExp* dollar3) {
+    synExp *alt1 = NULL;
+    synExp *alt3 = NULL;
+    if (dollar1->get_type() == synExp_String) {
+        if (dollar1->get_string() == "y") alt1 = synTrue;
+        if (dollar1->get_string() == "m") alt1 = synModule;
+        if (dollar1->get_string() == "n") alt1 = synFalse;
+    }
+    if (dollar3->get_type() == synExp_String) {
+        if (dollar3->get_string() == "y") alt3 = synTrue;
+        if (dollar3->get_string() == "m") alt3 = synModule;
+        if (dollar3->get_string() == "n") alt3 = synFalse;
+    }
+    // If it's two string literals (or env variable) we just decide here
+    // [Right now only in use to check $ARCH]
+    if (dollar1->get_type() == synExp_String && dollar3->get_type() == synExp_String) {
+    if (dollar1->get_string() == dollar3->get_string())
+       return synTrue;
+    else
+       return synFalse;
+    }
+    
+    // Equality between different types
+    if (dollar1->get_type() == synExp_Symbol && alt3 != NULL)
+       return makeEqual(dollar1, alt3);
+    else
+    if (dollar3->get_type() == synExp_Symbol && alt1 != NULL)
+       return  makeEqual(alt1, dollar3);
+    
+    // A string symbol compared to a value
+    std::string theString;
+    synExp*  theSymbol = NULL;
+    bool found = false;
+    if (dollar1->get_type() == synExp_Symbol &&
+        dollar3->get_type() == synExp_String) {
+        theSymbol = dollar1;
+        theString = dollar3->get_string();
+        found     = true;
+    }
+    else
+    if (dollar1->get_type() == synExp_String &&
+        dollar3->get_type() == synExp_Symbol) {
+        theString = dollar1->get_string();
+        theSymbol = dollar3;
+        found     = true;
+    }
+    if (found) {
+        configInfo *v = symbolTable::getSymbol(theSymbol->getSymbol());
+        if (v == NULL) {
+            configInfo *c = new configInfo();
+            c->setName(theSymbol->getSymbol());
+            symbolTable::addSymbol(theSymbol->getSymbol(), c);
+            v = symbolTable::getSymbol(theSymbol->getSymbol());
+        }
+        
+        v->addValue(theString);
+        return new synSymbol(v->buildNameValue(theString));
+    }
+    found = false;
+    synExp *theUnknown = NULL;
+    // One unknown and one symbol
+    if (dollar1->isSymbol() &&
+        dollar3->isUnknown()) {
+            theSymbol  = dollar1;
+            theUnknown = dollar3;
+            found = true;
+    }
+    else
+    if (dollar3->isSymbol() &&
+        dollar1->isUnknown()) {
+            theSymbol  = dollar3;
+            theUnknown = dollar1;
+            found = true;
+    }
+    if (found) {
+        synExp* theKnown = NULL;
+        configInfo *v = symbolTable::getSymbol(theSymbol->getSymbol());
+        std::string type = v->getVartype();
+        if (type == "string" || type == "int" || type == "hex") {
+            theKnown = new synString(theUnknown->get_string());
+            theUnknown->destroy();
+            v->addValue(theKnown->get_string());
+            return new synSymbol(v->buildNameValue(theKnown->get_string()));
+        }
+        else
+        if (type == "boolean" || type == "tristate") {
+            // It was a symbol with no definition
+            theKnown = synFalse;
+            theUnknown->destroy();
+            return synFalse;
+        }
+        else {
+            std::logic_error("Unknown type "+type+" for symbol "+theSymbol->getSymbol());
+        }
+    }
+    // Two symbols of type string checked for equality
+    if (dollar1->get_type() == synExp_Symbol &&
+    dollar3->get_type() == synExp_Symbol) {
+        varInfo *v1 =
+        symbolTable::getSymbol(dollar1->get_string());
+        varInfo *v3 =
+        symbolTable::getSymbol(dollar3->get_string());
+        if (v1 != NULL && v3 != NULL)
+        if (v1->getVartype() == "string" && v3->getVartype() == "string")
+           throw std::logic_error("Equality between string symbols not implemented");
+    }
+    return makeEqual(dollar1->copy_exp(), dollar3->copy_exp());
+}
+
+void handle_default(kconf::Driver& driver, kconf_id* def, synExp* exp, synExp *ifExp) {
+    // For def_tristate and def_bool (type and default at the same time)
+    if (exp->isUnknown()) {
+        if (coninf->getVartype() == "string" ||
+            coninf->getVartype() == "int"    ||
+            coninf->getVartype() == "hex") {
+            std::string st = exp->get_string();
+            exp->destroy();
+            exp = new synString(st);
+        }
+        else
+        if (coninf->getVartype() == "boolean" || coninf->getVartype() == "tristate") {
+                exp->destroy();
+                exp = synFalse;
+        }
+        else throw std::logic_error("Unknown type *"+coninf->getVartype()+"* for symbol "+coninf->getName());
+    }
+     // Sometimes, there is a string with a default "Whatever" and no explicit type given
+     if (coninf->getVartype() == "" && exp->get_type() == synExp_String)
+         coninf->setVartype("string");
+         
+     if (def->type2string() != "unknown") {
+         coninf->setVartype(def->type2string());
+         driver.increaseCounters(def->type2string());
+     }
+     // We stack them up in reverse order to simplify later processing
+     if (coninf->getVartype() == "boolean" || coninf->getVartype() == "tristate") {
+         if (exp->get_type() == synExp_String) {
+             if (exp->get_string() == "y")
+                 coninf->push_default(ifExp, synTrue);
+             else
+             if (exp->get_string() == "n")
+                 coninf->push_default(ifExp, synFalse);
+             else
+             if (exp->get_string() == "m")
+                 coninf->push_default(ifExp, synModule);
+                 else {
+                     std::cerr << "Default string value " << exp->get_string() << " for logic config" << std::endl;
+                     throw(std::logic_error("Error"));
+                 }
+         
+         }
+         else {
+             coninf->push_default(ifExp, exp);
+         }
+     }
+     else {
+         coninf->push_default(ifExp, exp);
+     }
+}
+
+void handle_choice(kconf::Driver& driver, std::string cho) {
+    synExp* dep = synTrue;
+       synExp* vis = synTrue;
+       if (! configStack.empty()) {
+           dep = configStack.back()->getDependsVar();
+           vis = configStack.back()->getVisibility();
+       }
+       
+       choinf = new choiceInfo();
+       choinf->setDepLength(depStack.size());
+       choinf->addDepends(dep->copy_exp());
+       choinf->addVisibility(vis);
+       
+
+       std::ostringstream ost;
+       ost << cho << "choice_" << choiceNameCounter++;
+       choinf->setName(ost.str());
+       choiceInfo::useXOR = driver.useXOR;
+       choinf->setFile(driver.lexer->curfile());
+       choiceStack.push_back(choinf);
+       configStack.push_back(choinf);
+       // timesDependsOn should be in varInfo, not in configInfo
+       // because choices also need to simplify their dependencies
+       for (auto s : choinf->getDependsVar()->giveSymbols())
+           configInfo::timesDependsOn[std::pair<std::string, std::string>(choinf->getName(), s)]++;
+}
+
+void handle_source(kconf::Driver& driver, std::string filename) {
+    driver.streamname = filename;
+       // The file name may contain a SYMBOL like "$BR2_EXTERNAL/Config.in"
+       std::string symbolName;
+       if (driver.streamname.find('$') != std::string::npos) {
+           std::string old    = driver.streamname;
+           std::size_t dollar = driver.streamname.find('$');
+           std::size_t bar    = driver.streamname.rfind('/');
+           if (dollar !=  std::string::npos) {
+               if (bar != 0)
+               symbolName =
+               std::string(driver.streamname, dollar+1, bar - dollar-1);
+               else
+               symbolName =
+               std::string(driver.streamname, dollar+1, driver.streamname.length() - dollar-1);
+           }
+           configInfo *ss = symbolTable::getSymbol(symbolName);
+           if (ss == NULL)
+             std::cerr << "1 Symbol " << symbolName << " not found in symbol table" << std::endl;
+
+           std::string start;
+           if (dollar > 0)
+                start  = std::string(driver.streamname,0, dollar -1);
+           std::string middle = ss->getValue()->get_string();
+           std::string end    =  std::string(driver.streamname, bar, driver.streamname.length() - bar);
+           filename = start+middle+end;
+       }
+
+       //std::cerr << "Calling checkNextfiles " << filename << std::endl;
+       int nfiles = driver.lexer->checkNextFiles(filename);
+       driver.increaseFiles(nfiles);
+}
+
+synExp* handle_symbol(kconf::Driver& driver, std::string& sym) {
+    if (sym == "n" || sym == "N") return synFalse;
+    if (sym == "y" || sym == "Y") return synTrue;
+    if (sym == "m" || sym == "M") return synModule;
+    
+    if (driver.configList.find(sym) != driver.configList.end()) {
+        return new synSymbol(sym);
+    }
+    //std::cerr << "Symbol " << sym << " unknown" << std::endl;
+    return new synUnknown(sym);
+}
+
+void handle_ifblock(kconf::Driver& driver, synExp* dollar2) {
+    if (dollar2->isUnknown()) {
+        std::string st = dollar2->get_string();
+        dollar2->destroy();
+        dollar2 = synFalse;
+    }
+    synExp* dep = synTrue;
+    synExp* vis = synTrue;
+    if (! configStack.empty()) {
+        dep = configStack.back()->getDependsVar();
+        vis = configStack.back()->getVisibility();
+    }
+    ifInfo* ifinf = new ifInfo();
+    ifinf->setDepLength(depStack.size());
+    ifinf->addDepends(dep->copy_exp());
+    ifinf->addDepends(dollar2->copy_exp());
+    
+    addDepStack(dollar2);
+    // 4
+    ifinf->setDependStack(depStack);
+    
+    ifinf->addVisibility(vis->copy_exp());
+    ifinf->setGuard(dollar2);
+    configStack.push_back(ifinf);
+    driver.increaseIfBlocks();
+}
+
+%}
+/*** yacc/bison Declarations ***/
+
+/* Require bison 3.0 or later */
+%require "3.0"
+
+/* add debug output code to generated parser. disable this for release
+ * versions. */
+%debug
+
+/* start symbol is named "start" */
+%start input
+
+/* write out a header file containing the token defines */
+%defines
+
+/* use newer C++ skeleton file */
+%skeleton "lalr1.cc"
+
+/* namespace to enclose parser in */
+%define api.namespace {kconf}
+
+/* set the parser's class identifier */
+%define api.parser.class {Parser}
+%define api.token.constructor
+%define api.value.type variant
+
+//%define parse.assert
+
+/* keep track of the current position within the input */
+%locations
+%initial-action
+{
+    // initialize the initial location object
+    @$.begin.filename = @$.end.filename = &driver.streamname;
+};
+
+/* The driver is passed by reference to the parser and to the scanner. This
+ * provides a simple but effective pure interface, not relying on global
+ * variables. */
+//%parse-param { class Driver& driver }
+// The parsing context.
+%param { class Driver& driver }
+/* verbose error messages */
+%define parse.error verbose
+
+%code requires {
+    #include "varInfo.hpp"
+    #include "synExp.hpp"
+    
+    struct kconf_id;
+
+}
+
+%token <kconf_id*>T_MAINMENU
+%token <kconf_id*>T_MENU
+%token <kconf_id*>T_ENDMENU
+%token <kconf_id*>T_SOURCE
+%token <kconf_id*>T_CHOICE
+%token <kconf_id*>T_ENDCHOICE
+%token <kconf_id*>T_COMMENT
+%token <kconf_id*>T_CONFIG
+%token <kconf_id*>T_MENUCONFIG
+%token <kconf_id*>T_HELP
+%token <kconf_id*>T_IF
+%token <kconf_id*>T_ENDIF
+%token <kconf_id*>T_DEPENDS
+%token <kconf_id*>T_OPTIONAL
+%token <kconf_id*>T_PROMPT
+%token <kconf_id*>T_TYPE
+%token <kconf_id*>T_DEFAULT
+%token <kconf_id*>T_SELECT
+%token <kconf_id*>T_RANGE
+%token <kconf_id*>T_VISIBLE
+%token <kconf_id*>T_OPTION
+%token <kconf_id*>T_ON
+%token <kconf_id*>T_OPT_DEFCONFIG_LIST
+%token <kconf_id*>T_OPT_MODULES
+%token <kconf_id*>T_OPT_ENV
+%token <kconf_id*>T_INSERT
+
+%token <std::string> T_HELPTEXT
+%token <std::string> T_WORD
+%token <std::string> T_WORD_QUOTE
+
+%token T_UNEQUAL
+%token T_CLOSE_PAREN
+%token T_OPEN_PAREN
+%token T_EOL
+%token T_EOP // End of pass
+%token T_EOF 0
+
+%left T_OR
+%left T_AND
+%left T_EQUAL T_UNEQUAL
+%nonassoc T_NOT
+
+%type<std::string> prompt symbol_option_arg word_opt;
+%type<synExp*> symbol;
+%type<synExp*> expr if_expr visible  visibility_list;
+%type<synExp*> depends depends_list;
+
+%printer { yyoutput << $$; } <std::string>;
+
+%{
+
+#include "driver.hpp"
+#include "scanner.hpp"
+#include "varInfo.hpp"
+
+
+/* this "connects" the bison parser in the driver to the flex scanner class
+ * object. it defines the yylex() function call to pull the next token from the
+ * current lexer object of the driver context. */
+
+#undef yylex
+#define yylex driver.lexer->lex
+
+%}
+
+%% /*** Grammar Rules ***/
+
+input: nl start pass nl start {
+}
+| start pass start {
+}
+;
+pass: T_EOP {
+    driver.firstPass = false;
+}
+start: mainmenu_stmt stmt_list  {
+}
+| stmt_list {
+};
+
+stmt_list:
+/* empty */
+| stmt_list common_stmt
+| stmt_list choice_stmt
+| stmt_list menu_stmt
+| stmt_list end			{  }
+| stmt_list T_WORD error T_EOL	{ }
+| stmt_list option_name error T_EOL
+{
+	
+}
+| stmt_list error T_EOL		{ }
+;
+
+option_name:
+T_DEPENDS | T_PROMPT | T_TYPE | T_SELECT | T_OPTIONAL | T_RANGE | T_DEFAULT | T_VISIBLE
+;
+
+common_stmt:
+T_EOL
+| if_stmt
+| comment_stmt
+| config_stmt
+| insert_stmt
+| menuconfig_stmt
+| source_stmt
+;
+
+option_error:
+T_WORD error T_EOL		{  }
+| error T_EOL			{  }
+;
+
+
+/* config/menuconfig entry */
+
+config_entry_start: T_CONFIG T_WORD T_EOL {// Check
+    if (!driver.firstPass)
+        handle_config_start($2, driver);
+    else {
+          driver.configList.insert($2);
+        }
+};
+
+config_stmt: config_entry_start config_option_list {// Check
+    if (!driver.firstPass)
+        handle_config_stmt(driver);
+};
+
+insert_stmt: T_INSERT
+;
+menuconfig_entry_start: T_MENUCONFIG T_WORD T_EOL {// Check
+    if (!driver.firstPass)
+        handle_config_start($2, driver);
+    else {
+        driver.configList.insert($2);
+    }
+};
+
+menuconfig_stmt: menuconfig_entry_start config_option_list {// Check
+    if (!driver.firstPass)
+        handle_config_stmt(driver);
+};
+
+config_option_list: // Check
+/* empty */
+| config_option_list config_option 
+| config_option_list symbol_option
+| config_option_list depends
+{
+    if (!driver.firstPass) {
+        // Not here because this only affects the config
+        //addDepStack($2);
+        coninf->addInnerDep($2->copy_exp());
+        coninf->addDepends($2->copy_exp());
+    }
+}
+| config_option_list help
+| config_option_list option_error
+| config_option_list T_EOL
+;
+
+config_option: T_TYPE prompt_stmt_opt T_EOL // Check
+{
+    if (!driver.firstPass) {
+        std::string st = $1->type2string();
+        coninf->setVartype(st);
+        driver.increaseCounters(st);
+    }
+};
+
+config_option: T_PROMPT prompt if_expr T_EOL // Check
+{
+    if (!driver.firstPass) {
+        coninf->activatePrompt();
+        coninf->setPrompText($2);
+        coninf->setPromptGuard($3);
+    }
+};
+
+config_option: T_DEFAULT expr if_expr T_EOL // Check
+{
+    if (!driver.firstPass)
+        handle_default(driver, $1, $2, $3);
+};
+
+config_option: T_SELECT T_WORD if_expr T_EOL
+{
+    if (!driver.firstPass) {
+        // Dependencies alone or dependencies and visibility condition?
+        coninf->addMapSelect($2, $3, coninf->getDependsVar()->copy_exp());
+        driver.addToSelectable($2);
+        coninf->setSelects();
+        for(configInfo* c : menuStack)
+            c->setSelects();
+    }
+};
+
+config_option: T_RANGE symbol symbol if_expr T_EOL {
+    if (!driver.firstPass) {
+        synExp *dollar2 = $2;
+        synExp *dollar3 = $3;
+        if (dollar2->isUnknown()) {
+            std::string st = dollar2->get_string();
+            dollar2->destroy();
+            dollar2 = new synString(st);
+        }
+        if (dollar3->isUnknown()) {
+            std::string st = dollar3->get_string();
+            dollar3->destroy();
+            dollar3 = new synString(st);
+        }
+        coninf->addRange(dollar2, dollar3);
+    }
+}
+;
+
+symbol_option: T_OPTION symbol_option_list T_EOL
+;
+
+symbol_option_list:
+/* empty */
+| symbol_option_list T_WORD symbol_option_arg
+{
+    // We do nothing, this has to be dealt with when calling Kconfig2Logic
+    // with the syntax key=value, so the value will get written in the
+    // symbol table for key.
+
+    if (!driver.firstPass) {
+        coninf->setFromEnvironment();
+        configInfo *c = symbolTable::getSymbol(coninf->getName());
+        
+        // If the key=value was not used we define the symbol
+        // to avoid problems later on
+        if (c == NULL) {
+            if (coninf->getVartype() == "string")
+                coninf->setValue(new synString(""));
+            else
+                if (coninf->getVartype() == "int")
+                    coninf->setValue(new synString("0"));
+                    else
+                    if (coninf->getVartype() == "hex")
+                        coninf->setValue(new synString("0x0"));
+                        
+            symbolTable::addSymbol(coninf->getName(), coninf);
+        }
+    }
+};
+
+symbol_option_arg:
+/* empty */		{  }
+| T_EQUAL prompt	{ if (!driver.firstPass) {$$ = $2;}  }
+;
+
+/* choice entry */
+
+choice: T_CHOICE word_opt T_EOL
+{
+    if (!driver.firstPass)
+        handle_choice(driver, $2);
+
+};
+
+choice_entry: choice choice_option_list
+{
+    if (!driver.firstPass)
+        choinf->setDependStack(depStack);
+};
+
+choice_end: end
+;
+
+choice_stmt: choice_entry choice_block choice_end {
+    if (!driver.firstPass) {
+        driver.increaseChoices();
+        driver.addConstraint(choiceStack.back());
+        if (choiceStack.back()->getName() == "")
+        choiceStack.back()->setName(choiceStack.back()->getPrompText());
+        driver.addChoice(choiceStack.back());
+        driver.add(choiceStack.back());
+        choiceStack.pop_back();
+        configStack.pop_back();
+    }
+};
+
+choice_option_list:
+/* empty */
+| choice_option_list choice_option
+| choice_option_list depends {
+    if (!driver.firstPass) {
+        // Not here because it only affects the choice
+        //addDepStack($2);
+        choiceStack.back()->addInnerDep($2->copy_exp());
+        choiceStack.back()->addDepends($2->copy_exp());
+    }
+}
+| choice_option_list help
+| choice_option_list T_EOL
+| choice_option_list option_error
+;
+
+choice_option: T_PROMPT prompt if_expr T_EOL // Check
+{
+    if (!driver.firstPass) {
+        choiceStack.back()->activatePrompt();
+        choiceStack.back()->setPrompText($2);
+        choiceStack.back()->setPromptGuard($3);
+    }
+};
+
+choice_option: T_TYPE prompt_stmt_opt T_EOL // Check
+{
+    if (!driver.firstPass) {
+        choiceStack.back()->setVartype($1->type2string());
+        driver.increaseCounters($1->type2string());
+    }
+};
+
+choice_option: T_OPTIONAL T_EOL
+{
+    if (!driver.firstPass)
+        choiceStack.back()->setOptional();
+};
+
+choice_option: T_DEFAULT T_WORD if_expr T_EOL
+{
+    if (!driver.firstPass) {
+        choiceStack.back()->push_default($3, new synSymbol($2));
+        // For def_tristate and def_bool (type and default at the same time)
+        if ($1->type2string() != "unknown") {
+            choiceStack.back()->setVartype($1->type2string());
+            driver.increaseCounters($1->type2string());
+        }
+    }
+};
+
+choice_block:
+/* empty */
+| choice_block common_stmt
+;
+
+if_entry: T_IF expr nl {
+    if (!driver.firstPass)
+        handle_ifblock(driver, $2);
+};
+
+if_end: end
+;
+
+if_stmt: if_entry if_block if_end {
+    if (!driver.firstPass) {
+        delDepStack(configStack.back());
+        configStack.pop_back();
+    }
+};
+
+if_block:
+/* empty */
+| if_block common_stmt
+| if_block menu_stmt
+| if_block choice_stmt
+;
+
+/* mainmenu entry */
+
+mainmenu_stmt: T_MAINMENU prompt nl
+{
+    if (!driver.firstPass) {
+        // Front-end related. Nothing to see here.
+        driver.increaseMainMenus();
+        //driver.menuStack.push_back($2);
+    }
+
+};
+
+/* menu entry */
+
+menu: T_MENU prompt T_EOL
+{
+    if (!driver.firstPass) {
+        synExp* dep = synTrue;
+        synExp* vis = synTrue;
+        if (! configStack.empty()) {
+            dep = configStack.back()->getDependsVar();
+            vis = configStack.back()->getVisibility();
+        }
+        configInfo *menuinf = new configInfo();
+        menuinf->setDepLength(depStack.size());
+        menuinf->setHasConfig();
+        menuinf->addDepends(dep->copy_exp());
+        menuinf->addVisibility(vis->copy_exp());
+        menuinf->setPrompText($2);
+        
+        configStack.push_back(menuinf);
+        menuStack.push_back(menuinf);
+        driver.increaseMenus();
+    }
+};
+
+menu_entry: menu visibility_list depends_list
+{
+    if (!driver.firstPass) {
+        configStack.back()->addVisibility($2);
+        // This menu inherits the dependencies of upper menus
+        
+        addDepStack($3);
+        configStack.back()->setDependStack(depStack);
+        configStack.back()->addDepends($3->copy_exp());
+    }
+}
+
+menu_end: end
+;
+
+menu_stmt: menu_entry menu_block menu_end {
+    if (!driver.firstPass) {
+        if (!menuStack.back()->getSelects())
+        driver.addMenuBlocks(menuStack.back());
+        
+        delDepStack(configStack.back());
+        menuStack.pop_back();
+        configStack.pop_back();
+    }
+};
+
+menu_block:
+/* empty */
+| menu_block common_stmt
+| menu_block menu_stmt
+| menu_block choice_stmt
+;
+
+source_stmt: T_SOURCE prompt T_EOL
+{
+        handle_source(driver, $2);
+   
+};
+
+/* comment entry */
+
+comment: T_COMMENT prompt T_EOL
+{
+	
+};
+
+comment_stmt: comment depends_list
+{
+};
+
+/* help option */
+
+help_start: T_HELP T_EOL
+{
+        driver.lexer->starthelp();
+};
+
+help: help_start T_HELPTEXT
+{
+};
+
+/* depends option */
+
+depends_list:
+/* empty */                 { $$ = synTrue; }
+| depends_list depends      {
+    if (!driver.firstPass) {
+        $$ = makeAnd($1->copy_exp(), $2->copy_exp());}
+    else $$ = synTrue;
+}
+| depends_list T_EOL        {
+    if (!driver.firstPass)
+        $$ = $1;
+    else $$ = synTrue;
+}
+| depends_list option_error { $$ = synFalse;}
+;
+
+depends: T_DEPENDS T_ON expr T_EOL
+{
+    if (!driver.firstPass) {
+        synExp* dollar3 = $3;
+        if (dollar3->isUnknown()) {
+            dollar3->destroy();
+            dollar3 = synFalse;
+        }
+        $$ = dollar3;
+    }
+    else $$ = synTrue;
+}
+;
+
+/* visibility option */
+
+visibility_list:
+/* empty */                 { $$ = synTrue; }
+| visibility_list visible   {
+    if (!driver.firstPass)
+        $$ = makeAnd($1->copy_exp(), $2->copy_exp());
+    else $$ = synTrue;
+}
+| visibility_list T_EOL     {
+    if (!driver.firstPass)
+        $$ = $1;
+    else $$ = synTrue;
+}
+;
+
+visible: T_VISIBLE if_expr
+{
+    if (!driver.firstPass)
+        $$ = $2;
+    else $$ = synTrue;
+};
+
+/* prompt statement */
+
+prompt_stmt_opt:
+/* empty */         {
+    if (!driver.firstPass) {
+        // If there is no previous prompt declared with T_PROMPT...
+        if (configStack.back()->getPrompText() == "")
+        configStack.back()->setPromptGuard(synFalse);
+    }
+}
+
+| prompt if_expr    {
+    if (!driver.firstPass) {
+        configStack.back()->activatePrompt();
+        configStack.back()->setPrompText($1);
+        configStack.back()->setPromptGuard($2);
+    }
+}
+;
+
+prompt:	  T_WORD  { $$ = $1;   }
+| T_WORD_QUOTE    {
+    $$ = $1;
+}
+;
+
+end:	  T_ENDMENU T_EOL	{  }
+| T_ENDCHOICE T_EOL	{ }
+| T_ENDIF T_EOL		{  }
+;
+
+nl:
+T_EOL
+| nl T_EOL
+;
+
+if_expr:  /* empty */			{ $$ = synTrue;   }
+| T_IF expr                     {
+    if (!driver.firstPass) {
+        if ($2->isUnknown())
+            $$ =  synFalse;
+        else
+            $$ = $2;
+    }
+    else $$ = synTrue;
+}
+;
+
+expr:	  symbol				{
+    if (!driver.firstPass) {
+        $$ = $1->copy_exp();
+    }
+    else $$ = synTrue;
+}
+| symbol T_EQUAL symbol  		{
+    if (!driver.firstPass)
+        $$ = handle_equality($1, $3);
+    else $$ = synTrue;
+}
+| symbol T_UNEQUAL symbol		{
+    if (!driver.firstPass) {
+        std::cerr << "dolar1 " << $1 << " dolar3" << $3 << std::endl;
+        $$ = makeNot(handle_equality($1, $3)->copy_exp());
+    }
+    else $$ = synTrue;
+}
+| T_OPEN_PAREN expr T_CLOSE_PAREN	{
+    if (!driver.firstPass)
+        $$ =  $2->copy_exp();
+    else $$ = synTrue;
+}
+| T_NOT expr                        {
+    if (!driver.firstPass) {
+        if ($2->isUnknown())
+          $$ = synTrue;
+        else
+            $$ = makeNot($2->copy_exp());
+    }
+    else $$ = synTrue;
+}
+| expr T_OR expr                    {
+    if (!driver.firstPass) {
+        synExp* first  = $1;
+        synExp* second = $3;
+        if ($1->isUnknown())
+            first = synFalse;
+        if ($3->isUnknown())
+            second = synFalse;
+        
+        $$ = makeOr(first->copy_exp(), second->copy_exp());
+    }
+    else $$ = synTrue;
+}
+| expr T_AND expr                   {
+    if (!driver.firstPass) {
+        synExp* first  = $1;
+        synExp* second = $3;
+        if ($1->isUnknown())
+            first = synFalse;
+        if ($3->isUnknown())
+            second = synFalse;
+        
+        $$ = makeAnd(first->copy_exp(), second->copy_exp());
+    }
+    else $$ = synTrue;
+};
+
+symbol:	  T_WORD {
+    if (!driver.firstPass) {
+        $$ = handle_symbol(driver, $1);
+    }
+    else $$ = synTrue;
+}
+
+| T_WORD_QUOTE	    {
+     if (!driver.firstPass)
+        $$ = new synString($1);
+    else $$ = synTrue;
+}
+;
+
+word_opt: /* empty */			{ $$ = ""; }
+| T_WORD                        {
+    if (!driver.firstPass)
+        $$ = $1;
+    else $$ = "";
+}
+
+
+
+%% /*** Additional Code ***/
+void kconf::Parser::error(const Parser::location_type& l,
+			    const std::string& m)
+{
+    driver.error(l, m);
+    exit(-1);
+}
+

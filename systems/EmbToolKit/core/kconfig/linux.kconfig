@@ -1,0 +1,245 @@
+#################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         linux.kconfig
+# \brief	linux.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+
+choice
+	prompt "Linux series to use"
+	help
+	 Here you can choose which Linux kernel headers you want to use.
+
+	config EMBTK_LINUX_VERSION_3_16_X
+		bool "linux-3.16.x"
+		help
+		 Use a linux-3.16.x version.
+	config EMBTK_LINUX_VERSION_3_15_X
+		bool "linux-3.15.x"
+		help
+		 Use a linux-3.15.x version.
+	config EMBTK_LINUX_VERSION_3_14_X
+		bool "linux-3.14.x"
+		help
+		 Use a linux-3.14.x version.
+	config EMBTK_LINUX_VERSION_3_13_X
+		bool "linux-3.13.x"
+		help
+		 Use a linux-3.13.x version.
+	config EMBTK_LINUX_VERSION_3_12_X
+		bool "linux-3.12.x"
+		help
+		 Use a linux-3.12.x version.
+	config EMBTK_LINUX_VERSION_3_11_X
+		bool "linux-3.11.x"
+		help
+		 Use a linux-3.11.x version.
+	config EMBTK_LINUX_VERSION_3_10_X
+		bool "linux-3.10.x"
+		help
+		 Use a linux-3.10.x version.
+	config EMBTK_LINUX_VERSION_3_9_X
+		bool "linux-3.9.x"
+		help
+		 Use a linux-3.9.x version.
+	config EMBTK_LINUX_VERSION_3_8_X
+		bool "linux-3.8.x"
+		help
+		 Use a linux-3.8.x version.
+	config EMBTK_LINUX_VERSION_3_7_X
+		bool "linux-3.7.x"
+		help
+		 Use a linux-3.7.x version.
+	config EMBTK_LINUX_VERSION_3_6_X
+		bool "linux-3.6.x"
+		help
+		 Use a linux-3.6.x version.
+	config EMBTK_LINUX_VERSION_3_5_X
+		bool "linux-3.5.x"
+		help
+		 Use a linux-3.5.x version.
+	config EMBTK_LINUX_VERSION_3_4_X
+		bool "linux-3.4.x"
+		help
+		 Use a linux-3.4.x version.
+	config EMBTK_LINUX_VERSION_3_3_X
+		bool "linux-3.3.x"
+		help
+		 Use a linux-3.3.x version.
+	config EMBTK_LINUX_VERSION_3_2_X
+		bool "linux-3.2.x"
+		help
+		 Use a linux-3.2.x version.
+	config EMBTK_LINUX_VERSION_3_1_X
+		bool "linux-3.1.x"
+		help
+		 Use a linux-3.1.x version.
+	config EMBTK_LINUX_VERSION_3_0_X
+		bool "linux-3.0.x"
+		help
+		 Use a linux-3.0.x version.
+	config EMBTK_LINUX_VERSION_2_6_39_X
+		bool "linux-2.6.39.x"
+		help
+		 Use a linux-2.6.39.x version.
+	config EMBTK_LINUX_VERSION_2_6_38_X
+		bool "linux-2.6.38.x"
+		help
+		 Use a linux-2.6.38.x version.
+	config EMBTK_LINUX_VERSION_2_6_37_X
+		bool "linux-2.6.37.x"
+		help
+		 Use a linux-2.6.37.x version.
+	config EMBTK_LINUX_VERSION_2_6_36_X
+		bool "linux-2.6.36.x"
+		help
+		 Use a linux-2.6.36.x version.
+	config EMBTK_LINUX_VERSION_2_6_35_X
+		bool "linux-2.6.35.x"
+		help
+		 Use a linux-2.6.35.x version.
+	config EMBTK_LINUX_VERSION_2_6_34_X
+		bool "linux-2.6.34.x"
+		help
+		 Use a linux-2.6.34.x version.
+	config EMBTK_LINUX_VERSION_2_6_33_X
+		bool "linux-2.6.33.x"
+		help
+		 Use a linux-2.6.33.x version.
+	config EMBTK_LINUX_VERSION_2_6_32_X
+		bool "linux-2.6.32.x"
+		help
+		 Use a linux-2.6.32.x version.
+endchoice
+
+if EMBTK_LINUX_VERSION_3_16_X
+source core/kconfig/linux-kconfigs/linux-3.16.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_15_X
+source core/kconfig/linux-kconfigs/linux-3.15.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_14_X
+source core/kconfig/linux-kconfigs/linux-3.14.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_13_X
+source core/kconfig/linux-kconfigs/linux-3.13.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_12_X
+source core/kconfig/linux-kconfigs/linux-3.12.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_11_X
+source core/kconfig/linux-kconfigs/linux-3.11.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_10_X
+source core/kconfig/linux-kconfigs/linux-3.10.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_9_X
+source core/kconfig/linux-kconfigs/linux-3.9.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_8_X
+source core/kconfig/linux-kconfigs/linux-3.8.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_7_X
+source core/kconfig/linux-kconfigs/linux-3.7.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_6_X
+source core/kconfig/linux-kconfigs/linux-3.6.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_5_X
+source core/kconfig/linux-kconfigs/linux-3.5.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_4_X
+source core/kconfig/linux-kconfigs/linux-3.4.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_3_X
+source core/kconfig/linux-kconfigs/linux-3.3.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_2_X
+source core/kconfig/linux-kconfigs/linux-3.2.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_1_X
+source core/kconfig/linux-kconfigs/linux-3.1.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_3_0_X
+source core/kconfig/linux-kconfigs/linux-3.0.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_39_X
+source core/kconfig/linux-kconfigs/linux-2.6.39.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_38_X
+source core/kconfig/linux-kconfigs/linux-2.6.38.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_37_X
+source core/kconfig/linux-kconfigs/linux-2.6.37.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_36_X
+source core/kconfig/linux-kconfigs/linux-2.6.36.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_35_X
+source core/kconfig/linux-kconfigs/linux-2.6.35.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_34_X
+source core/kconfig/linux-kconfigs/linux-2.6.34.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_33_X
+source core/kconfig/linux-kconfigs/linux-2.6.33.kconfig
+endif
+
+if EMBTK_LINUX_VERSION_2_6_32_X
+source core/kconfig/linux-kconfigs/linux-2.6.32.kconfig
+endif
+
+config EMBTK_LINUX_HAVE_MIRROR
+	bool "Use a linux mirror"
+	help
+		specify an alternate location where to download linux sources.
+config EMBTK_LINUX_HAVE_MIRROR_SITE
+	depends on EMBTK_LINUX_HAVE_MIRROR
+	string "Mirror site"
+	default "ftp://ftp.embtoolkit.org/embtoolkit.org/packages-mirror"
+	help
+		specify an alternate location where to download linux sources
+
+config EMBTK_LINUX_NEED_PATCH
+	bool

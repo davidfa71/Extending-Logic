@@ -1,0 +1,72 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xproto.kconfig
+# \brief	xproto.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XPROTO
+	bool "Have xproto"
+	help
+		xproto for X windowing system.
+		xproto provides the headers and specification documents
+		defining the X Window System Core Protocol, Version 11.
+
+choice
+	prompt "xproto version you wish"
+	depends on EMBTK_HAVE_XPROTO
+	help
+		Here you can choose which version of xproto you want to use.
+
+	config  EMBTK_XPROTO_VERSION_7_0_22
+		bool "xproto-7.0.22"
+	config  EMBTK_XPROTO_VERSION_7_0_21
+		bool "xproto-7.0.21"
+	config  EMBTK_XPROTO_VERSION_7_0_20
+		bool "xproto-7.0.20"
+	config  EMBTK_XPROTO_VERSION_7_0_19
+		bool "xproto-7.0.19"
+	config  EMBTK_XPROTO_VERSION_7_0_18
+		bool "xproto-7.0.18"
+	config  EMBTK_XPROTO_VERSION_7_0_17
+		bool "xproto-7.0.17"
+	config  EMBTK_XPROTO_VERSION_7_0_16
+		bool "xproto-7.0.16"
+endchoice
+
+config EMBTK_XPROTO_VERSION_STRING
+	string
+	default "7.0.22"	if EMBTK_XPROTO_VERSION_7_0_22
+	default "7.0.21"	if EMBTK_XPROTO_VERSION_7_0_21
+	default "7.0.20"	if EMBTK_XPROTO_VERSION_7_0_20
+	default "7.0.19"	if EMBTK_XPROTO_VERSION_7_0_19
+	default "7.0.18"	if EMBTK_XPROTO_VERSION_7_0_18
+	default "7.0.17"	if EMBTK_XPROTO_VERSION_7_0_17
+	default "7.0.16"	if EMBTK_XPROTO_VERSION_7_0_16
+
+config EMBTK_XPROTO_NEED_PATCH
+	bool
+config EMBTK_XPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_XPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_XPROTO_PKG_IS_TARBZ2
+	bool

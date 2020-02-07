@@ -1,0 +1,50 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         tcpdump.kconfig
+# \brief	tcpdump.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2012
+################################################################################
+
+config EMBTK_HAVE_TCPDUMP
+	bool "Have tcpdump"
+	select EMBTK_HAVE_LIBPCAP
+	help
+	 Tcpdump uses libpcap, a system-independent interface for user-level
+	 packet capture.
+
+choice
+	prompt "tcpdump version you wish"
+	depends on EMBTK_HAVE_TCPDUMP
+	help
+	 Here you can choose which version of tcpdump you want to use.
+
+	config  EMBTK_TCPDUMP_VERSION_4_3_0
+		bool "tcpdump-4.3.0"
+endchoice
+
+config EMBTK_TCPDUMP_VERSION_STRING
+	string
+	default "4.3.0"		if EMBTK_TCPDUMP_VERSION_4_3_0
+
+config EMBTK_TCPDUMP_NEED_PATCH
+	bool
+config EMBTK_TCPDUMP_NEED_AUTORECONF
+	bool

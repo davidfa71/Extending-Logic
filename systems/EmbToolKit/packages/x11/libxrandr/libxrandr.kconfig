@@ -1,0 +1,59 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libxrandr.kconfig
+# \brief	libxrandr.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2010
+################################################################################
+
+config EMBTK_HAVE_LIBXRANDR
+	bool "Have libXrandr"
+	select EMBTK_HAVE_XPROTO
+	select EMBTK_HAVE_RANDRPROTO
+	help
+		libXrandr for X windowing system
+choice
+	prompt "libxrandr version you wish"
+	depends on EMBTK_HAVE_LIBXRANDR
+	help
+	 Here you can choose which version of libXrandr you want to use.
+
+	config  EMBTK_LIBXRANDR_VERSION_1_3_2
+		bool "libXrandr-1.3.2"
+	config  EMBTK_LIBXRANDR_VERSION_1_3_1
+		bool "libXrandr-1.3.1"
+	config  EMBTK_LIBXRANDR_VERSION_1_3_0
+		bool "libXrandr-1.3.0"
+endchoice
+
+config EMBTK_LIBXRANDR_VERSION_STRING
+	string
+	default "1.3.2"		if EMBTK_LIBXRANDR_VERSION_1_3_2
+	default "1.3.1"		if EMBTK_LIBXRANDR_VERSION_1_3_1
+	default "1.3.0"		if EMBTK_LIBXRANDR_VERSION_1_3_0
+
+config EMBTK_LIBXRANDR_NEED_PATCH
+	bool
+config EMBTK_LIBXRANDR_NEED_AUTORECONF
+	bool
+config EMBTK_LIBXRANDR_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBXRANDR_PKG_IS_TARBZ2
+	bool

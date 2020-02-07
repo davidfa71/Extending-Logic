@@ -1,0 +1,89 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         freetype.kconfig
+# \brief	freetype.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2009
+################################################################################
+
+config EMBTK_HAVE_FREETYPE
+	bool "Have FreeType"
+	select EMBTK_HAVE_ZLIB
+	help
+	 FreeType 2 is a software font engine that is designed to be small,
+	 efficient, highly customizable, and portable while capable of producing
+	 high-quality output (glyph images). It can be used in graphics
+	 libraries, display servers, font conversion tools, text image
+	 generation tools, and many other products as well.
+	 Note that FreeType 2 is a font service and doesn't provide APIs to
+	 perform higher-level features like text layout or graphics processing
+	 (e.g., colored text rendering, ‘hollowing’, etc.). However, it greatly
+	 simplifies these tasks by providing a simple, easy to use, and uniform
+	 interface to access the content of font files.
+
+choice
+	prompt "FreeType version you wish"
+	depends on EMBTK_HAVE_FREETYPE
+	help
+		Here you can choose which version of freetype you want to use.
+
+	config  EMBTK_FREETYPE_VERSION_2_4_6
+		bool "FreeType-2.4.6"
+	config  EMBTK_FREETYPE_VERSION_2_4_4
+		bool "FreeType-2.4.4"
+	config  EMBTK_FREETYPE_VERSION_2_4_3
+		bool "FreeType-2.4.3"
+	config  EMBTK_FREETYPE_VERSION_2_4_2
+		bool "FreeType-2.4.2"
+	config  EMBTK_FREETYPE_VERSION_2_4_1
+		bool "FreeType-2.4.1"
+	config  EMBTK_FREETYPE_VERSION_2_4_0
+		bool "FreeType-2.4.0"
+	config  EMBTK_FREETYPE_VERSION_2_3_12
+		bool "FreeType-2.3.12"
+	config  EMBTK_FREETYPE_VERSION_2_3_11
+		bool "FreeType-2.3.11"
+	config  EMBTK_FREETYPE_VERSION_2_3_10
+		bool "FreeType-2.3.10"
+	config  EMBTK_FREETYPE_VERSION_2_3_9
+		bool "FreeType-2.3.9"
+endchoice
+
+config EMBTK_FREETYPE_VERSION_STRING
+	string
+	default "2.4.6"		if EMBTK_FREETYPE_VERSION_2_4_6
+	default "2.4.4"		if EMBTK_FREETYPE_VERSION_2_4_4
+	default "2.4.3"		if EMBTK_FREETYPE_VERSION_2_4_3
+	default "2.4.2"		if EMBTK_FREETYPE_VERSION_2_4_2
+	default "2.4.1"		if EMBTK_FREETYPE_VERSION_2_4_1
+	default "2.4.0"		if EMBTK_FREETYPE_VERSION_2_4_0
+	default "2.3.12"	if EMBTK_FREETYPE_VERSION_2_3_12
+	default "2.3.11"	if EMBTK_FREETYPE_VERSION_2_3_11
+	default "2.3.10"	if EMBTK_FREETYPE_VERSION_2_3_10
+	default "2.3.9"		if EMBTK_FREETYPE_VERSION_2_3_9
+
+config EMBTK_FREETYPE_NEED_PATCH
+	bool
+config EMBTK_FREETYPE_NEED_AUTORECONF
+	bool
+config EMBTK_FREETYPE_PKG_IS_TARGZ
+	bool
+config EMBTK_FREETYPE_PKG_IS_TARBZ2
+	bool

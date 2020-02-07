@@ -1,0 +1,67 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         lutok.kconfig
+# \brief	lutok.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         June 2014
+################################################################################
+
+config EMBTK_HAVE_LUTOK
+	bool "Have lutok"
+	select EMBTK_HAVE_LUA
+	select EMBTK_GCC_LANGUAGE_CPP
+	help
+	 Lutok is a lightweight C++ API library for Lua.
+
+	 Lutok provides thin C++ wrappers around the Lua C API to ease the
+	 interaction between C++ and Lua.  These wrappers make intensive use of
+	 RAII to prevent resource leakage, expose C++-friendly data types, report
+	 errors by means of exceptions and ensure that the Lua stack is always
+	 left untouched in the face of errors.  The library also provides a small
+	 subset of miscellaneous utility functions built on top of the wrappers.
+
+	 Lutok focuses on providing a clean and safe C++ interface; the drawback
+	 is that it is not suitable for performance-critical environments.  In
+	 order to implement error-safe C++ wrappers on top of a Lua C binary
+	 library, Lutok adds several layers or abstraction and error checking
+	 that go against the original spirit of the Lua C API and thus degrade
+	 performance.
+	 see https://github.com/jmmv/lutok
+
+choice
+	prompt "lutok version you wish"
+	depends on EMBTK_HAVE_LUTOK
+	help
+	 Here you can choose which version of lutok you want to use.
+
+	config  EMBTK_LUTOK_VERSION_0_4
+		bool "lutok-0.4"
+		select EMBTK_LUTOK_NEED_AUTORECONF
+		select EMBTK_LUTOK_NEED_PATCH
+endchoice
+
+config EMBTK_LUTOK_VERSION_STRING
+	string
+	default "0.4"		if EMBTK_LUTOK_VERSION_0_4
+
+config EMBTK_LUTOK_NEED_PATCH
+	bool
+config EMBTK_LUTOK_NEED_AUTORECONF
+	bool

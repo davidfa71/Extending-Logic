@@ -1,0 +1,58 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         lua.kconfig
+# \brief	lua.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2010
+################################################################################
+
+config EMBTK_HAVE_LUA
+	bool "Have lua"
+	select KEMBTK_EGLIBC_OPTION_POSIX_C_LANG_WIDE_CHAR if EMBTK_CLIB_EGLIBC
+	select KEMBTK_EGLIBC_OPTION_EGLIBC_LOCALE_CODE if EMBTK_CLIB_EGLIBC
+	select KEMBTK_UCLIBC_UCLIBC_HAS_WCHAR if EMBTK_CLIB_UCLIBC
+	select EMBTK_LUA_NEED_PATCH
+	help
+		Lua is a powerful, fast, lightweight, embeddable scripting
+		language.
+		Lua combines simple procedural syntax with powerful data
+		description constructs based on associative arrays and
+		extensible semantics. Lua is dynamically typed, runs by
+		interpreting bytecode for a register-based virtual machine,
+		and has automatic memory management with incremental garbage
+		collection, making it ideal for configuration, scripting, and
+		rapid prototyping.
+
+choice
+	prompt "lua version you wish"
+	depends on EMBTK_HAVE_LUA
+	help
+	 Here you can choose which version of lua you want to use.
+
+	config  EMBTK_LUA_VERSION_5_1_5
+		bool "lua-5.1.5"
+endchoice
+
+config EMBTK_LUA_VERSION_STRING
+	string
+	default "5.1.5"		if EMBTK_LUA_VERSION_5_1_5
+
+config EMBTK_LUA_NEED_PATCH
+	bool

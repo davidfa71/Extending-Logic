@@ -1,0 +1,50 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libressl.kconfig
+# \brief	libressl.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2014
+################################################################################
+
+config EMBTK_HAVE_LIBRESSL
+	bool "Have LibreSSL"
+	help
+	 LibreSSL is a FREE version of the SSL/TLS protocol forked from OpenSSL
+	 and developped by the OpenBSD project.
+
+choice
+	prompt "libressl version you wish"
+	depends on EMBTK_HAVE_LIBRESSL
+	help
+	 Here you can choose which version of libressl you want to use.
+
+	config  EMBTK_LIBRESSL_VERSION_2_1_1
+		bool "LibreSSL-2.1.1"
+		select EMBTK_LIBRESSL_NEED_PATCH
+endchoice
+
+config EMBTK_LIBRESSL_VERSION_STRING
+	string
+	default "2.1.1"		if EMBTK_LIBRESSL_VERSION_2_1_1
+
+config EMBTK_LIBRESSL_NEED_PATCH
+	bool
+config EMBTK_LIBRESSL_NEED_AUTORECONF
+	bool

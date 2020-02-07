@@ -1,0 +1,158 @@
+#include "Objective.hpp"
+Objective::Objective() {};
+Objective::Objective(const Objective& obj) {
+   if (&obj == this) return;
+   //throw std::logic_error("What are you doing copy constructing an Objective object?");
+   independent = obj.getIndependent();
+   min         = obj.getMin();
+   max         = obj.getMax();
+   for(auto pobjterm : fun)
+     delete pobjterm;
+   fun.clear();
+   for(auto pobjterm : obj.fun)
+	add(pobjterm->clone());
+}
+
+Objective& Objective::operator=(const Objective& obj) {
+  if (&obj == this) return *this;
+  independent = obj.getIndependent();
+  min         = obj.getMin();
+  max         = obj.getMax();
+  for(auto pobjterm : fun)
+     delete pobjterm;
+  fun.clear();
+  for(auto pobjterm : obj.fun)
+       add(pobjterm->clone());
+
+  return *this;
+}  
+ 
+void	   Objective::setMin(int xmin) { min = xmin; }
+void	   Objective::setMax(int xmax) { max = xmax; }
+int	   Objective::getMin() const   { return min; }
+int 	   Objective::getMax() const   { return max; }
+
+Objective  Objective::setToTrue(int var) {
+  Objective res;
+  //std::map<int, ObjectiveTerm*>                 map1;
+  //std::map<std::pair<int, int>, ObjectiveTerm*> map2;
+  res.setIndependent(independent);
+  for(auto x : fun) {
+    //ObjectiveTerm* o = x->setToTrue(var, map1, map2);
+    ObjectiveTerm* o = x->setToTrue(var);
+    if (o != NULL) {
+      if (o->isZeroObjectiveTerm()) {
+        res.addToIndependent(o->getCoefficient());
+        delete o;
+	}
+      else
+        res.add(o); 
+    }
+  }
+  return res;
+}
+
+Objective  Objective::setToFalse(int var) {
+  Objective res;
+  res.setIndependent(independent);
+  for(auto x : fun) {
+    ObjectiveTerm* o = x->setToFalse(var);
+    if (o != NULL) 
+        res.add(o); 
+  }
+  return res;
+}
+
+void    Objective::translate(std::vector<int>& tr) {
+  for(auto objterm : fun)
+    objterm->translate(tr);
+}
+
+double Objective::getIndependent() const   { return independent; }
+void   Objective::setIndependent(double d) { independent = d;    };
+
+void Objective::add(double d, std::vector<int> v) { 
+  if (v.empty()) {
+     independent = d;
+     return;
+  }
+  if (v.size() == 1) {
+     fun.push_back(new SingleObjectiveTerm(d, v[0]));
+     return;
+  }
+  if (v.size() == 2) {
+     fun.push_back(new DoubleObjectiveTerm(d, v[0], v[1]));
+     return;
+  }
+
+  if (v.size() == 3) {
+     fun.push_back(new TripleObjectiveTerm(d, v[0], v[1], v[2]));
+     return;
+  }
+  std::ostringstream ost;
+  ost << "Error, add an objective term of size " << v.size() << std::endl;
+  throw std::logic_error(ost.str());
+}
+
+int  Objective::size() { return fun.size(); };
+
+double  Objective::getCoef(int index) { return independent; }
+
+std::vector<int> Objective::getFactors(int index) { return fun[index]->getFactors(); }
+
+std::ostream& operator<<(std::ostream& os, const Objective& obj) {
+  bool first = true;
+  os << obj.getIndependent() << " ";
+  for(auto p : obj.fun) {
+    if (p->getCoefficient() >= 0)
+       os << "+" << p->getCoefficient() << " ";
+    else
+       os << " " << p->getCoefficient() << " ";
+    for(auto x : p->getFactors())
+      os << " * " << x;
+  }
+  return os;
+}
+
+// Filters an objective function to the interesting part for a group of variables
+// does not carry over the independent coefficient if there is one
+Objective Objective::filter(std::set<int> variables) {
+  Objective res;
+  for(auto pobjterm : fun) 
+    if (pobjterm->filter(variables))
+	res.add(pobjterm->clone());
+  
+  return res;
+}
+
+Objective       Objective::filter(int minVar, int maxVar) {
+  Objective res;
+  for(auto pobjterm : fun) 
+    if (pobjterm->filter(minVar, maxVar))
+       res.add(pobjterm->clone());
+  return res;
+}
+
+void    Objective::addToIndependent(double d) { independent += d;}
+Objective::~Objective() {
+   // std::cerr << "Deleting " << *this << " pointer " << this << std::endl;
+   for(auto x : fun) {
+        //std::cerr << " pointer " << x << std::endl;
+        //for(auto y : x->getFactors())
+	//  std::cerr << " * " << y;
+        //std::cerr << std::endl;
+   	delete x;
+   }
+}
+
+void   Objective::add(ObjectiveTerm* o) {
+	fun.push_back(o);
+};
+
+Objective Objective::setTo(int var, bool value) {
+  if (value)
+	return setToTrue(var);
+  else
+	return setToFalse(var);
+}
+

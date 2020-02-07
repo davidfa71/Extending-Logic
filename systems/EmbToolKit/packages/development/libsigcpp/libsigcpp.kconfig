@@ -1,0 +1,56 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libsigcpp.kconfig
+# \brief	libsigcpp.kconfig of Embtoolkit
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         July 2014
+################################################################################
+
+config EMBTK_HAVE_LIBSIGCPP
+	bool "Have libsigc++"
+	select EMBTK_GCC_LANGUAGE_CPP
+	help
+	 libsigc++ implements a typesafe callback system for standard C++.
+	 It allows you to define signals and to connect those signals to
+	 any callback function, either global or a member function, regardless
+	 of whether it is static or virtual.
+
+choice
+	prompt "libsigc++ version you wish"
+	depends on EMBTK_HAVE_LIBSIGCPP
+	help
+	 Here you can choose which version of libsigc++ you want to use.
+
+	config  EMBTK_LIBSIGCPP_VERSION_2_3_1
+		bool "libsigc++-2.3.1"
+endchoice
+
+config EMBTK_LIBSIGCPP_MAJOR_VERSION_STRING
+	string
+	default "2.3"		if EMBTK_LIBSIGCPP_VERSION_2_3_1
+
+config EMBTK_LIBSIGCPP_VERSION_STRING
+	string
+	default "2.3.1"		if EMBTK_LIBSIGCPP_VERSION_2_3_1
+
+config EMBTK_LIBSIGCPP_NEED_PATCH
+	bool
+config EMBTK_LIBSIGCPP_NEED_AUTORECONF
+	bool

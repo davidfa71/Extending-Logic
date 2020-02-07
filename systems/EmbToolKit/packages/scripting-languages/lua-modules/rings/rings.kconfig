@@ -1,0 +1,50 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         rings.kconfig
+# \brief	rings.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         April 2012
+################################################################################
+
+config EMBTK_HAVE_RINGS
+	bool "Have Rings module"
+	depends on EMBTK_HAVE_LUA
+	select EMBTK_RINGS_NEED_PATCH
+	help
+		Rings is a library which provides a way to create new Lua states
+		from within Lua. It also offers a simple way to communicate
+		between the creator (master) and the created (slave) states.
+
+choice
+	prompt "Rings version you wish"
+	depends on EMBTK_HAVE_RINGS
+	help
+	 Here you can choose which version of Rings you want to use.
+
+	config  EMBTK_RINGS_VERSION_1_2_3
+		bool "rings-1.2.3"
+endchoice
+
+config EMBTK_RINGS_VERSION_STRING
+	string
+	default "1.2.3"		if EMBTK_RINGS_VERSION_1_2_3
+
+config EMBTK_RINGS_NEED_PATCH
+	bool

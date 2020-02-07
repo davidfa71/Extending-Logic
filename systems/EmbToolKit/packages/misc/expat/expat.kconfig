@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         expat.kconfig
+# \brief	expat.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         July 2010
+################################################################################
+
+config EMBTK_HAVE_EXPAT
+	bool "Have Expat"
+	help
+		 Expat is an XML parser library written in C. It is a
+		 stream-oriented parser in which an application registers
+		 handlers for things the parser might find in the XML document
+		 (like start tags).
+choice
+	prompt "expat version you wish"
+	depends on EMBTK_HAVE_EXPAT
+	help
+	 Here you can choose which version of Expat you want to use.
+
+	config  EMBTK_EXPAT_VERSION_2_0_1
+		bool "expat-2.0.1"
+endchoice
+
+config EMBTK_EXPAT_VERSION_STRING
+	string
+	default "2.0.1"		if EMBTK_EXPAT_VERSION_2_0_1
+
+config EMBTK_EXPAT_NEED_PATCH
+	bool
+config EMBTK_EXPAT_NEED_AUTORECONF
+	bool
+config EMBTK_EXPAT_PKG_IS_TARGZ
+	bool
+config EMBTK_EXPAT_PKG_IS_TARBZ2
+	bool

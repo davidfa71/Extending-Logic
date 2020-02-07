@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         compositeproto.kconfig
+# \brief	compositeproto.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_COMPOSITEPROTO
+	bool "Have compositeproto"
+	help
+		compositeproto for X windowing system
+choice
+	prompt "compositeproto version you wish"
+	depends on EMBTK_HAVE_COMPOSITEPROTO
+	help
+		Here you can choose which version of compositeproto you want to
+		use.
+
+	config  EMBTK_COMPOSITEPROTO_VERSION_0_4_2
+		bool "compositeproto-0.4.2"
+	config  EMBTK_COMPOSITEPROTO_VERSION_0_4_1
+		bool "compositeproto-0.4.1"
+endchoice
+
+config EMBTK_COMPOSITEPROTO_VERSION_STRING
+	string
+	default "0.4.2"	if EMBTK_COMPOSITEPROTO_VERSION_0_4_2
+	default "0.4.1"	if EMBTK_COMPOSITEPROTO_VERSION_0_4_1
+
+config EMBTK_COMPOSITEPROTO_NEED_PATCH
+	bool
+config EMBTK_COMPOSITEPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_COMPOSITEPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_COMPOSITEPROTO_PKG_IS_TARBZ2
+	bool

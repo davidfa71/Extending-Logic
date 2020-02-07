@@ -1,0 +1,57 @@
+################################################################################
+# EmbToolkit
+# Copyright(C) 2013-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         Kconfig
+# \brief	linux kernel build options
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2013
+################################################################################
+
+menu "Linux kernel Image configuration"
+
+config EMBTK_LINUX_DOTCONFIG
+	string "Linux kernel config file (mandatory)"
+	help
+	 Please specify the linux kernel configuration file for
+	 your target/board.
+
+choice
+	prompt "Linux source tree to use"
+	help
+	 Specify which linux source tree to use.
+
+	config EMBTK_LINUX_BUILD_TOOLCHAIN_SRC
+		bool "The same used to build the toolchain"
+		help
+		 Select this option to use the same linux source tree used to
+		 build the toolchain.
+
+	config EMBTK_LINUX_BUILD_USE_EXTSRC
+		bool "External linux source tree"
+		help
+		 Select this option to use an external linux source tree.
+endchoice
+
+config EMBTK_LINUX_BUILD_EXTSRC
+	string "External linux source tree path"
+	depends on EMBTK_LINUX_BUILD_USE_EXTSRC
+	help
+	 Please specify your external linux source tree path.
+
+endmenu

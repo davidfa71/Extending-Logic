@@ -1,0 +1,1488 @@
+cuddAPI.c:    if ((unsigned int) dd->size >= CUDD_MAXINDEX - 1) {
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:	dd->reordered = 0;
+cuddAPI.c:	res = cuddUniqueInter(dd,dd->size,DD_ONE(dd),DD_ZERO(dd));
+cuddAPI.c:    } while (dd->reordered == 1);
+cuddAPI.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAPI.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAPI.c:    if ((unsigned int) dd->size >= CUDD_MAXINDEX - 1) {
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    if (level >= dd->size) return(Cudd_addIthVar(dd,level));
+cuddAPI.c:	dd->reordered = 0;
+cuddAPI.c:	res = cuddUniqueInter(dd,dd->size - 1,DD_ONE(dd),DD_ZERO(dd));
+cuddAPI.c:    } while (dd->reordered == 1);
+cuddAPI.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAPI.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAPI.c:    if ((unsigned int) dd->size >= CUDD_MAXINDEX - 1) {
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    res = cuddUniqueInter(dd,dd->size,dd->one,Cudd_Not(dd->one));
+cuddAPI.c:    if ((unsigned int) dd->size >= CUDD_MAXINDEX - 1) {
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    if (level >= dd->size) return(Cudd_bddIthVar(dd,level));
+cuddAPI.c:    res = dd->vars[dd->size - 1];
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:	dd->reordered = 0;
+cuddAPI.c:    } while (dd->reordered == 1);
+cuddAPI.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAPI.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    if (i < dd->size) {
+cuddAPI.c:	res = dd->vars[i];
+cuddAPI.c:	res = cuddUniqueInter(dd,i,dd->one,Cudd_Not(dd->one));
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    lower = (i < dd->sizeZ - 1) ? dd->univ[dd->permZ[i]+1] : DD_ONE(dd);
+cuddAPI.c:	dd->reordered = 0;
+cuddAPI.c:    } while (dd->reordered == 1);
+cuddAPI.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAPI.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAPI.c:    for (j = dd->permZ[i] - 1; j >= 0; j--) {
+cuddAPI.c:	    dd->reordered = 0;
+cuddAPI.c:	    res = cuddUniqueInterZdd(dd, dd->invpermZ[j], zvar, zvar);
+cuddAPI.c:	} while (dd->reordered == 1);
+cuddAPI.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAPI.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddAPI.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddAPI.c:    allnew = dd->sizeZ == 0;
+cuddAPI.c:    if (dd->size * multiplicity > dd->sizeZ) {
+cuddAPI.c:	res = cuddResizeTableZdd(dd,dd->size * multiplicity - 1);
+cuddAPI.c:	for (i = 0; i < dd->size; i++) {
+cuddAPI.c:		dd->permZ[i * multiplicity + j] =
+cuddAPI.c:		    dd->perm[i] * multiplicity + j;
+cuddAPI.c:		dd->invpermZ[dd->permZ[i * multiplicity + j]] =
+cuddAPI.c:	for (i = 0; i < dd->sizeZ; i++) {
+cuddAPI.c:	    dd->univ[i]->index = dd->invpermZ[i];
+cuddAPI.c:	permutation = ALLOC(int,dd->sizeZ);
+cuddAPI.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddAPI.c:	for (i = 0; i < dd->size; i++) {
+cuddAPI.c:		    dd->invperm[i] * multiplicity + j;
+cuddAPI.c:	for (i = dd->size * multiplicity; i < dd->sizeZ; i++) {
+cuddAPI.c:    if (dd->treeZ != NULL) {
+cuddAPI.c:    if (dd->tree != NULL) {
+cuddAPI.c:	dd->treeZ = Mtr_CopyTree(dd->tree, multiplicity);
+cuddAPI.c:	if (dd->treeZ == NULL) return(0);
+cuddAPI.c:	dd->treeZ = Mtr_InitGroupTree(0, dd->sizeZ);
+cuddAPI.c:	if (dd->treeZ == NULL) return(0);
+cuddAPI.c:	dd->treeZ->index = dd->invpermZ[0];
+cuddAPI.c:	vmask = ALLOC(char, dd->size);
+cuddAPI.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddAPI.c:	lmask =  ALLOC(char, dd->size);
+cuddAPI.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddAPI.c:	for (i = 0; i < dd->size; i++) {
+cuddAPI.c:	res = addMultiplicityGroups(dd,dd->treeZ,multiplicity,vmask,lmask);
+cuddAPI.c:    return(dd->one);
+cuddAPI.c:    return(i < dd->sizeZ ? dd->univ[i] : DD_ONE(dd));
+cuddAPI.c:    return(dd->plusinfinity);
+cuddAPI.c:    return(dd->minusinfinity);
+cuddAPI.c:    return(dd->background);
+cuddAPI.c:    dd->background = bck;
+cuddAPI.c:    return(dd->cacheSlots);
+cuddAPI.c:    int slots = dd->cacheSlots;
+cuddAPI.c:    DdCache *cache = dd->cache;
+cuddAPI.c:    return((double)used / (double) dd->cacheSlots);
+cuddAPI.c:    return(dd->cacheHits + dd->cacheMisses +
+cuddAPI.c:	   dd->totCachehits + dd->totCacheMisses);
+cuddAPI.c:    return(dd->cacheHits + dd->totCachehits);
+cuddAPI.c:    return(dd->recursiveCalls);
+cuddAPI.c:    return((unsigned int) (0.5 + 100 * dd->minHit / (1 + dd->minHit)));
+cuddAPI.c:    dd->minHit = (double) hr / (100.0 - (double) hr);
+cuddAPI.c:    return(dd->looseUpTo);
+cuddAPI.c:    dd->looseUpTo = lut;
+cuddAPI.c:    return(2 * dd->cacheSlots + dd->cacheSlack);
+cuddAPI.c:    return(dd->maxCacheHard);
+cuddAPI.c:    dd->maxCacheHard = mc;
+cuddAPI.c:    return(dd->size);
+cuddAPI.c:    return(dd->sizeZ);
+cuddAPI.c:    return(dd->slots);
+cuddAPI.c:    int size = dd->size;
+cuddAPI.c:    DdNode *sentinel = &(dd->sentinel);
+cuddAPI.c:	subtable = &(dd->subtables[i]);
+cuddAPI.c:    size = dd->sizeZ;
+cuddAPI.c:	subtable = &(dd->subtableZ[i]);
+cuddAPI.c:    subtable = &(dd->constants);
+cuddAPI.c:    return((double)used / (double) dd->slots);
+cuddAPI.c:    int size = dd->size;
+cuddAPI.c:	subtable = &(dd->subtables[i]);
+cuddAPI.c:    size = dd->sizeZ;
+cuddAPI.c:	subtable = &(dd->subtableZ[i]);
+cuddAPI.c:    subtable = &(dd->constants);
+cuddAPI.c:    return(1.0 - empty / (double) dd->slots);
+cuddAPI.c:    return(dd->keys);
+cuddAPI.c:    return(dd->dead);
+cuddAPI.c:    return(dd->minDead);
+cuddAPI.c:    return(dd->reorderings);
+cuddAPI.c:    return(dd->maxReorderings);
+cuddAPI.c:    dd->maxReorderings = mr;
+cuddAPI.c:    return(dd->reordTime);
+cuddAPI.c:    return(dd->garbageCollections);
+cuddAPI.c:    return(dd->GCTime);
+cuddAPI.c:    return(dd->nodesFreed);
+cuddAPI.c:    return(dd->nodesDropped);
+cuddAPI.c:    return(dd->uniqueLookUps);
+cuddAPI.c:    return(dd->uniqueLinks);
+cuddAPI.c:    return(dd->siftMaxVar);
+cuddAPI.c:    dd->siftMaxVar = smv;
+cuddAPI.c:    return(dd->siftMaxSwap);
+cuddAPI.c:    dd->siftMaxSwap = sms;
+cuddAPI.c:    return(dd->maxGrowth);
+cuddAPI.c:    dd->maxGrowth = mg;
+cuddAPI.c:    return(dd->maxGrowthAlt);
+cuddAPI.c:    dd->maxGrowthAlt = mg;
+cuddAPI.c:    return(dd->reordCycle);
+cuddAPI.c:    dd->reordCycle = cycle;
+cuddAPI.c:    return(dd->tree);
+cuddAPI.c:    if (dd->tree != NULL) {
+cuddAPI.c:	Mtr_FreeTree(dd->tree);
+cuddAPI.c:    dd->tree = tree;
+cuddAPI.c:    fixVarTree(tree, dd->perm, dd->size);
+cuddAPI.c:    if (dd->tree != NULL) {
+cuddAPI.c:	Mtr_FreeTree(dd->tree);
+cuddAPI.c:	dd->tree = NULL;
+cuddAPI.c:    return(dd->treeZ);
+cuddAPI.c:    if (dd->treeZ != NULL) {
+cuddAPI.c:	Mtr_FreeTree(dd->treeZ);
+cuddAPI.c:    dd->treeZ = tree;
+cuddAPI.c:    fixVarTree(tree, dd->permZ, dd->sizeZ);
+cuddAPI.c:    if (dd->treeZ != NULL) {
+cuddAPI.c:	Mtr_FreeTree(dd->treeZ);
+cuddAPI.c:	dd->treeZ = NULL;
+cuddAPI.c:    if (i < 0 || i >= dd->size) return(-1);
+cuddAPI.c:    return(dd->perm[i]);
+cuddAPI.c:    if (i < 0 || i >= dd->sizeZ) return(-1);
+cuddAPI.c:    return(dd->permZ[i]);
+cuddAPI.c:    if (i < 0 || i >= dd->size) return(-1);
+cuddAPI.c:    return(dd->invperm[i]);
+cuddAPI.c:    if (i < 0 || i >= dd->sizeZ) return(-1);
+cuddAPI.c:    return(dd->invpermZ[i]);
+cuddAPI.c:    if (i < 0 || i > dd->size) return(NULL);
+cuddAPI.c:    return(dd->vars[i]);
+cuddAPI.c:    return(dd->epsilon);
+cuddAPI.c:    dd->epsilon = ep;
+cuddAPI.c:    return(dd->groupcheck);
+cuddAPI.c:    dd->groupcheck = gc;
+cuddAPI.c:    return(dd->gcEnabled);
+cuddAPI.c:    dd->gcEnabled = 1;
+cuddAPI.c:    dd->gcEnabled = 0;
+cuddAPI.c:    return(dd->countDead == 0 ? 1 : 0);
+cuddAPI.c:    dd->countDead = 0;
+cuddAPI.c:    dd->countDead = ~0U;
+cuddAPI.c:    return(dd->recomb);
+cuddAPI.c:    dd->recomb = recomb;
+cuddAPI.c:    return(dd->symmviolation);
+cuddAPI.c:    dd->symmviolation = symmviolation;
+cuddAPI.c:    return(dd->arcviolation);
+cuddAPI.c:    dd->arcviolation = arcviolation;
+cuddAPI.c:    return(dd->populationSize);
+cuddAPI.c:    dd->populationSize = populationSize;
+cuddAPI.c:    return(dd->numberXovers);
+cuddAPI.c:    dd->numberXovers = numberXovers;
+cuddAPI.c:    return(dd->randomizeOrder);
+cuddAPI.c:    dd->randomizeOrder = factor;
+cuddAPI.c:    return(dd->memused);
+cuddAPI.c:    retval = fprintf(fp,"Number of BDD variables: %d\n", dd->size);
+cuddAPI.c:    retval = fprintf(fp,"Number of ZDD variables: %d\n", dd->sizeZ);
+cuddAPI.c:    retval = fprintf(fp,"Number of cache entries: %u\n", dd->cacheSlots);
+cuddAPI.c:		     dd->cacheinserts);
+cuddAPI.c:		     dd->cachecollisions);
+cuddAPI.c:		     dd->cachedeletions);
+cuddAPI.c:    retval = fprintf(fp,"Number of buckets in unique table: %u\n", dd->slots);
+cuddAPI.c:    retval = fprintf(fp,"Unique lookups: %.0f\n", dd->uniqueLookUps);
+cuddAPI.c:	    dd->uniqueLinks, dd->uniqueLinks / dd->uniqueLookUps);
+cuddAPI.c:    retval = fprintf(fp,"Number of BDD and ADD nodes: %u\n", dd->keys);
+cuddAPI.c:    retval = fprintf(fp,"Number of ZDD nodes: %u\n", dd->keysZ);
+cuddAPI.c:    retval = fprintf(fp,"Number of dead BDD and ADD nodes: %u\n", dd->dead);
+cuddAPI.c:    retval = fprintf(fp,"Number of dead ZDD nodes: %u\n", dd->deadZ);
+cuddAPI.c:		     dd->allocated);
+cuddAPI.c:		     dd->reclaimed);
+cuddAPI.c:    retval = fprintf(fp,"Nodes freed: %.0f\n", dd->nodesFreed);
+cuddAPI.c:    retval = fprintf(fp,"Nodes dropped: %.0f\n", dd->nodesDropped);
+cuddAPI.c:    retval = fprintf(fp,"Reorderings so far: %d\n", dd->reorderings);
+cuddAPI.c:    DdNodePtr *scan = dd->memoryList;
+cuddAPI.c:    unsigned int live = dd->keys - dd->dead;
+cuddAPI.c:    if (live > dd->peakLiveNodes) {
+cuddAPI.c:	dd->peakLiveNodes = live;
+cuddAPI.c:    return((int)dd->peakLiveNodes);
+cuddAPI.c:    count = (long) (dd->keys - dd->dead);
+cuddAPI.c:    for (i=0; i < dd->size; i++) {
+cuddAPI.c:	if (dd->vars[i]->ref == 1) count--;
+cuddAPI.c:    return((long)(dd->keysZ - dd->deadZ + 2));
+cuddAPI.c:	hook = &(dd->preGCHook);
+cuddAPI.c:	hook = &(dd->postGCHook);
+cuddAPI.c:	hook = &(dd->preReorderingHook);
+cuddAPI.c:	hook = &(dd->postReorderingHook);
+cuddAPI.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddAPI.c:	hook = &(dd->preGCHook);
+cuddAPI.c:	hook = &(dd->postGCHook);
+cuddAPI.c:	hook = &(dd->preReorderingHook);
+cuddAPI.c:	hook = &(dd->postReorderingHook);
+cuddAPI.c:	hook = dd->preGCHook;
+cuddAPI.c:	hook = dd->postGCHook;
+cuddAPI.c:	hook = dd->preReorderingHook;
+cuddAPI.c:	hook = dd->postReorderingHook;
+cuddAPI.c:    retval = fprintf(dd->out,"%s reordering with ", str);
+cuddAPI.c:	retval = fprintf(dd->out,"converging ");
+cuddAPI.c:	retval = fprintf(dd->out,"random");
+cuddAPI.c:	retval = fprintf(dd->out,"sifting");
+cuddAPI.c:	retval = fprintf(dd->out,"symmetric sifting");
+cuddAPI.c:	retval = fprintf(dd->out,"lazy sifting");
+cuddAPI.c:	retval = fprintf(dd->out,"group sifting");
+cuddAPI.c:	retval = fprintf(dd->out,"window");
+cuddAPI.c:	retval = fprintf(dd->out,"annealing");
+cuddAPI.c:	retval = fprintf(dd->out,"genetic");
+cuddAPI.c:	retval = fprintf(dd->out,"linear sifting");
+cuddAPI.c:	retval = fprintf(dd->out,"exact");
+cuddAPI.c:    retval = fprintf(dd->out,": from %ld to ... ", strcmp(str, "BDD") == 0 ?
+cuddAPI.c:    fflush(dd->out);
+cuddAPI.c:    retval = fprintf(dd->out,"%ld nodes in %g sec\n", strcmp(str, "BDD") == 0 ?
+cuddAPI.c:    retval = fflush(dd->out);
+cuddAPI.c:    MtrNode *tree = isBdd ? dd->tree : dd->treeZ;
+cuddAPI.c:    int *invperm = isBdd ? dd->invperm : dd->invpermZ;
+cuddAPI.c:    int size = isBdd ? dd->size : dd->sizeZ;
+cuddAPI.c:            retval = fprintf(dd->out, "%c%d", i==0 ? '(' : ',', invperm[i]);
+cuddAPI.c:        retval = fprintf(dd->out,")\n");
+cuddAPI.c:        return Mtr_PrintGroupedOrder(tree,invperm,dd->out);
+cuddAPI.c:    dd->hooks = value;  
+cuddAPI.c:    return(dd->hooks);  
+cuddAPI.c:    return(dd->errorCode);
+cuddAPI.c:    dd->errorCode = CUDD_NO_ERROR;
+cuddAPI.c:    return(dd->out);
+cuddAPI.c:    dd->out = fp;
+cuddAPI.c:    return(dd->err);
+cuddAPI.c:    dd->err = fp;
+cuddAPI.c:    return(dd->nextDyn);
+cuddAPI.c:    dd->nextDyn = next;
+cuddAPI.c:    return(dd->swapSteps);
+cuddAPI.c:    return(dd->maxLive);
+cuddAPI.c:    dd->maxLive = maxLive;
+cuddAPI.c:    return(dd->maxmemhard);
+cuddAPI.c:    size_t oldLimit = dd->maxmemhard;
+cuddAPI.c:    dd->maxmemhard = maxMemory;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].bindVar = 1;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].bindVar = 0;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    return(dd->subtables[dd->perm[index]].bindVar);
+cuddAPI.c:    if (index >= dd->size || index < 0) return (0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].varType = CUDD_VAR_PRIMARY_INPUT;
+cuddAPI.c:    if (index >= dd->size || index < 0) return (0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].varType = CUDD_VAR_PRESENT_STATE;
+cuddAPI.c:    if (index >= dd->size || index < 0) return (0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].varType = CUDD_VAR_NEXT_STATE;
+cuddAPI.c:    if (index >= dd->size || index < 0) return -1;
+cuddAPI.c:    return (dd->subtables[dd->perm[index]].varType == CUDD_VAR_PRIMARY_INPUT);
+cuddAPI.c:    if (index >= dd->size || index < 0) return -1;
+cuddAPI.c:    return (dd->subtables[dd->perm[index]].varType == CUDD_VAR_PRESENT_STATE);
+cuddAPI.c:    if (index >= dd->size || index < 0) return -1;
+cuddAPI.c:    return (dd->subtables[dd->perm[index]].varType == CUDD_VAR_NEXT_STATE);
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].pairIndex = pairIndex;
+cuddAPI.c:    if (index >= dd->size || index < 0) return -1;
+cuddAPI.c:    return dd->subtables[dd->perm[index]].pairIndex;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    if (dd->subtables[dd->perm[index]].varToBeGrouped <= CUDD_LAZY_SOFT_GROUP) {
+cuddAPI.c:	dd->subtables[dd->perm[index]].varToBeGrouped = CUDD_LAZY_SOFT_GROUP;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].varToBeGrouped = CUDD_LAZY_HARD_GROUP;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    if (dd->subtables[dd->perm[index]].varToBeGrouped <=
+cuddAPI.c:	dd->subtables[dd->perm[index]].varToBeGrouped = CUDD_LAZY_NONE;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(-1);
+cuddAPI.c:    if (dd->subtables[dd->perm[index]].varToBeGrouped == CUDD_LAZY_UNGROUP)
+cuddAPI.c:	return(dd->subtables[dd->perm[index]].varToBeGrouped);
+cuddAPI.c:    if (index >= dd->size || index < 0) return(0);
+cuddAPI.c:    dd->subtables[dd->perm[index]].varToBeGrouped = CUDD_LAZY_UNGROUP;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(-1);
+cuddAPI.c:    return dd->subtables[dd->perm[index]].varToBeGrouped == CUDD_LAZY_UNGROUP;
+cuddAPI.c:    if (index >= dd->size || index < 0) return(-1);
+cuddAPI.c:    if (dd->subtables[dd->perm[index]].varToBeGrouped == CUDD_LAZY_HARD_GROUP)
+cuddAPI.c:	startV = dd->permZ[auxnode->index] / multiplicity;
+cuddAPI.c:		node->index = dd->invpermZ[i * multiplicity];
+cuddAddApply.c:	dd->reordered = 0;
+cuddAddApply.c:    } while (dd->reordered == 1);
+cuddAddApply.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddApply.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddApply.c:    if (F == dd->background) return(F);
+cuddAddApply.c:    if (G == dd->background) return(G);
+cuddAddApply.c:    if (cuddIsConstant(F) && cuddIsConstant(G)) return(dd->background);
+cuddAddApply.c:	dd->reordered = 0;
+cuddAddApply.c:    } while (dd->reordered == 1);
+cuddAddApply.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddApply.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddFind.c:	dd->reordered = 0;
+cuddAddFind.c:    } while (dd->reordered == 1);
+cuddAddFind.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddFind.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddAddInv.c:	(void) fprintf(dd->err,"Invalid epsilon\n");
+cuddAddInv.c:	dd->reordered = 0;
+cuddAddInv.c:    } while (dd->reordered == 1);
+cuddAddInv.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddInv.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddIte.c:	dd->reordered = 0;
+cuddAddIte.c:    } while (dd->reordered == 1);
+cuddAddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddIte.c:        return(dd->background);
+cuddAddIte.c:	dd->reordered = 0;
+cuddAddIte.c:    } while (dd->reordered == 1);
+cuddAddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddNeg.c:	dd->reordered = 0;
+cuddAddNeg.c:    } while (dd->reordered == 1);
+cuddAddNeg.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddNeg.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddNeg.c:	dd->reordered = 0;
+cuddAddNeg.c:    } while (dd->reordered == 1);
+cuddAddNeg.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddNeg.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddWalsh.c:	dd->reordered = 0;
+cuddAddWalsh.c:    } while (dd->reordered == 1);
+cuddAddWalsh.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddAddWalsh.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddAddWalsh.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddAddWalsh.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	dd->reordered = 0;
+cuddApprox.c:    } while (dd->reordered == 1);
+cuddApprox.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddApprox.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddApprox.c:	fprintf(dd->err, "Cannot subset, nil object\n");
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Wrong prediction: %d versus actual %d\n",
+cuddApprox.c:	    (void) fprintf(dd->err, "Wrong subset\n");
+cuddApprox.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddApprox.c:	fprintf(dd->err, "Cannot subset, nil object\n");
+cuddApprox.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Wrong prediction: %d versus actual %d\n",
+cuddApprox.c:	    (void) fprintf(dd->err, "Wrong subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddApprox.c:	fprintf(dd->err, "Cannot subset, nil object\n");
+cuddApprox.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	(void) fprintf(dd->err, "Wrong prediction: %d versus actual %d\n",
+cuddApprox.c:	    (void) fprintf(dd->err, "Wrong subset\n");
+cuddApprox.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddApprox.c:    queue = cuddLevelQueueInit(dd->size,sizeof(GlobalQueueItem),info->size,dd);
+cuddApprox.c:    localQueue = cuddLevelQueueInit(dd->size,sizeof(LocalQueueItem),
+cuddApprox.c:				    dd->initSlots,dd);
+cuddApprox.c:	(void) fprintf(dd->err,
+cuddApprox.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddApprox.c:    (void) fprintf(dd->out,"initial size = %d initial minterms = %g\n",
+cuddApprox.c:    queue = cuddLevelQueueInit(dd->size,sizeof(GlobalQueueItem),info->size,dd);
+cuddApprox.c:    localQueue = cuddLevelQueueInit(dd->size,sizeof(LocalQueueItem),
+cuddApprox.c:				    dd->initSlots,dd);
+cuddApprox.c:    (void) fprintf(dd->out,"initial size = %d initial minterms = %g\n",
+cuddApprox.c:    queue = cuddLevelQueueInit(dd->size,sizeof(GlobalQueueItem),info->size,dd);
+cuddApprox.c:    localQueue = cuddLevelQueueInit(dd->size,sizeof(LocalQueueItem),
+cuddApprox.c:				    dd->initSlots,dd);
+cuddApprox.c:	(void) fprintf(dd->err,
+cuddApprox.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddApprox.c:    topf = dd->perm[f->index];
+cuddBddAbs.c:    topf = (unsigned) dd->perm[F->index];
+cuddBddAbs.c:    level = (unsigned) dd->perm[var->index];
+cuddBddCorr.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddBddCorr.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddBddCorr.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddBddCorr.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:    unsigned int saveLimit = dd->maxLive;
+cuddBddIte.c:    dd->maxLive = (dd->keys - dd->dead) + (dd->keysZ - dd->deadZ) + limit;
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    dd->maxLive = saveLimit;
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:    unsigned int saveLimit = dd->maxLive;
+cuddBddIte.c:    dd->maxLive = (dd->keys - dd->dead) + (dd->keysZ - dd->deadZ) + limit;
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    dd->maxLive = saveLimit;
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:    unsigned int saveLimit = dd->maxLive;
+cuddBddIte.c:    dd->maxLive = (dd->keys - dd->dead) + (dd->keysZ - dd->deadZ) + limit;
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    dd->maxLive = saveLimit;
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:    unsigned int saveLimit = dd->maxLive;
+cuddBddIte.c:    dd->maxLive = (dd->keys - dd->dead) + (dd->keysZ - dd->deadZ) + limit;
+cuddBddIte.c:	dd->reordered = 0;
+cuddBddIte.c:    } while (dd->reordered == 1);
+cuddBddIte.c:    dd->maxLive = saveLimit;
+cuddBddIte.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBddIte.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddBddIte.c:    topf = dd->perm[F->index];
+cuddBddIte.c:    topg = dd->perm[g->index];
+cuddBddIte.c:    topf = dd->perm[F->index];
+cuddBddIte.c:    topg = dd->perm[G->index];
+cuddBddIte.c:    DdNode	*one = dd->one;
+cuddBddIte.c:    *topfp = dd->perm[f->index];
+cuddBddIte.c:    *topgp = dd->perm[g->index];
+cuddBddIte.c:    *tophp = dd->perm[Cudd_Regular(h)->index];
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered == 1);
+cuddBridge.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBridge.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered == 1);
+cuddBridge.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBridge.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered == 1);
+cuddBridge.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBridge.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered == 1);
+cuddBridge.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBridge.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered ==1);
+cuddBridge.c:	dd->reordered = 0;
+cuddBridge.c:    } while (dd->reordered == 1);
+cuddBridge.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddBridge.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCheck.c:    int ntables = dd->size;
+cuddCheck.c:    DdSubtable *subtables = dd->subtables;
+cuddCheck.c:    retval = fprintf(dd->out,"*** DD heap profile for 0x%" PRIxPTR " ***\n",
+cuddCheck.c:	    retval = fprintf(dd->out,"%5d: %5d nodes\n", i, nodes);
+cuddCheck.c:    nodes = dd->constants.keys - dd->constants.dead;
+cuddCheck.c:	retval = fprintf(dd->out,"const: %5d nodes\n", nodes);
+cuddCheck.c:    retval = fprintf(dd->out,"Summary: %d tables, %d non-empty, largest: %d ",
+cuddCheck.c:    retval = fprintf(dd->out,"(with %d nodes)\n", maxnodes);
+cuddCheck.c:	level = dd->permZ[root->index];
+cuddCheck.c:	level = dd->perm[root->index];
+cuddClip.c:	dd->reordered = 0;
+cuddClip.c:    } while (dd->reordered == 1);
+cuddClip.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddClip.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddClip.c:	dd->reordered = 0;
+cuddClip.c:    } while (dd->reordered == 1);
+cuddClip.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddClip.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCof.c:	(void) fprintf(dd->err,"Cudd_Cofactor: Invalid restriction 1\n");
+cuddCof.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddCof.c:	dd->reordered = 0;
+cuddCof.c:    } while (dd->reordered == 1);
+cuddCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCof.c:    if (index1 >= dd->size) {
+cuddCof.c:        if (index2 >= dd->size) {
+cuddCof.c:            var2 = dd->vars[index2];
+cuddCof.c:    } else if (index2 >= dd->size) {
+cuddCof.c:        var1 = dd->vars[index1];
+cuddCof.c:    if (dd->perm[index1] < dd->perm[index2]) {
+cuddCof.c:        var1 = dd->vars[index1];
+cuddCof.c:        var2 = dd->vars[index2];
+cuddCof.c:        var1 = dd->vars[index2];
+cuddCof.c:        var2 = dd->vars[index1];
+cuddCof.c:    topf = dd->perm[F->index];
+cuddCof.c:    topg = dd->perm[G->index];
+cuddCof.c:	    (void) fprintf(dd->err,
+cuddCof.c:	    dd->errorCode = CUDD_INVALID_ARG;
+cuddCof.c:    top = dd->perm[F->index];
+cuddCof.c:    if (top > dd->perm[var2->index])
+cuddCof.c:    level1 = dd->perm[var1->index];
+cuddCof.c:    int level2 = dd->perm[var2->index];
+cuddCof.c:        topf1 = dd->perm[F1->index];
+cuddCof.c:        topf0 = dd->perm[F0->index];
+cuddCompose.c:    if (v < 0 || v >= dd->size) return(NULL);
+cuddCompose.c:    proj =  dd->vars[v];
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:    if (v < 0 || v >= dd->size) return(NULL);
+cuddCompose.c:    proj =  dd->vars[v];
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:    permut = ALLOC(int,dd->size);
+cuddCompose.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddCompose.c:    for (i = 0; i < dd->size; i++) permut[i] = i;
+cuddCompose.c:    permut = ALLOC(int,dd->size);
+cuddCompose.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddCompose.c:    for (i = 0; i < dd->size; i++) permut[i] = i;
+cuddCompose.c:    permut = ALLOC(int,dd->size);
+cuddCompose.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddCompose.c:    for (i = 0; i < dd->size; i++) permut[i] = i;
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:	for (deepest = dd->size - 1; deepest >= 0; deepest--) {
+cuddCompose.c:	    i = dd->invperm[deepest];
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:	for (deepest = dd->size - 1; deepest >= 0; deepest--) {
+cuddCompose.c:	    i = dd->invperm[deepest];
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:    for (i = (int) dd->size - 1; i >= 0; i--) {
+cuddCompose.c:	for (lastsub = dd->size - 1; lastsub >= 0; lastsub--) {
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:	dd->reordered = 0;
+cuddCompose.c:	for (deepest = dd->size - 1; deepest >= 0; deepest--) {
+cuddCompose.c:	    i = dd->invperm[deepest];
+cuddCompose.c:	    if (vector[i] != dd->vars[i]) {
+cuddCompose.c:    } while (dd->reordered == 1);
+cuddCompose.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddCompose.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddCompose.c:    v = dd->perm[proj->index];
+cuddCompose.c:	r = cuddBddIteRecur(dd, dd->vars[topindex], t, e);
+cuddCompose.c:    v = dd->perm[proj->index];
+cuddCompose.c:	dd->addVectorComposeHits++;
+cuddCompose.c:	dd->addGeneralVectorComposeHits++;
+cuddCompose.c:    index = dd->invperm[top];
+cuddCompose.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddCompose.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddCompose.c:	dd->bddVectorComposeHits++;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	dd->reordered = 0;
+cuddDecomp.c:    } while (dd->reordered == 1);
+cuddDecomp.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddDecomp.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:    assert(best >= 0 && best < dd->size);
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:    x = dd->vars[topid];
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	(void) fprintf(dd->err, "Not in table, Something wrong\n");
+cuddDecomp.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddDecomp.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	    (void) fprintf(dd->err, "Not in table: Something wrong\n");
+cuddDecomp.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddDecomp.c:	    (void) fprintf(dd->err, "Not in table: Something wrong\n");
+cuddDecomp.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddDecomp.c:    topv = dd->vars[topid];
+cuddDecomp.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddDecomp.c:    minterms = CountMinterms(dd, f, max, mintermTable, dd->err);
+cuddDecomp.c:    dd->errorCode = CUDD_MEMORY_OUT;
+cuddEssent.c:	dd->reordered = 0;
+cuddEssent.c:    } while (dd->reordered == 1);
+cuddEssent.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddEssent.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddEssent.c:    int size = dd->size;
+cuddEssent.c:    FILE *ifp = fp == NULL ? dd->out : fp;
+cuddEssent.c:	    res = dd->vars[index];
+cuddEssent.c:	    res = Cudd_Not(dd->vars[index]);
+cuddEssent.c:	    res = cuddBddAndRecur(dd,dd->vars[index],essT);
+cuddEssent.c:	    res = computeClauses(Tres, Eres, index, dd->size,
+cuddEssent.c:		res = computeClauses(Tres, Eres, index, dd->size,
+cuddEssent.c:	    res = computeClauses(Tres, Eres, index, dd->size,
+cuddExport.c:    int		nvars = dd->size;
+cuddExport.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddExport.c:    int		nvars = dd->size;
+cuddExport.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddExport.c:	if (sorted[dd->invperm[i]]) {
+cuddExport.c:	    if (inames == NULL || inames[dd->invperm[i]] == NULL) {
+cuddExport.c:		retval = fprintf(fp,"\" %d \" -> ", dd->invperm[i]);
+cuddExport.c:		retval = fprintf(fp,"\" %s \" -> ", inames[dd->invperm[i]]);
+cuddExport.c:	if (sorted[dd->invperm[i]]) {
+cuddExport.c:	    if (inames == NULL || inames[dd->invperm[i]] == NULL) {
+cuddExport.c:		retval = fprintf(fp,"\" %d \";\n", dd->invperm[i]);
+cuddExport.c:		retval = fprintf(fp,"\" %s \";\n", inames[dd->invperm[i]]);
+cuddExport.c:	    nodelist = dd->subtables[i].nodelist;
+cuddExport.c:	    slots = dd->subtables[i].slots;
+cuddExport.c:    nodelist = dd->constants.nodelist;
+cuddExport.c:    slots = dd->constants.slots;
+cuddExport.c:	if (sorted[dd->invperm[i]]) {
+cuddExport.c:	    nodelist = dd->subtables[i].nodelist;
+cuddExport.c:	    slots = dd->subtables[i].slots;
+cuddExport.c:    nodelist = dd->constants.nodelist;
+cuddExport.c:    slots = dd->constants.slots;
+cuddExport.c:    int		  nvars = dd->size;
+cuddExport.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddExport.c:	if (sorted[dd->invperm[i]]) {
+cuddExport.c:	    if (inames == NULL || inames[dd->invperm[i]] == NULL) {
+cuddExport.c:		retval = fprintf(fp,"v%d", dd->invperm[i]);
+cuddExport.c:		retval = fprintf(fp,"%s", inames[dd->invperm[i]]);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:          dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:    decomp = ALLOC(DdNode *,dd->size);
+cuddGenCof.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddGenCof.c:    for (i = 0; i < dd->size; i++) {
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:	for (i = 0; i < dd->size; i++) {
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:          dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:    for (i = 0; i < dd->size; i++) {
+cuddGenCof.c:	    dd->reordered = 0;
+cuddGenCof.c:	} while (dd->reordered == 1);
+cuddGenCof.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:    vect = ALLOC(DdNode *, dd->size);
+cuddGenCof.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:	for (i = 0; i < dd->size; i++) {
+cuddGenCof.c:	    res = cuddBddCharToVect(dd,f,dd->vars[dd->invperm[i]]);
+cuddGenCof.c:		    Cudd_IterDerefBdd(dd, vect[dd->invperm[j]]);
+cuddGenCof.c:	    vect[dd->invperm[i]] = res;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:	dd->reordered = 0;
+cuddGenCof.c:    } while (dd->reordered == 1);
+cuddGenCof.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddGenCof.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddGenCof.c:    topf = dd->perm[f->index];
+cuddGenCof.c:    topc = dd->perm[Cudd_Regular(c)->index];
+cuddGenCof.c:    topf = dd->perm[f->index];
+cuddGenCof.c:    topc = dd->perm[Cudd_Regular(c)->index];
+cuddGenCof.c:    topf = dd->perm[f->index];
+cuddGenCof.c:    topc = dd->perm[c->index];
+cuddGenCof.c:    topf = dd->perm[f->index];
+cuddGenCof.c:    topc = dd->perm[c->index];
+cuddGenCof.c:    level = dd->perm[x->index];
+cuddGenCof.c:    res = cuddBddIteRecur(dd, dd->vars[F->index], T, E);
+cuddGenCof.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddGenCof.c:    topf = dd->perm[f->index];
+cuddGenCof.c:    topu = dd->perm[u->index];
+cuddGenCof.c:    topl = dd->perm[Cudd_Regular(l)->index];
+cuddGenCof.c:    topu = dd->perm[u->index];
+cuddGenCof.c:    topl = dd->perm[Cudd_Regular(l)->index];
+cuddGenetic.c:    (void) fprintf(dd->out,
+cuddGenetic.c:	if (i == cut1 || i == cut2) (void) fprintf(dd->out,"|");
+cuddGenetic.c:	(void) fprintf(dd->out,"%2d ",STOREDD(info,mom,i));
+cuddGenetic.c:    (void) fprintf(dd->out,"\n");
+cuddGenetic.c:	if (i == cut1 || i == cut2) (void) fprintf(dd->out,"|");
+cuddGenetic.c:	(void) fprintf(dd->out,"%2d ",STOREDD(info,dad,i));
+cuddGenetic.c:    (void) fprintf(dd->out,"\n");
+cuddGroup.alt.c:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.alt.c:    tree = dd->tree;
+cuddGroup.alt.c:	dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.alt.c:	tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.alt.c:    tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.alt.c:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.alt.c:    tree = dd->tree;
+cuddGroup.alt.c:        dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.alt.c:        tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.alt.c:    //tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.alt.c:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.alt.c:    dd->subtables[dd->perm[index]].varHandled = 1;
+cuddGroup.alt.c:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.alt.c:    dd->subtables[dd->perm[index]].varHandled = 0;
+cuddGroup.alt.c:    if (index >= dd->size || index < 0) return(-1);
+cuddGroup.alt.c:    return dd->subtables[dd->perm[index]].varHandled;
+cuddGroup.c:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c:    tree = dd->tree;
+cuddGroup.c:	dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c:	tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c:    tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c:    tree = dd->tree;
+cuddGroup.c:        dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c:        tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c:    //tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c:    dd->subtables[dd->perm[index]].varHandled = 1;
+cuddGroup.c:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c:    dd->subtables[dd->perm[index]].varHandled = 0;
+cuddGroup.c:    if (index >= dd->size || index < 0) return(-1);
+cuddGroup.c:    return dd->subtables[dd->perm[index]].varHandled;
+cuddGroup.c.mio:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c.mio:    tree = dd->tree;
+cuddGroup.c.mio:	dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c.mio:	tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c.mio:    tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c.mio:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c.mio:    tree = dd->tree;
+cuddGroup.c.mio:        dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c.mio:        tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c.mio:    //tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c.mio:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c.mio:    dd->subtables[dd->perm[index]].varHandled = 1;
+cuddGroup.c.mio:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c.mio:    dd->subtables[dd->perm[index]].varHandled = 0;
+cuddGroup.c.mio:    if (index >= dd->size || index < 0) return(-1);
+cuddGroup.c.mio:    return dd->subtables[dd->perm[index]].varHandled;
+cuddGroup.c.orig:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c.orig:    tree = dd->tree;
+cuddGroup.c.orig:	dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c.orig:	tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c.orig:    tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c.orig:    level = (low < (unsigned int) dd->size) ? (unsigned int) dd->perm[low] : low;
+cuddGroup.c.orig:    tree = dd->tree;
+cuddGroup.c.orig:        dd->tree = tree = Mtr_InitGroupTree(0, dd->size);
+cuddGroup.c.orig:        tree->index = dd->size == 0 ? 0 : dd->invperm[0];
+cuddGroup.c.orig:    //tree->size = ddMax(tree->size, ddMax(level + size, (unsigned) dd->size));
+cuddGroup.c.orig:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c.orig:    dd->subtables[dd->perm[index]].varHandled = 1;
+cuddGroup.c.orig:    if (index >= dd->size || index < 0) return(0);
+cuddGroup.c.orig:    dd->subtables[dd->perm[index]].varHandled = 0;
+cuddGroup.c.orig:    if (index >= dd->size || index < 0) return(-1);
+cuddGroup.c.orig:    return dd->subtables[dd->perm[index]].varHandled;
+cuddHarwell.c:	(void) fprintf(dd->out,"%s: type %s, %d rows, %d columns, %d entries\n", key,
+cuddHarwell.c:	if (pr>1) (void) fprintf(dd->out,"%s\n", title);
+cuddHarwell.c:	(void) fprintf(dd->err,"%s: Illegal matrix type: %s\n",
+cuddHarwell.c:	    (void) fprintf(dd->err,
+cuddHarwell.c:	if (pr>0) (void) fprintf(dd->out,"%d right-hand side(s)\n", nrhs);
+cuddHarwell.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:		dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	    dd->reordered = 0;
+cuddHarwell.c:	} while (dd->reordered == 1);
+cuddHarwell.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddHarwell.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddHarwell.c:	    dd->reordered = 0;
+cuddHarwell.c:	} while (dd->reordered == 1);
+cuddHarwell.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddHarwell.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddHarwell.c:	    dd->reordered = 0;
+cuddHarwell.c:	} while (dd->reordered == 1);
+cuddHarwell.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddHarwell.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddHarwell.c:	    dd->reordered = 0;
+cuddHarwell.c:	} while (dd->reordered == 1);
+cuddHarwell.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddHarwell.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddHarwell.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddHarwell.c:	(void) fprintf(dd->err,"%s: Unexpected colptr[0] (%d)\n",
+cuddInit.c:    zdd->univ = ALLOC(DdNodePtr, zdd->sizeZ);
+cuddInit.c:    if (zdd->univ == NULL) {
+cuddInit.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddInit.c:    for (i = zdd->sizeZ - 1; i >= 0; i--) {
+cuddInit.c:	unsigned int index = zdd->invpermZ[i];
+cuddInit.c:	    FREE(zdd->univ);
+cuddInit.c:	zdd->univ[i] = res;
+cuddInit.c:    cuddZddP(zdd, zdd->univ[0]);
+cuddInit.c:    if (zdd->univ) {
+cuddInit.c:	Cudd_RecursiveDerefZdd(zdd, zdd->univ[0]);
+cuddInit.c:	FREE(zdd->univ);
+cuddLiteral.c:	dd->reordered = 0;
+cuddLiteral.c:    } while (dd->reordered == 1);
+cuddLiteral.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddLiteral.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddLiteral.c:	    res = cuddBddAndRecur(dd,Cudd_Not(dd->vars[F->index]),tmp);
+cuddLiteral.c:	    res = cuddBddAndRecur(dd,dd->vars[F->index],tmp);
+cuddMatMult.c:    nvars = dd->size;
+cuddMatMult.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddMatMult.c:	dd->reordered = 0;
+cuddMatMult.c:    } while (dd->reordered == 1);
+cuddMatMult.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddMatMult.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddMatMult.c:    nvars = dd->size;
+cuddMatMult.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddMatMult.c:	dd->reordered = 0;
+cuddMatMult.c:    } while (dd->reordered == 1);
+cuddMatMult.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddMatMult.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddMatMult.c:	dd->reordered = 0;
+cuddMatMult.c:    } while (dd->reordered == 1);
+cuddMatMult.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddMatMult.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddMatMult.c:	for (i = 0; i < dd->size; i++) {
+cuddMatMult.c:		if (dd->perm[i] > topP) {
+cuddMatMult.c:	for (i = 0; i < dd->size; i++) {
+cuddMatMult.c:		if (dd->perm[i] > topP && dd->perm[i] < topV) {
+cuddMatMult.c:    index = dd->invperm[topV];
+cuddMatMult.c:	for (i = 0; i < dd->size; i++) {
+cuddMatMult.c:		if (dd->perm[i] > topP && dd->perm[i] < topV) {
+cuddMatMult.c:    index = dd->invperm[top];
+cuddMatMult.c:    index = dd->invperm[v];
+cuddPriority.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddPriority.c:	    if (dd->size >= (int) CUDD_MAXINDEX - 1) goto endgame;
+cuddPriority.c:	    z[i] = cuddUniqueInter(dd,dd->size,dd->one,Cudd_Not(dd->one));
+cuddPriority.c:	(void) fprintf(dd->err,
+cuddPriority.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddPriority.c:	dd->reordered = 0;
+cuddPriority.c:    } while (dd->reordered == 1);
+cuddPriority.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddPriority.c:          dd->timeoutHandler(dd, dd->tohArg);
+cuddPriority.c:	dd->reordered = 0;
+cuddPriority.c:    } while (dd->reordered == 1);
+cuddPriority.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddPriority.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddPriority.c:	dd->reordered = 0;
+cuddPriority.c:    } while (dd->reordered == 1);
+cuddPriority.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddPriority.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddPriority.c:	dd->reordered = 0;
+cuddPriority.c:    } while (dd->reordered == 1);
+cuddPriority.c:        if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddPriority.c:            dd->timeoutHandler(dd, dd->tohArg);
+cuddPriority.c:	res = cuddBddIteRecur(dd, dd->vars[index], res1, res2);
+cuddPriority.c:	    Alpha  = Cudd_Not(dd->vars[index]);
+cuddPriority.c:	    Alpha = dd->vars[index];
+cuddPriority.c:	if (f == dd->background || f == zero) {
+cuddPriority.c:	    dd->dead++;
+cuddPriority.c:	    dd->constants.dead++;
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRead.c:    *E = dd->background; /* this call will never cause reordering */
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRead.c:	    dd->reordered = 0;
+cuddRead.c:	} while (dd->reordered == 1);
+cuddRead.c:            if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddRead.c:                dd->timeoutHandler(dd, dd->tohArg);
+cuddRef.c:    for (i = 0; i < dd->deathRowDepth; i++) {
+cuddRef.c:	if (f == dd->deathRow[i]) {
+cuddRef.c:    for (i = 0; i < dd->deathRowDepth; i++) {
+cuddRef.c:	count += f == dd->deathRow[i];
+cuddSat.c:    assert(0 <= i && i < dd->size);
+cuddSat.c:    level = (unsigned) dd->perm[i];
+cuddSat.c:    res = cuddCacheLookup2(dd,cacheOp,f,dd->vars[i]);
+cuddSat.c:    cuddCacheInsert2(dd,cacheOp,f,dd->vars[i],res);
+cuddSat.c:    dlevel = dd->perm[Dr->index];
+cuddSat.c:    flevel = dd->perm[F->index];
+cuddSat.c:    glevel = dd->perm[G->index];
+cuddSat.c:    dlevel = dd->perm[D->index];
+cuddSat.c:		(void) fprintf(dd->out,"Offending nodes:\n");
+cuddSat.c:		(void) fprintf(dd->out,
+cuddSat.c:		(void) fprintf(dd->out,
+cuddSat.c:	dd->reordered = 0;
+cuddSat.c:    } while (dd->reordered == 1);
+cuddSat.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddSat.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddSat.c:	dd->reordered = 0;
+cuddSat.c:    } while (dd->reordered == 1);
+cuddSat.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddSat.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddSat.c:    phases = ALLOC(int, dd->size);
+cuddSat.c:        dd->reordered = 0;
+cuddSat.c:    } while (dd->reordered == 1);
+cuddSat.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddSat.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddSat.c:	DdNode *var = dd->vars[reg->index];
+cuddSat.c:	Tcost = cost - WEIGHT(weight, my_dd->index);
+cuddSat.c:	    tmp = cuddBddAndRecur(manager,manager->vars[my_dd->index],sol);
+cuddSat.c:	    tmp = cuddBddAndRecur(manager,Cudd_Not(manager->vars[my_dd->index]),sol);
+cuddSat.c:	    tmp = cuddBddAndRecur(manager,manager->vars[my_dd->index],sol);
+cuddSat.c:	    tmp = cuddBddAndRecur(manager,Cudd_Not(manager->vars[my_dd->index]),sol);
+cuddSat.c:    topf = dd->perm[F->index];
+cuddSat.c:    toplb = dd->perm[LB->index];
+cuddSat.c:    topub = (ub == lone) ? CUDD_CONST_INDEX : (unsigned int) dd->perm[UB->index];
+cuddSat.c:                tmp = cuddBddAndRecur(dd, dd->vars[index], res);
+cuddSat.c:                tmp = cuddBddAndRecur(dd, Cudd_Not(dd->vars[index]), res);
+cuddSign.c:    dd->num_calls = 0;
+cuddSign.c:	(void) fprintf(dd->err,
+cuddSign.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSign.c:    size = dd->size;
+cuddSign.c:		    result[dd->invperm[i]] = values[i - firstLevel];
+cuddSign.c:		    result[dd->invperm[i]] = values[size - firstLevel];
+cuddSign.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddSign.c:    (void) fprintf(dd->out,"Number of calls: %d\n", dd->num_calls);
+cuddSign.c:    (void) fprintf(dd->out,"Time to compute measures: %s\n",
+cuddSign.c:	(void) fprintf(dd->out,
+cuddSign.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSign.c:    int		size = dd->size;
+cuddSign.c:    dd->num_calls++;
+cuddSign.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSolve.c:	bdd->errorCode = CUDD_MEMORY_OUT;
+cuddSolve.c:	(void) fprintf(bdd->out,
+cuddSolve.c:	bdd->reordered = 0;
+cuddSolve.c:    } while (bdd->reordered == 1);
+cuddSolve.c:    if (bdd->errorCode == CUDD_TIMEOUT_EXPIRED && bdd->timeoutHandler) {
+cuddSolve.c:        bdd->timeoutHandler(bdd, bdd->tohArg);
+cuddSolve.c:	bdd->reordered = 0;
+cuddSolve.c:    } while (bdd->reordered == 1);
+cuddSolve.c:    if (bdd->errorCode == CUDD_TIMEOUT_EXPIRED && bdd->timeoutHandler) {
+cuddSolve.c:        bdd->timeoutHandler(bdd, bdd->tohArg);
+cuddSolve.c:    variables = bdd->vars;
+cuddSubsetHB.c:	dd->reordered = 0;
+cuddSubsetHB.c:    } while (dd->reordered == 1);
+cuddSubsetHB.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddSubsetHB.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddSubsetHB.c:	dd->reordered = 0;
+cuddSubsetHB.c:    } while (dd->reordered == 1);
+cuddSubsetHB.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddSubsetHB.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddSubsetHB.c:	fprintf(dd->err, "Cannot subset, nil object\n");
+cuddSubsetHB.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddSubsetHB.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddSubsetHB.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetHB.c:	(void) fprintf(dd->err, "Out-of-memory; Cannot subset\n");
+cuddSubsetHB.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetHB.c:	fprintf(dd->err,
+cuddSubsetHB.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetHB.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetHB.c:	fprintf(dd->out, "Something wrong, st_table insert failed\n");
+cuddSubsetHB.c:        dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetHB.c:        dd->reordered = 0;
+cuddSubsetHB.c:	    fprintf(dd->err, "Wrong subset\n");
+cuddSubsetHB.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetHB.c:	fprintf(dd->err,"Something wrong, st_table insert failed\n");
+cuddSubsetHB.c:	fprintf(dd->err,
+cuddSubsetHB.c:		fprintf(dd->out,"Something wrong, couldnt find nodes in node quality table\n");
+cuddSubsetHB.c:		dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetHB.c:	    fprintf(dd->out,"Something wrong, couldnt find nodes in node quality table\n");
+cuddSubsetHB.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetHB.c:		fprintf(dd->err, "This node should not be in the approximated table\n");
+cuddSubsetSP.c:	dd->reordered = 0;
+cuddSubsetSP.c:    } while(dd->reordered == 1);
+cuddSubsetSP.c:	dd->reordered = 0;
+cuddSubsetSP.c:    } while(dd->reordered == 1);
+cuddSubsetSP.c:	fprintf(dd->err, "Cannot partition, nil object\n");
+cuddSubsetSP.c:	dd->errorCode = CUDD_INVALID_ARG;
+cuddSubsetSP.c:    pathTable = CreatePathTable(dd, &gInfo, f, pathLengthArray, dd->err);
+cuddSubsetSP.c:    if ((pathTable == NULL) || (dd->errorCode == CUDD_MEMORY_OUT)) {
+cuddSubsetSP.c:			       dd->err);
+cuddSubsetSP.c:	(void) fprintf(dd->out, "Path length array\n");
+cuddSubsetSP.c:		(void) fprintf(dd->out, "%d ",i);
+cuddSubsetSP.c:	(void) fprintf(dd->out, "\n");
+cuddSubsetSP.c:		(void) fprintf(dd->out, "%d ",pathLengthArray[i]);
+cuddSubsetSP.c:	(void) fprintf(dd->out, "\n");
+cuddSubsetSP.c:	(void) fprintf(dd->out, "Maxpath  = %d, Thresholdreached = %d\n",
+cuddSubsetSP.c:	    fprintf(dd->err, "Something wrong, root node must be in table\n");
+cuddSubsetSP.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:		(void) fprintf(dd->err, "All computations are bogus, since root has path length greater than max path length within threshold %u, %u\n", maxpath, pathLength);
+cuddSubsetSP.c:		dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:	(void) fprintf(dd->out, "Hits = %d, New==Node = %d, NumCalls = %d\n",
+cuddSubsetSP.c:	    (void) fprintf(dd->err, "Wrong partition\n");
+cuddSubsetSP.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:		    if (dd->errorCode == CUDD_MEMORY_OUT) {
+cuddSubsetSP.c:			dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:		    if (dd->errorCode == CUDD_MEMORY_OUT) {
+cuddSubsetSP.c:			if (dd->errorCode == CUDD_MEMORY_OUT) {
+cuddSubsetSP.c:    if (dd->errorCode == CUDD_MEMORY_OUT) {
+cuddSubsetSP.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:    if (dd->errorCode == CUDD_MEMORY_OUT) {
+cuddSubsetSP.c:    dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:	(void) fprintf(dd->err, "Something wrong, node must be in table \n");
+cuddSubsetSP.c:	dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:	    (void) fprintf(dd->err, "Something wrong, node must be in table\n");
+cuddSubsetSP.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:	    (void) fprintf(dd->err, "Something wrong, node must be in table\n");
+cuddSubsetSP.c:	    dd->errorCode = CUDD_INTERNAL_ERROR;
+cuddSubsetSP.c:				dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:				(void) fprintf(dd->err, "OUT of memory\n");
+cuddSubsetSP.c:			    dd->errorCode = CUDD_MEMORY_OUT;
+cuddSubsetSP.c:			    (void) fprintf(dd->err, "OUT of memory\n");
+cuddSubsetSP.c:                        (void) fprintf(dd->err, "Out of memory\n");
+cuddTable.c:	auxnode->low = dd->perm[auxnode->index];
+cuddUtil.c:	for (q = 0; q < dd->size; q++) {
+cuddUtil.c:		(void) fprintf(dd->out, "0");
+cuddUtil.c:		(void) fprintf(dd->out, "1");
+cuddUtil.c:		(void) fprintf(dd->out, "-");
+cuddUtil.c:		(void) fprintf(dd->out, "?");
+cuddUtil.c:	(void) fprintf(dd->out, " 1\n");
+cuddUtil.c:    (void) fprintf(dd->out, "\n");
+cuddUtil.c:	(void) fprintf(dd->out,": is the NULL DD\n");
+cuddUtil.c:	(void) fflush(dd->out);
+cuddUtil.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddUtil.c:       (void) fprintf(dd->out,": is the zero DD\n");
+cuddUtil.c:       (void) fflush(dd->out);
+cuddUtil.c:            (void) fprintf(dd->out,": %d nodes %d leaves unknown minterms\n",
+cuddUtil.c:            (void) fprintf(dd->out,": %d nodes %d leaves %g minterms\n",
+cuddUtil.c:	    (void) fprintf(dd->out,"\n");
+cuddUtil.c:	(void) fflush(dd->out);
+cuddUtil.c:	(void) fprintf(dd->out,": is the NULL DD\n");
+cuddUtil.c:	(void) fflush(dd->out);
+cuddUtil.c:        dd->errorCode = CUDD_INVALID_ARG;
+cuddUtil.c:        (void) fprintf(dd->out,": is the zero DD\n");
+cuddUtil.c:        (void) fflush(dd->out);
+cuddUtil.c:    (void) fprintf(dd->out,": %d nodes %d leaves ", nodes, leaves);
+cuddUtil.c:        if (!Cudd_ApaPrintExponential(dd->out, digits, count, 6))
+cuddUtil.c:        if (!Cudd_ApaPrintDecimal(dd->out, digits, count))
+cuddUtil.c:    (void) fprintf(dd->out, " minterms\n");
+cuddUtil.c:    (void) fflush(dd->out);
+cuddUtil.c:        dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:        dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    fprintf(dd->out, "%s", pstring);
+cuddUtil.c:            dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:            (*indices)[i] = (int) (ptrint) dd->stack[i];
+cuddUtil.c:        DdNode *var = dd->vars[index];
+cuddUtil.c:    size = ddMax(dd->size, dd->sizeZ);
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:            dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:            (*indices)[i] = (int) (ptrint) dd->stack[i];
+cuddUtil.c:        DdNode *var = dd->vars[index];
+cuddUtil.c:    size = ddMax(dd->size, dd->sizeZ);
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:        DdNode *var = dd->vars[index];
+cuddUtil.c:    size = dd->size;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    size = dd->size;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	    dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    size = dd->size;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    nvars = dd->size;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	} else if (top == Cudd_Not(DD_ONE(dd)) || top == dd->background) {
+cuddUtil.c:	} else if (top == Cudd_Not(DD_ONE(dd)) || top == dd->background) {
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    gen->gen.primes.cube = ALLOC(int,dd->size);
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddUtil.c:    DdNode *sentinel = &(dd->sentinel);
+cuddUtil.c:    nvars = dd->size;
+cuddUtil.c:	nodelist = dd->subtables[i].nodelist;
+cuddUtil.c:	slots = dd->subtables[i].slots;
+cuddUtil.c:    nodelist = dd->constants.nodelist;
+cuddUtil.c:    slots = dd->constants.slots;
+cuddUtil.c:    /* dd->cuddRand == 0 if the geneartor has not been initialized yet. */
+cuddUtil.c:    if (dd->cuddRand == 0) Cudd_Srandom(dd,1);
+cuddUtil.c:    w          = dd->cuddRand / LEQQ1;
+cuddUtil.c:    dd->cuddRand   = LEQA1 * (dd->cuddRand - w * LEQQ1) - w * LEQR1;
+cuddUtil.c:    dd->cuddRand  += (dd->cuddRand < 0) * MODULUS1;
+cuddUtil.c:    /* Compute dd->cuddRand2 = (dd->cuddRand2 * LEQA2) % MODULUS2 avoiding
+cuddUtil.c:    w          = dd->cuddRand2 / LEQQ2;
+cuddUtil.c:    dd->cuddRand2  = LEQA2 * (dd->cuddRand2 - w * LEQQ2) - w * LEQR2;
+cuddUtil.c:    dd->cuddRand2 += (dd->cuddRand2 < 0) * MODULUS2;
+cuddUtil.c:    /* dd->cuddRand is shuffled with the Bays-Durham algorithm.
+cuddUtil.c:    ** dd->shuffleSelect and cuddRand2 are combined to generate the output.
+cuddUtil.c:    i = (int) (dd->shuffleSelect / STAB_DIV);
+cuddUtil.c:    dd->shuffleSelect   = dd->shuffleTable[i] - dd->cuddRand2;
+cuddUtil.c:    dd->shuffleTable[i] = dd->cuddRand;
+cuddUtil.c:    dd->shuffleSelect  += (dd->shuffleSelect < 1) * (MODULUS1 - 1);
+cuddUtil.c:    /* Since dd->shuffleSelect != 0, and we want to be able to return 0,
+cuddUtil.c:    return(dd->shuffleSelect - 1);
+cuddUtil.c:    if (seed < 0)       dd->cuddRand = -seed;
+cuddUtil.c:    else if (seed == 0) dd->cuddRand = 1;
+cuddUtil.c:    else                dd->cuddRand = seed;
+cuddUtil.c:    dd->cuddRand2 = dd->cuddRand;
+cuddUtil.c:	w = dd->cuddRand / LEQQ1;
+cuddUtil.c:	dd->cuddRand = LEQA1 * (dd->cuddRand - w * LEQQ1) - w * LEQR1;
+cuddUtil.c:	dd->cuddRand += (dd->cuddRand < 0) * MODULUS1;
+cuddUtil.c:	dd->shuffleTable[i % STAB_SIZE] = dd->cuddRand;
+cuddUtil.c:    dd->shuffleSelect = dd->shuffleTable[1 % STAB_SIZE];
+cuddUtil.c:    if (nvars == 0) nvars = dd->size;
+cuddUtil.c:    (void) fputc('\n',dd->out);
+cuddUtil.c:	(void) fprintf(dd->out,"ID = %c0x%" PRIxPTR "\tvalue = %-9g\n", bang(f),
+cuddUtil.c:    (void) fprintf(dd->out,"ID = %c0x%"PRIxPTR"\tindex = %d\tr = %d\t", bang(f),
+cuddUtil.c:    (void) fprintf(dd->out,"ID = %c0x%" PRIxPTR "\tindex = %u\t", bang(f),
+cuddUtil.c:	(void) fprintf(dd->out,"T = %-9g\t",cuddV(n));
+cuddUtil.c:	(void) fprintf(dd->out,"T = 0x%" PRIxPTR "\t",
+cuddUtil.c:	(void) fprintf(dd->out,"E = %c%-9g\n",bang(n),cuddV(N));
+cuddUtil.c:	(void) fprintf(dd->out,"E = %c0x%" PRIxPTR "\n",
+cuddUtil.c:	if (node != dd->background && node != Cudd_Not(dd->one)) {
+cuddUtil.c:	    for (i = 0; i < dd->size; i++) {
+cuddUtil.c:		if (v == 0) (void) fprintf(dd->out,"0");
+cuddUtil.c:		else if (v == 1) (void) fprintf(dd->out,"1");
+cuddUtil.c:		else (void) fprintf(dd->out,"-");
+cuddUtil.c:	    (void) fprintf(dd->out," % g\n", cuddV(node));
+cuddUtil.c:    if (dd->perm[node->index] > dd->perm[i]) {
+cuddUtil.c:	if (node == dd->background || node == Cudd_Not(dd->one)) {
+cuddUtil.c:	if (node == dd->background) {
+cuddUtil.c:    var = dd->vars[index];
+cuddUtil.c:        dd->stack[*SP] = (DdNode *)(ptruint) index;
+cuddUtil.c:        int index = (int) (ptrint) dd->stack[i];
+cuddUtil.c:        DdNode *var = dd->vars[index];
+cuddZddCount.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddCount.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:	dd->reordered = 0;
+cuddZddFuncs.c:    } while (dd->reordered == 1);
+cuddZddFuncs.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddFuncs.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddFuncs.c:    top_f = dd->permZ[f->index];
+cuddZddFuncs.c:    top_g = dd->permZ[g->index];
+cuddZddFuncs.c:    top_f = dd->permZ[f->index];
+cuddZddFuncs.c:    top_g = dd->permZ[g->index];
+cuddZddFuncs.c:    top_f = dd->permZ[f->index];
+cuddZddFuncs.c:    top_g = dd->permZ[g->index];
+cuddZddFuncs.c:    top = dd->permZ[f->index];
+cuddZddFuncs.c:    level = dd->permZ[v];
+cuddZddFuncs.c:    return(dd->permZ[pv]);
+cuddZddFuncs.c:    return(dd->permZ[nv]);
+cuddZddGroup.c:    level = (low < (unsigned int) dd->sizeZ) ? (unsigned int) dd->permZ[low] : low;
+cuddZddGroup.c:    tree = dd->treeZ;
+cuddZddGroup.c:	dd->treeZ = tree = Mtr_InitGroupTree(0, dd->sizeZ);
+cuddZddGroup.c:	tree->index = dd->invpermZ[0];
+cuddZddIsop.c:    autoDynZ = dd->autoDynZ;
+cuddZddIsop.c:    dd->autoDynZ = 0;
+cuddZddIsop.c:	dd->reordered = 0;
+cuddZddIsop.c:    } while (dd->reordered == 1);
+cuddZddIsop.c:    dd->autoDynZ = autoDynZ;
+cuddZddIsop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddIsop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddIsop.c:	dd->reordered = 0;
+cuddZddIsop.c:    } while (dd->reordered == 1);
+cuddZddIsop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddIsop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddIsop.c:	dd->reordered = 0;
+cuddZddIsop.c:    } while (dd->reordered == 1);
+cuddZddIsop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddIsop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddIsop.c:    top_l = dd->perm[Cudd_Regular(L)->index];
+cuddZddIsop.c:    top_u = dd->perm[Cudd_Regular(U)->index];
+cuddZddIsop.c:	dd->permZ[index * 2] > dd->permZ[zdd_Isub0->index])) {
+cuddZddIsop.c:	dd->permZ[index * 2] > dd->permZ[zdd_Isub1->index])) {
+cuddZddIsop.c:	dd->permZ[index * 2] > dd->permZ[zdd_Id->index])) {
+cuddZddIsop.c:    top_l = dd->perm[Cudd_Regular(L)->index];
+cuddZddIsop.c:    top_u = dd->perm[Cudd_Regular(U)->index];
+cuddZddIsop.c:    if (node == dd->one)
+cuddZddIsop.c:	return(dd->one);
+cuddZddIsop.c:    if (node == dd->zero)
+cuddZddIsop.c:	return(Cudd_Not(dd->one));
+cuddZddIsop.c:    if (fd != dd->zero) {
+cuddZddMisc.c:    dc_var = (double)((double)(zdd->sizeZ) - (double)path);
+cuddZddPort.c:	dd->reordered = 0;
+cuddZddPort.c:    } while (dd->reordered == 1);
+cuddZddPort.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddPort.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddPort.c:	dd->reordered = 0;
+cuddZddPort.c:    } while (dd->reordered == 1);
+cuddZddPort.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddPort.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddPort.c:	if (expected >= dd->sizeZ) {
+cuddZddPort.c:	    return(dd->univ[expected]);
+cuddZddPort.c:		id = dd->invperm[level];
+cuddZddPort.c:	id = dd->invperm[level];
+cuddZddPort.c:    if (depth == dd->sizeZ) return(one);
+cuddZddPort.c:    index = dd->invpermZ[depth];
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	p_top = zdd->permZ[P->index];
+cuddZddSetop.c:	q_top = zdd->permZ[Q->index];
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:	dd->reordered = 0;
+cuddZddSetop.c:    } while (dd->reordered == 1);
+cuddZddSetop.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddSetop.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddSetop.c:    tautology = (top == CUDD_MAXINDEX) ? DD_ONE(dd) : dd->univ[top];
+cuddZddSetop.c:	p_top = zdd->permZ[P->index];
+cuddZddSetop.c:	q_top = zdd->permZ[Q->index];
+cuddZddSetop.c:	p_top = zdd->permZ[P->index];
+cuddZddSetop.c:	q_top = zdd->permZ[Q->index];
+cuddZddSetop.c:	p_top = zdd->permZ[P->index];
+cuddZddSetop.c:	q_top = zdd->permZ[Q->index];
+cuddZddSetop.c:    top_var = zdd->permZ[P->index];
+cuddZddSetop.c:    level = zdd->permZ[zvar->index];
+cuddZddSetop.c:    top_var = zdd->permZ[P->index];
+cuddZddSetop.c:    level = zdd->permZ[zvar->index];
+cuddZddSetop.c:    top_var = zdd->permZ[P->index];
+cuddZddSetop.c:    level = zdd->permZ[zvar->index];
+cuddZddUtil.c:    size = (int)zdd->sizeZ;
+cuddZddUtil.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:    size = (int)zdd->sizeZ;
+cuddZddUtil.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:	(void) fprintf(zdd->out,": is the empty ZDD\n");
+cuddZddUtil.c:	(void) fflush(zdd->out);
+cuddZddUtil.c:	(void) fprintf(zdd->out,": %d nodes %g minterms\n",
+cuddZddUtil.c:	    (void) fprintf(zdd->out,"\n");
+cuddZddUtil.c:	(void) fflush(zdd->out);
+cuddZddUtil.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:    nvars = zdd->sizeZ;
+cuddZddUtil.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:	zdd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:    int nvars = zdd->sizeZ;
+cuddZddUtil.c:    size = ddMax(dd->size, dd->sizeZ);
+cuddZddUtil.c:        dd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:        dd->reordered = 0;
+cuddZddUtil.c:            i = (j >= dd->size) ? j : dd->invperm[j];
+cuddZddUtil.c:                var = cuddUniqueInter(dd,i,dd->one,Cudd_Not(dd->one));
+cuddZddUtil.c:    } while (dd->reordered == 1);
+cuddZddUtil.c:    if (dd->errorCode == CUDD_TIMEOUT_EXPIRED && dd->timeoutHandler) {
+cuddZddUtil.c:        dd->timeoutHandler(dd, dd->tohArg);
+cuddZddUtil.c:    int		nvars = dd->sizeZ;
+cuddZddUtil.c:	dd->errorCode = CUDD_MEMORY_OUT;
+cuddZddUtil.c:	if (sorted[dd->invpermZ[i]]) {
+cuddZddUtil.c:		retval = fprintf(fp,"\" %d \" -> ", dd->invpermZ[i]);
+cuddZddUtil.c:		retval = fprintf(fp,"\" %s \" -> ", inames[dd->invpermZ[i]]);
+cuddZddUtil.c:	if (sorted[dd->invpermZ[i]]) {
+cuddZddUtil.c:		retval = fprintf(fp,"\" %d \";\n", dd->invpermZ[i]);
+cuddZddUtil.c:		retval = fprintf(fp,"\" %s \";\n", inames[dd->invpermZ[i]]);
+cuddZddUtil.c:	    nodelist = dd->subtableZ[i].nodelist;
+cuddZddUtil.c:	    slots = dd->subtableZ[i].slots;
+cuddZddUtil.c:    nodelist = dd->constants.nodelist;
+cuddZddUtil.c:    slots = dd->constants.slots;
+cuddZddUtil.c:	if (sorted[dd->invpermZ[i]]) {
+cuddZddUtil.c:	    nodelist = dd->subtableZ[i].nodelist;
+cuddZddUtil.c:	    slots = dd->subtableZ[i].slots;
+cuddZddUtil.c:    nodelist = dd->constants.nodelist;
+cuddZddUtil.c:    slots = dd->constants.slots;
+cuddZddUtil.c:    (void) fputc('\n', zdd->out);
+cuddZddUtil.c:	(void)fprintf(zdd->out, "ID = %d\n", (f == base));
+cuddZddUtil.c:    (void) fprintf(zdd->out, "ID = 0x%" PRIxPTR "\tindex = %u\tr = %u\t",
+cuddZddUtil.c:	(void) fprintf(zdd->out, "T = %d\t\t", (n == base));
+cuddZddUtil.c:	(void) fprintf(zdd->out, "T = 0x%" PRIxPTR "\t", (ptruint) n /
+cuddZddUtil.c:	(void) fprintf(zdd->out, "E = %d\n", (n == base));
+cuddZddUtil.c:	(void) fprintf(zdd->out, "E = 0x%" PRIxPTR "\n", (ptruint) n /
+cuddZddUtil.c:	    if (level != zdd->sizeZ) {
+cuddZddUtil.c:		list[zdd->invpermZ[level]] = 0;
+cuddZddUtil.c:	    for (i = 0; i < zdd->sizeZ; i++) {
+cuddZddUtil.c:		    (void) fprintf(zdd->out,"0");
+cuddZddUtil.c:		    (void) fprintf(zdd->out,"1");
+cuddZddUtil.c:		    (void) fprintf(zdd->out,"@");	/* should never happen */
+cuddZddUtil.c:		    (void) fprintf(zdd->out,"-");
+cuddZddUtil.c:	    (void) fprintf(zdd->out," 1\n");
+cuddZddUtil.c:	    list[zdd->invpermZ[level]] = 0;
+cuddZddUtil.c:	    if (level != zdd->sizeZ) {
+cuddZddUtil.c:		list[zdd->invpermZ[level]] = 0;
+cuddZddUtil.c:	    for (i = 0; i < zdd->sizeZ; i += 2) {
+cuddZddUtil.c:		    (void) putc('-',zdd->out);
+cuddZddUtil.c:		    (void) putc('1',zdd->out);
+cuddZddUtil.c:		    (void) putc('0',zdd->out);
+cuddZddUtil.c:		    (void) putc('@',zdd->out); /* should never happen */
+cuddZddUtil.c:	    (void) fprintf(zdd->out," 1\n");
+cuddZddUtil.c:	    list[zdd->invpermZ[level]] = 0;
+Binary file libcudd_la-cuddAPI.o matches
+Binary file libcudd_la-cuddAddAbs.o matches
+Binary file libcudd_la-cuddAddApply.o matches
+Binary file libcudd_la-cuddAddFind.o matches
+Binary file libcudd_la-cuddAddInv.o matches
+Binary file libcudd_la-cuddAddIte.o matches
+Binary file libcudd_la-cuddAddNeg.o matches
+Binary file libcudd_la-cuddAddWalsh.o matches
+Binary file libcudd_la-cuddAndAbs.o matches
+Binary file libcudd_la-cuddAnneal.o matches
+Binary file libcudd_la-cuddApa.o matches
+Binary file libcudd_la-cuddApprox.o matches
+Binary file libcudd_la-cuddBddAbs.o matches
+Binary file libcudd_la-cuddBddCorr.o matches
+Binary file libcudd_la-cuddBddIte.o matches
+Binary file libcudd_la-cuddBridge.o matches
+Binary file libcudd_la-cuddCache.o matches
+Binary file libcudd_la-cuddCheck.o matches
+Binary file libcudd_la-cuddClip.o matches
+Binary file libcudd_la-cuddCof.o matches
+Binary file libcudd_la-cuddCompose.o matches
+Binary file libcudd_la-cuddDecomp.o matches
+Binary file libcudd_la-cuddEssent.o matches
+Binary file libcudd_la-cuddExact.o matches
+Binary file libcudd_la-cuddExport.o matches
+Binary file libcudd_la-cuddGenCof.o matches
+Binary file libcudd_la-cuddGenetic.o matches
+Binary file libcudd_la-cuddGroup.o matches
+Binary file libcudd_la-cuddHarwell.o matches
+Binary file libcudd_la-cuddInit.o matches
+Binary file libcudd_la-cuddInteract.o matches
+Binary file libcudd_la-cuddLCache.o matches
+Binary file libcudd_la-cuddLevelQ.o matches
+Binary file libcudd_la-cuddLinear.o matches
+Binary file libcudd_la-cuddLiteral.o matches
+Binary file libcudd_la-cuddMatMult.o matches
+Binary file libcudd_la-cuddPriority.o matches
+Binary file libcudd_la-cuddRead.o matches
+Binary file libcudd_la-cuddRef.o matches
+Binary file libcudd_la-cuddReorder.o matches
+Binary file libcudd_la-cuddSat.o matches
+Binary file libcudd_la-cuddSign.o matches
+Binary file libcudd_la-cuddSolve.o matches
+Binary file libcudd_la-cuddSplit.o matches
+Binary file libcudd_la-cuddSubsetHB.o matches
+Binary file libcudd_la-cuddSubsetSP.o matches
+Binary file libcudd_la-cuddSymmetry.o matches
+Binary file libcudd_la-cuddTable.o matches
+Binary file libcudd_la-cuddUtil.o matches
+Binary file libcudd_la-cuddWindow.o matches
+Binary file libcudd_la-cuddZddCount.o matches
+Binary file libcudd_la-cuddZddFuncs.o matches
+Binary file libcudd_la-cuddZddGroup.o matches
+Binary file libcudd_la-cuddZddIsop.o matches
+Binary file libcudd_la-cuddZddLin.o matches
+Binary file libcudd_la-cuddZddMisc.o matches
+Binary file libcudd_la-cuddZddPort.o matches
+Binary file libcudd_la-cuddZddReord.o matches
+Binary file libcudd_la-cuddZddSetop.o matches
+Binary file libcudd_la-cuddZddSymm.o matches
+Binary file libcudd_la-cuddZddUtil.o matches
+testcudd.c:    dd->groupcheck = (Cudd_AggregationType) groupcheck;
+testcudd.c:	    tmpp = Cudd_bddAnd(dd,Cudd_Not(dd->vars[y[i]->index]),ycube);
+testcudd.c:	    xvars[i] = dd->vars[x[i]->index];
+testcudd.c:	    yvars[i] = dd->vars[y[i]->index];
+testcudd.c:			for (q = 0; q < dd->size; q++) {
+testcudd.c:	size = dd->size;
+testcudd.c:		Cudd_SymmProfile(dd,0,dd->size-1);
+testcudd.c:		    (void) printf("%d ", dd->invperm[i]);
+testcudd.c:		    (void) printf("%d ", dd->perm[i]);
+testcudd.c:	    for (i = dd->cacheSlots - 1; i>=0; i--) {
+testcudd.c:		dd->cache[i].data = NULL;
+testcudd.c:	    (void) printf("Number of variables = %6d\t",dd->size);
+testcudd.c:	    (void) printf("Number of slots     = %6u\n",dd->slots);
+testcudd.c:	    (void) printf("Number of keys      = %6u\t",dd->keys);
+testcudd.c:	    (void) printf("Number of min dead  = %6u\n",dd->minDead);
+testcudd.c:		Cudd_SymmProfile(dd,0,dd->size-1);
+testcudd.c:	    for (q = 0; q < dd->size; q++) {
+testcudd.c:	    for (q = 0; q < dd->size; q++) {
+testcudd.c:    f1 = Cudd_Cofactor(dd,f,dd->vars[x]);
+testcudd.c:    f0 = Cudd_Cofactor(dd,f,Cudd_Not(dd->vars[x]));

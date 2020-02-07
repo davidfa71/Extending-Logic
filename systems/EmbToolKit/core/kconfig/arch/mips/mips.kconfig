@@ -1,0 +1,130 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         arch-variant.kconfig
+# \brief	MIPS architecture kconfig options.
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         August 2009
+################################################################################
+
+choice
+	prompt "MIPS Endian"
+	depends on EMBTK_ARCH_MIPS
+	help
+	 Select your MIPS core endianness
+
+	config EMBTK_ARCH_MIPS_LITTLE_ENDIAN
+		bool "Little endian"
+		select EMBTK_TARGET_ARCH_LITTLE_ENDIAN
+
+	config EMBTK_ARCH_MIPS_BIG_ENDIAN
+		bool "Big endian"
+		select EMBTK_TARGET_ARCH_BIG_ENDIAN
+endchoice
+
+choice
+	prompt "MIPS architecture variant"
+	depends on EMBTK_ARCH_MIPS
+	default EMBTK_ARCH_MIPS_MIPS32
+	help
+	 Select architecture variant.
+
+	config EMBTK_ARCH_MIPS_MIPS1
+		bool "MIPS I core"
+		select EMBTK_TARGET_ARCH_32BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_1 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS2
+		bool "MIPS II core"
+		select EMBTK_TARGET_ARCH_32BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_2 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS3
+		bool "MIPS III core"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_3 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS4
+		bool "MIPS IV core"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_4 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS32
+		bool "MIPS32 core"
+		select EMBTK_TARGET_ARCH_32BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS32 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS32R2
+		bool "MIPS32 release 2 core"
+		select EMBTK_TARGET_ARCH_32BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS32R2 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS64
+		bool "MIPS64 core"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS64 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_MIPS64R2
+		bool "MIPS64 release 2 core"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS64 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_OCTEON
+		bool "Octeon"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS64 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_OCTEON_PLUS
+		bool "Octeon+"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS64 if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_OCTEON2
+		bool "Octeon2"
+		select EMBTK_TARGET_ARCH_64BITS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_ISA_MIPS64 if EMBTK_CLIB_UCLIBC
+endchoice
+
+choice
+	prompt "ABI"
+	depends on EMBTK_ARCH_MIPS
+	default EMBTK_ARCH_MIPS_ABI_O32
+	help
+	 Here you can select which abi you want to use.
+	config EMBTK_ARCH_MIPS_ABI_O32
+		bool "o32"
+		select EMBTK_32BITS_FS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_O32_ABI if EMBTK_CLIB_UCLIBC
+
+	config EMBTK_ARCH_MIPS_ABI_N32
+		bool "n32" if !EMBTK_TARGET_ARCH_32BITS
+		select EMBTK_64BITS_FS_COMPAT32
+		select KEMBTK_UCLIBC_CONFIG_MIPS_N32_ABI if EMBTK_CLIB_UCLIBC
+
+#	config EMBTK_ARCH_MIPS_ABI_EABI
+#		bool "eabi (BROKEN)" if !EMBTK_TARGET_ARCH_32BITS
+
+#	config EMBTK_ARCH_MIPS_ABI_O64
+#		bool "o64 (BROKEN)" if !EMBTK_TARGET_ARCH_32BITS
+
+	config EMBTK_ARCH_MIPS_ABI_N64
+		bool "n64" if !EMBTK_TARGET_ARCH_32BITS
+		select EMBTK_64BITS_FS
+		select KEMBTK_UCLIBC_CONFIG_MIPS_N64_ABI if EMBTK_CLIB_UCLIBC
+endchoice

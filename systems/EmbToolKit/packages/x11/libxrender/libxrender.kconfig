@@ -1,0 +1,56 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libxrender.kconfig
+# \brief	libxrender.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_LIBXRENDER
+	bool "Have libxrender"
+	select EMBTK_HAVE_RENDERPROTO
+	select EMBTK_HAVE_LIBX11
+	help
+		libXrender for X windowing system
+choice
+	prompt "libxrender version you wish"
+	depends on EMBTK_HAVE_LIBXRENDER
+	help
+	 Here you can choose which version of libxrender you want to use.
+
+	config  EMBTK_LIBXRENDER_VERSION_0_9_6
+		bool "libXrender-0.9.6"
+	config  EMBTK_LIBXRENDER_VERSION_0_9_5
+		bool "libXrender-0.9.5"
+endchoice
+
+config EMBTK_LIBXRENDER_VERSION_STRING
+	string
+	default "0.9.6"	if EMBTK_LIBXRENDER_VERSION_0_9_6
+	default "0.9.5"	if EMBTK_LIBXRENDER_VERSION_0_9_5
+
+config EMBTK_LIBXRENDER_NEED_PATCH
+	bool
+config EMBTK_LIBXRENDER_NEED_AUTORECONF
+	bool
+config EMBTK_LIBXRENDER_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBXRENDER_PKG_IS_TARBZ2
+	bool

@@ -1,0 +1,51 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2014 GAYE Abdoulaye Walsimou.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 2 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libelf.kconfig
+# \brief	libelf.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         January 2010
+################################################################################
+
+config EMBTK_HAVE_LIBELF
+	bool "Have libelf"
+	help
+	 libelf lets you read, modify or create ELF files in an
+	 architecture-independent way. The library takes care of size and endian
+	 issues, e.g. you can process a file for SPARC processors on an
+	 Intel-based system.
+
+choice
+	prompt "libelf version you wish"
+	depends on EMBTK_HAVE_LIBELF
+	help
+	 Here you can choose which version of libelf you want to use.
+
+	config  EMBTK_LIBELF_VERSION_0_8_13
+		bool "libelf-0.8.13"
+		select EMBTK_LIBELF_NEED_PATCH
+endchoice
+
+config EMBTK_LIBELF_VERSION_STRING
+	string
+	default "0.8.13"	if EMBTK_LIBELF_VERSION_0_8_13
+
+config EMBTK_LIBELF_NEED_PATCH
+	bool
+config EMBTK_LIBELF_NEED_AUTORECONF
+	bool

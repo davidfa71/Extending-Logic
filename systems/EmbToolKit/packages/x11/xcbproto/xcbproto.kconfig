@@ -1,0 +1,50 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 2 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+################################################################################
+#
+# \file         xcbproto.kconfig
+# \brief	xcbproto.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XCBPROTO
+	bool "Have xcbproto"
+	help
+		xcbproto for X windowing system
+choice
+	prompt "xcbproto version you wish"
+	depends on EMBTK_HAVE_XCBPROTO
+	help
+	 Here you can choose which version of xcbproto you want to use.
+
+	config  EMBTK_XCBPROTO_VERSION_1_6
+		bool "xcbproto-1.6"
+endchoice
+
+config EMBTK_XCBPROTO_VERSION_STRING
+	string
+	default "1.6"	if EMBTK_XCBPROTO_VERSION_1_6
+
+config EMBTK_XCBPROTO_NEED_PATCH
+	bool
+config EMBTK_XCBPROTO_NEED_AUTORECONF
+	bool
+config EMBTK_XCBPROTO_PKG_IS_TARGZ
+	bool
+config EMBTK_XCBPROTO_PKG_IS_TARBZ2
+	bool

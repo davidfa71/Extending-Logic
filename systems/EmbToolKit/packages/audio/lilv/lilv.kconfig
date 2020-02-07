@@ -1,0 +1,58 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         lilv.kconfig
+# \brief        lilv.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         May 2014
+################################################################################
+
+config EMBTK_HAVE_LILV
+	bool "Have lilv"
+	select EMBTK_HAVE_LV2
+	select EMBTK_HAVE_SERD
+	select EMBTK_HAVE_SORD
+	select EMBTK_HAVE_SRATOM
+	help
+	 Lilv is a C library to make the use of LV2 plugins as simple as possible
+	 for applications. Lilv is the successor to SLV2, rewritten to be
+	 significantly faster and have minimal dependencies. It is stable,
+	 well-tested software (the included test suite covers over 90% of the
+	 code) in use by several applications.
+
+choice
+	prompt "lilv version to use"
+	depends on EMBTK_HAVE_LILV
+	help
+	 lilv version to use
+
+	config EMBTK_LILV_VERSION_0_18_0
+		bool "lilv-0.18.0"
+endchoice
+
+config EMBTK_LILV_USE_WAF
+	bool
+	default y
+
+config EMBTK_LILV_VERSION_STRING
+	string
+	default "0.18.0"	if EMBTK_LILV_VERSION_0_18_0
+
+config EMBTK_LILV_NEED_PATCH
+	bool

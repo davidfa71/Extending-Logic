@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         mtdutils.kconfig
+# \brief	mtdutils.kconfig of Embtoolkit.
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         August 2010
+################################################################################
+
+config EMBTK_HAVE_MTDUTILS
+	bool "Have mtd-utils in your target root filesystem"
+	select EMBTK_HAVE_E2FSPROGS-LIBUUID
+	select EMBTK_HAVE_ZLIB
+	select EMBTK_HAVE_LZO
+	select KEMBTK_UCLIBC_UCLIBC_SUSV3_LEGACY_MACROS if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_HAS_FLOATS if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_DO_C99_MATH if EMBTK_CLIB_UCLIBC
+	help
+	 The MTD Utilities are a collection of tools that allow the user to
+	 interact with the MTD subsystem in the kernel to perform operations on
+	 Flash devices.
+
+choice
+	prompt "mtd-utils version used"
+	depends on EMBTK_HAVE_MTDUTILS
+	help
+	 Version of mtd-utils to use.
+
+	config EMBTK_MTDUTILS_VERSION_1_5_1
+		bool "mtd-utils-1.5.1"
+		select EMBTK_MTDUTILS_NEED_PATCH
+endchoice
+
+config EMBTK_MTDUTILS_VERSION_STRING
+	string
+	default "1.5.1"		if EMBTK_MTDUTILS_VERSION_1_5_1
+
+config EMBTK_MTDUTILS_NEED_PATCH
+	bool

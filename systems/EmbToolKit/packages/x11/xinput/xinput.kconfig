@@ -1,0 +1,59 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xinput.kconfig
+# \brief	xinput.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         September 2010
+################################################################################
+
+config EMBTK_HAVE_XINPUT
+	bool "Have xinput"
+	select EMBTK_HAVE_XPROTO
+	select EMBTK_HAVE_INPUTPROTO
+	select EMBTK_HAVE_LIBX11
+	select EMBTK_HAVE_LIBXEXT
+	select EMBTK_HAVE_LIBXI
+	help
+		xinput is a utility to configure and test XInput devices.
+choice
+	prompt "xinput version you wish"
+	depends on EMBTK_HAVE_XINPUT
+	help
+	 Here you can choose which version of xinput you want to use.
+
+	config  EMBTK_XINPUT_VERSION_1_5_3
+		bool "xinput-1.5.3"
+	config  EMBTK_XINPUT_VERSION_1_5_2
+		bool "xinput-1.5.2"
+endchoice
+
+config EMBTK_XINPUT_VERSION_STRING
+	string
+	default "1.5.3"		if EMBTK_XINPUT_VERSION_1_5_3
+	default "1.5.2"		if EMBTK_XINPUT_VERSION_1_5_2
+
+config EMBTK_XINPUT_NEED_PATCH
+	bool
+config EMBTK_XINPUT_NEED_AUTORECONF
+	bool
+config EMBTK_XINPUT_PKG_IS_TARGZ
+	bool
+config EMBTK_XINPUT_PKG_IS_TARBZ2
+	bool

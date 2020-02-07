@@ -1,0 +1,73 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libjpeg.kconfig
+# \brief	libjpeg.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         October 2009
+################################################################################
+
+config EMBTK_HOST_HAVE_LIBJPEG
+	bool
+	help
+		JPEG (pronounced "jay-peg") for host development machine.
+
+config EMBTK_HAVE_LIBJPEG
+	bool "Have libjpeg"
+	help
+		JPEG (pronounced "jay-peg") is a standardized image compression
+		mechanism. JPEG stands for Joint Photographic Experts Group, the
+		original name of the committee that wrote the standard.
+
+choice
+	prompt "libjpeg version you wish"
+	depends on EMBTK_HAVE_LIBJPEG || EMBTK_HOST_HAVE_LIBJPEG
+	help
+		Here you can choose which version of libjpeg you want to use.
+
+	config  EMBTK_LIBJPEG_VERSION_V8
+		bool "libjpeg-8"
+	config  EMBTK_LIBJPEG_VERSION_V7
+		bool "libjpeg-7"
+endchoice
+
+config	EMBTK_LIBJPEG_VERSION_STRING
+	string
+	default "8"		if EMBTK_LIBJPEG_VERSION_V8
+	default "7"		if EMBTK_LIBJPEG_VERSION_V7
+
+config EMBTK_LIBJPEG_NEED_PATCH
+	bool
+	select EMBTK_LIBJPEG_HOST_NEED_PATCH
+config EMBTK_LIBJPEG_NEED_AUTORECONF
+	bool
+	select EMBTK_LIBJPEG_HOST_NEED_AUTORECONF
+config EMBTK_LIBJPEG_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBJPEG_PKG_IS_TARBZ2
+	bool
+
+config EMBTK_LIBJPEG_HOST_NEED_PATCH
+	bool
+config EMBTK_LIBJPEG_HOST_NEED_AUTORECONF
+	bool
+config EMBTK_LIBJPEG_HOST_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBJPEG_HOST_PKG_IS_TARBZ2
+	bool

@@ -1,0 +1,46 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         audio.kconfig
+# \brief	audio.kconfig of Embtoolkit
+# \author       GAYE Abdoulaye Walsimou, <walsimou@walsimou.com>
+# \date         May 2014
+################################################################################
+
+# alsa-lib
+source packages/audio/alsa-lib/alsa-lib.kconfig
+
+# ladspa
+source packages/audio/ladspa/ladspa.kconfig
+
+# libsndfile
+source packages/audio/libsndfile/libsndfile.kconfig
+
+# libsamplerate
+source packages/audio/libsamplerate/libsamplerate.kconfig
+
+# lilv
+source packages/audio/lilv/lilv.kconfig
+
+# lv2
+source packages/audio/lv2/lv2.kconfig
+
+# jack2
+source packages/audio/jack2/jack2.kconfig
+

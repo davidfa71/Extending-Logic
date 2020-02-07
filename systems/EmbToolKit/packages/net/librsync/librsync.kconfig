@@ -1,0 +1,58 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         librsync.kconfig
+# \brief	librsync.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         January 2014
+################################################################################
+
+config EMBTK_HAVE_LIBRSYNC
+	bool "Have librsync"
+	select EMBTK_HAVE_POPT
+
+	help
+	 The librsync library implements network delta-compression of streams
+	 and files. The algorithm is similar to that used in the rsync(1) and
+	 xdelta(2) programs, but specialized for transfer of arbitrary-length
+	 octet streams.
+	 Unlike most diff programs, librsync does not require access to both of
+	 the files on the same machine, but rather only a short ``signature'' of
+	 the old file and the complete contents of the new file.
+	 See http://librsync.sourceforge.net
+
+choice
+	prompt "librsync version you wish"
+	depends on EMBTK_HAVE_LIBRSYNC
+	help
+	 Here you can choose which version of librsync you want to use.
+
+	config  EMBTK_LIBRSYNC_VERSION_0_9_7
+		bool "librsync-0.9.7"
+		select EMBTK_LIBRSYNC_NEED_PATCH
+endchoice
+
+config EMBTK_LIBRSYNC_VERSION_STRING
+	string
+	default "0.9.7"		if EMBTK_LIBRSYNC_VERSION_0_9_7
+
+config EMBTK_LIBRSYNC_NEED_PATCH
+	bool
+config EMBTK_LIBRSYNC_NEED_AUTORECONF
+	bool

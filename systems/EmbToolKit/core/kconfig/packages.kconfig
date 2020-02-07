@@ -1,0 +1,103 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         packages.kconfig
+# \brief	packages.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         May 2009
+################################################################################
+
+#Busybox
+config EMBTK_HAVE_BB
+	bool "Have Busybox in your root filesystem"
+	default y
+
+if EMBTK_HAVE_BB
+menu "Busybox configuration"
+source packages/busybox/busybox.kconfig
+endmenu
+endif
+
+menu "Packages to include in your root filesystem"
+
+menu "Flash manipulation tools"
+source packages/system/mtdutils/mtdutils.kconfig
+endmenu
+
+menu "Audio packages"
+source packages/audio/audio.kconfig
+endmenu
+
+menu "Compression packages"
+source packages/compression/compression.kconfig
+endmenu
+
+menu "Database libraries/packages"
+source packages/database/database.kconfig
+endmenu
+
+menu "Development libraries/packages"
+source packages/development/development.kconfig
+endmenu
+
+menu "Graphics packages"
+source packages/graphics/graphics.kconfig
+endmenu
+
+menu "Mathematics packages"
+source packages/math/math.kconfig
+endmenu
+
+menu "Networking packages"
+source packages/net/net.kconfig
+endmenu
+
+menu "Scripting languages"
+source packages/scripting-languages/scripting-languages.kconfig
+endmenu
+
+menu "Security packages"
+source packages/security/security.kconfig
+endmenu
+
+menu "System packages"
+source packages/system/system.kconfig
+endmenu
+
+menu "Text processing packages"
+source packages/textproc/textproc.kconfig
+endmenu
+
+menu "Miscellaneous packages"
+source packages/misc/misc.kconfig
+endmenu
+
+menu "X window system"
+source packages/x11/x11.kconfig
+endmenu
+
+endmenu
+
+menu "Support native languages in root filesystem"
+source core/kconfig/nls.kconfig
+endmenu
+
+menu "Support timezone in root filesystem"
+source core/kconfig/timez.kconfig
+endmenu

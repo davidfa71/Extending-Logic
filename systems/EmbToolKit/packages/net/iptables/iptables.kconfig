@@ -1,0 +1,61 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012 Averell KINOUANI <a.kinouani@voila.fr>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         iptables.kconfig
+# \brief	iptables.kconfig of Embtoolkit
+# \author       Averell KINOUANI,  <averell.kinouani@embtoolkit.org>
+# \date         Juin 2013
+################################################################################
+
+config EMBTK_HAVE_IPTABLES
+	bool "Have Iptables"
+	select KEMBTK_UCLIBC_UCLIBC_HAS_FLOATS if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_DO_C99_MATH if EMBTK_CLIB_UCLIBC
+	help
+		iptables is the userspace command line program used to configure
+		the Linux 2.4.x and 2.6.x IPv4 packet filtering ruleset.
+		It is target towards system administrators.
+		Since Network Address Translation is also configured from the
+		packet filter ruleset, iptables is used for Sthis, too.
+
+choice
+	prompt "Iptables version you wish"
+	depends on EMBTK_HAVE_IPTABLES
+	help
+		Here you can choose which version of iptables you want to use.
+	config  EMBTK_IPTABLES_VERSION_1_4_19_1
+		bool "iptables-1.4.19.1"
+
+endchoice
+
+config EMBTK_IPTABLES_HAVE_LIBIPQ
+	bool "Have Libipq"
+	depends on EMBTK_HAVE_IPTABLES
+	help
+		libipq is a developpement library for iptables userspace packet
+		queuing. libipq provides an API for communicating with ip_queue.
+
+config EMBTK_IPTABLES_VERSION_STRING
+	string
+	default "1.4.19.1"	if EMBTK_IPTABLES_VERSION_1_4_19_1
+
+config EMBTK_IPTABLES_NEED_PATCH
+	bool
+config EMBTK_IPTABLES_NEED_AUTORECONF
+	bool

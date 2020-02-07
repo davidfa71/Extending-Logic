@@ -1,0 +1,62 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libxi.kconfig
+# \brief	libxi.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         September 2010
+################################################################################
+
+config EMBTK_HAVE_LIBXI
+	bool "Have libXi"
+	select EMBTK_HAVE_XPROTO
+	select EMBTK_HAVE_XEXTPROTO
+	select EMBTK_HAVE_INPUTPROTO
+	select EMBTK_HAVE_LIBX11
+	select EMBTK_HAVE_LIBXEXT
+	help
+		library for the X Input Extension.
+choice
+	prompt "libXi version you wish"
+	depends on EMBTK_HAVE_LIBXI
+	help
+		Here you can choose which version of libXi you want to use.
+
+	config  EMBTK_LIBXI_VERSION_1_4_3
+		bool "libXi-1.4.3"
+	config  EMBTK_LIBXI_VERSION_1_4_1
+		bool "libXi-1.4.1"
+	config  EMBTK_LIBXI_VERSION_1_3
+		bool "libXi-1.3"
+endchoice
+
+config EMBTK_LIBXI_VERSION_STRING
+	string
+	default "1.4.3"		if EMBTK_LIBXI_VERSION_1_4_3
+	default "1.4.1"		if EMBTK_LIBXI_VERSION_1_4_1
+	default "1.3"		if EMBTK_LIBXI_VERSION_1_3
+
+config EMBTK_LIBXI_NEED_PATCH
+	bool
+config EMBTK_LIBXI_NEED_AUTORECONF
+	bool
+config EMBTK_LIBXI_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBXI_PKG_IS_TARBZ2
+	bool

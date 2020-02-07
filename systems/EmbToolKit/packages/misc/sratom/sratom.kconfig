@@ -1,0 +1,54 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         sratom.kconfig
+# \brief        sratom.kconfig of Embtoolkit.
+# \author       Ricardo Crudo <ricardo.crudo@gmail.com>
+# \date         May 2014
+################################################################################
+
+config EMBTK_HAVE_SRATOM
+	bool "Have sratom"
+	select EMBTK_HAVE_LV2
+	select EMBTK_HAVE_SERD
+	select EMBTK_HAVE_SORD
+	help
+	 Sratom is a library for serialising LV2 atoms to/from RDF, particularly
+	 the Turtle syntax.
+
+choice
+	prompt "sratom version to use"
+	depends on EMBTK_HAVE_SRATOM
+	help
+	 sratom version to use
+
+	config EMBTK_SRATOM_VERSION_0_4_4
+		bool "sratom-0.4.4"
+endchoice
+
+config EMBTK_SRATOM_USE_WAF
+	bool
+	default y
+
+config EMBTK_SRATOM_VERSION_STRING
+	string
+	default "0.4.4"	if EMBTK_SRATOM_VERSION_0_4_4
+
+config EMBTK_SRATOM_NEED_PATCH
+	bool

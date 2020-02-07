@@ -1,0 +1,163 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         hosttools-buildopts.kconfig
+# \brief	hosttools-buildopts.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         January 2012
+################################################################################
+
+comment "-----------------------------"
+comment "Build options"
+comment "-----------------------------"
+
+config EMBTK_NUMBER_BUILD_JOBS
+	int "Number of parallel build jobs"
+	default 1
+
+config EMBTK_DOWNLOAD_DIR
+	string "Download directory"
+	default $EMBTK_DEFAULT_DL
+	help
+	 Directory where downloaded packages are stored.
+
+	 You must specify here an absolute directory location, if you choose to
+	 use an alternate location.
+
+	 Note:
+	 If you want to preserve downloaded packages from being removed when
+	 you do make distclean, you must specify an alternate location.
+	 If you leave this option in the default location under Embtoolkit,
+	 $(EMBTK_ROOT)/dl, then make distclean will remove downloaded packages.
+	 But keep in mind that only a make distclean command will remove
+	 downloaded packages in the default location under EmbToolkit,
+	 not make clean.
+
+config EMBTK_WIPEOUTWORKSPACES
+	bool "Wipe out packages workspace after successful build"
+	help
+	 Wipe out packages workspace after successful build. If is highly
+	 recommended to enable this option if you want to save disk space on you
+	 host development.
+
+config EMBTK_CACHE_PATCHES
+	bool "Preserve first downloaded patches and do not download new one"
+	default y
+	help
+	 When this option is enable, new patches for packages will not be
+	 downloaded the second time you run the build process.
+
+comment "-----------------------------"
+comment "Host tools"
+comment "-----------------------------"
+
+config EMBTK_HAVE_MKIMAGE
+	bool
+	select EMBTK_HOST_HAVE_ZLIB
+	default y
+	help
+	 u-boot mkimage tool.
+
+#
+# gettext
+#
+source packages/htools/gettext/gettext.kconfig
+
+#
+# gperf for host
+#
+source packages/htools/gperf/gperf.kconfig
+
+#
+# GMP
+#
+source packages/htools/gmp/gmp.kconfig
+
+#
+# MPFR
+#
+source packages/htools/mpfr/mpfr.kconfig
+
+#
+# MPC
+#
+source packages/htools/mpc/mpc.kconfig
+
+#
+# ccache
+#
+source packages/htools/ccache/ccache.kconfig
+
+#
+# Autotools
+#
+source packages/htools/m4/m4.kconfig
+source packages/htools/libtool/libtool.kconfig
+source packages/htools/autoconf/autoconf.kconfig
+source packages/htools/automake/automake.kconfig
+
+#
+# GNU sed
+#
+source packages/htools/gsed/gsed.kconfig
+
+#
+# BSD make
+#
+source core/kconfig/bmake.kconfig
+
+#
+# GNU make
+#
+source packages/htools/gmake/gmake.kconfig
+
+#
+# libuuid
+#
+source packages/htools/e2fsprogs-libuuid/e2fsprogs-libuuid.kconfig
+
+#
+# mtd-utils
+#
+source packages/htools/mtdutils/mtdutils.kconfig
+
+#
+# pkgconf
+#
+source packages/htools/pkgconf/pkgconf.kconfig
+
+#
+# fakeroot
+#
+source packages/htools/fakeroot/fakeroot.kconfig
+
+#
+# findutils
+#
+source packages/htools/findutils/findutils.kconfig
+
+#
+# libelf
+#
+source packages/htools/libelf/libelf.kconfig
+
+#
+# zlib for host
+#
+source packages/htools/zlib/zlib.kconfig

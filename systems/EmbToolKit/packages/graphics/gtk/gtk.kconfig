@@ -1,0 +1,111 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 GAYE Abdoulaye Walsimou.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gtk.kconfig
+# \brief	gtk.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2009
+################################################################################
+
+config EMBTK_HAVE_GTK
+	bool "Have gtk+"
+	select EMBTK_HOST_HAVE_GDKPIXBUF
+	select EMBTK_HAVE_GLIB
+	select EMBTK_HAVE_PANGO
+	select EMBTK_HAVE_ATK
+	select EMBTK_HAVE_LIBJPEG
+	select EMBTK_HAVE_LIBPNG
+	select EMBTK_HAVE_LIBTIFF
+	select EMBTK_HAVE_FONTCONFIG
+	select EMBTK_HAVE_CAIRO
+	help
+		GTK+ is a highly usable, feature rich toolkit for creating
+		graphical user interfaces which boasts cross platform
+		compatibility and an easy to use API. GTK+ it is written in C,
+		but has bindings to many other popular programming languages
+		such as C++, Python and C# among others. GTK+ is licensed under
+		the GNU LGPL 2.1 allowing development of both free and
+		proprietary software with GTK+ without any license fees or
+		royalties.
+choice
+	prompt "gtk+ backend"
+	depends on EMBTK_HAVE_GTK
+	help
+		Which gtk+ backend to use
+
+	config  EMBTK_GTK_BACKEND_XSERVER
+		bool "X windowing system"
+		select EMBTK_HAVE_CAIRO_WITH_LIBXCB
+		select EMBTK_HAVE_LIBX11
+		select EMBTK_HAVE_LIBXEXT
+		select EMBTK_HAVE_LIBXRENDER
+		select EMBTK_HAVE_XINPUT
+	config  EMBTK_GTK_BACKEND_DIRECTFB
+		bool "DirectFB"
+		select EMBTK_HAVE_DIRECTFB
+		select EMBTK_HAVE_CAIRO_WITH_DIRECTFB
+endchoice
+
+choice
+	prompt "gtk+ version you wish"
+	depends on EMBTK_HAVE_GTK
+	help
+	 Here you can choose which version of gtk you want to use.
+
+	config  EMBTK_GTK_VERSION_2_20_1
+		bool "gtk+-2.20.1"
+		select EMBTK_ATK_VERSION_1_30_X_AND_GREATER
+	config  EMBTK_GTK_VERSION_2_18_9
+		bool "gtk+-2.18.9"
+	config  EMBTK_GTK_VERSION_2_18_8
+		bool "gtk+-2.18.8"
+	config  EMBTK_GTK_VERSION_2_18_7
+		bool "gtk+-2.18.7"
+	config  EMBTK_GTK_VERSION_2_18_6
+		bool "gtk+-2.18.6"
+	config  EMBTK_GTK_VERSION_2_18_5
+		bool "gtk+-2.18.5"
+endchoice
+
+config EMBTK_GTK_MAJOR_VERSION_STRING
+	string
+	default "2.20"		if EMBTK_GTK_VERSION_2_20_1
+	default "2.18"		if EMBTK_GTK_VERSION_2_18_9
+	default "2.18"		if EMBTK_GTK_VERSION_2_18_8
+	default "2.18"		if EMBTK_GTK_VERSION_2_18_7
+	default "2.18"		if EMBTK_GTK_VERSION_2_18_6
+	default "2.18"		if EMBTK_GTK_VERSION_2_18_5
+
+config EMBTK_GTK_VERSION_STRING
+	string
+	default "2.20.1"	if EMBTK_GTK_VERSION_2_20_1
+	default "2.18.9"	if EMBTK_GTK_VERSION_2_18_9
+	default "2.18.8"	if EMBTK_GTK_VERSION_2_18_8
+	default "2.18.7"	if EMBTK_GTK_VERSION_2_18_7
+	default "2.18.6"	if EMBTK_GTK_VERSION_2_18_6
+	default "2.18.5"	if EMBTK_GTK_VERSION_2_18_5
+
+config EMBTK_GTK_NEED_PATCH
+	bool
+config EMBTK_GTK_NEED_AUTORECONF
+	bool
+config EMBTK_GTK_PKG_IS_TARGZ
+	bool
+config EMBTK_GTK_PKG_IS_TARBZ2
+	bool

@@ -1,0 +1,86 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2009-2011 Abdoulaye Walsimou GAYE.
+# For Copyrright from linux kernel's build/configure system, see their source
+# code.
+#
+# This program is free software; you can distribute it and/or modify it
+# under the terms of the GNU General Public License
+# (Version 2 or later) published by the Free Software Foundation.
+#
+# This program is distributed in the hope it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+# FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+# for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place - Suite 330, Boston MA 02111-1307, USA.
+################################################################################
+#
+# \file         fs.kconfig
+# \brief	fs.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         August 2009
+################################################################################
+
+menu "Type of root filesystem to build"
+
+#INITRAMFS cpio archive
+config EMBTK_ROOTFS_HAVE_INITRAMFS_CPIO
+	bool "Build cpio archive for initramfs"
+	help
+	 Build a cpio archive, in order to use it later as source file for
+	 initramfs in the linux kernel.
+choice
+	depends on EMBTK_ROOTFS_HAVE_INITRAMFS_CPIO
+	prompt "Compression program to use"
+	config EMBTK_ROOTFS_HAVE_INITRAMFS_CPIO_GZIPED
+		bool "gzip"
+		help
+		 Use gzip compression algorithm.
+	config EMBTK_ROOTFS_HAVE_INITRAMFS_CPIO_BZIPED
+		bool "bzip2"
+		help
+		 Use bzip2 compression algorithm.
+endchoice
+
+#####################################
+# JFFS2 root filesystem image build #
+#####################################
+config EMBTK_ROOTFS_HAVE_JFFS2
+	bool "Build a JFFS2 root filesystem image"
+	select EMBTK_HOST_HAVE_MTDUTILS
+	help
+		Build a JFFS2 root filesystem image for your target.
+config EMBTK_ROOTFS_HAVE_JFFS2_ERASEBLOCKSIZE
+	depends on EMBTK_ROOTFS_HAVE_JFFS2
+	help
+		Erase block size to use in bytes
+		NOTE: If erase block size is below 4096 the unit is assumed
+		to be KiB
+	int "Erase block size to use in bytes"
+	default 16384
+config EMBTK_ROOTFS_HAVE_JFFS2_PAGESIZE
+	depends on EMBTK_ROOTFS_HAVE_JFFS2
+	help
+		Page size to use in bytes
+	int "Page size to use in bytes"
+	default 4096
+config EMBTK_ROOTFS_HAVE_JFFS2_CLEANMARKERSIZE
+	depends on EMBTK_ROOTFS_HAVE_JFFS2
+	help
+		Size of cleanmarker in bytes (almost always 12)
+	int "Size of cleanmarker in bytes (almost always 12)"
+	default 12
+
+############################
+# SQUASHFS root filesystem #
+############################
+config EMBTK_ROOTFS_HAVE_SQUASHFS
+	bool "Build a squashfs root filesystem image"
+	select EMBTK_HOST_HAVE_SQUASHFS
+	help
+	 Build a squashfs root filesystem image for your target
+
+endmenu

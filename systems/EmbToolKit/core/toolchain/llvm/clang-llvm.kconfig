@@ -1,0 +1,49 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2012-2014 Abdoulaye Walsimou GAYE <awg@embtoolkit.org>.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         clang-llvm.kconfig
+# \brief	clang-llvm.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         December 2012
+################################################################################
+
+#
+# clang/llvm version
+#
+choice
+	prompt "Version of llvm you wish"
+	help
+	 Version of llvm you wish
+
+	config EMBTK_CLANG_HOST_LLVM_HOST_VERSION_3_4_1
+		bool "clang/llvm-3.4.1"
+		select EMBTK_LLVM_HOST_VERSION_3_4_1
+		select EMBTK_CLANG_HOST_VERSION_3_4_1
+	config EMBTK_CLANG_HOST_LLVM_HOST_VERSION_3_3
+		bool "clang/llvm-3.3"
+		select EMBTK_LLVM_HOST_VERSION_3_3
+		select EMBTK_CLANG_HOST_VERSION_3_3
+	config EMBTK_CLANG_HOST_LLVM_HOST_VERSION_GIT
+		bool "Use clang/llvm git repository"
+		select EMBTK_LLVM_HOST_VERSION_GIT
+		select EMBTK_CLANG_HOST_VERSION_GIT
+		help
+		 Answer Y here if you want to build your toolchain based on
+		 clang/llvm sources from its GIT repository.
+endchoice

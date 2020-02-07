@@ -1,0 +1,50 @@
+%{
+#include <stdbool.h>
+#include <stdio.h>
+#include "Objective.hpp"
+#include <fstream>
+
+Objective        obj;
+double           coef;
+std::vector<int> factors;
+bool             start = true;
+
+
+
+%}
+/* enable c++ scanner class generation */
+%option c++
+
+/* the manual says "somewhat more optimized" */
+%option batch
+
+%option noyywrap
+
+
+delim		[\ \t\r]
+ws		{delim}+
+coefficient	[+-]?[0-9]+(\.[0-9]+)?
+varindex	[0-9]+
+
+
+/* Variables in DIMACS start at 1, but CUDD variables start at 0 */
+%%
+{ws}		        {                                          }
+{varindex}		{ if (start) coef = atof(yytext); else factors.push_back(atoi(yytext)-1); start = false;      }	
+{coefficient}		{ coef = atof(yytext); start = false;                     }
+\*			{                                          }
+\+			{ obj.add(coef, factors); factors.clear(); start = true; }
+root			{                                          }	
+<<EOF>>                 { obj.add(coef, factors); return 0;        }
+.|\n                    {}
+%% /*** Additional Code ***/
+
+Objective lex(std::string inputfile) {
+    std::ifstream in(inputfile.c_str());
+    FlexLexer* lexer = new yyFlexLexer(&in);
+    lexer->yylex();
+    return obj;
+}
+
+
+

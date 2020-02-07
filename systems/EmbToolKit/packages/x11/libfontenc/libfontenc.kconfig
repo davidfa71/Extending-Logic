@@ -1,0 +1,55 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2011 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         libfontenc.kconfig
+# \brief	libfontenc.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_LIBFONTENC
+	bool "Have libfontenc"
+	select EMBK_HAVE_ZLIB
+	help
+		libfontenc for X windowing system
+choice
+	prompt "libfontenc version you wish"
+	depends on EMBTK_HAVE_LIBFONTENC
+	help
+		Here you can choose which version of libfontenc you want to use.
+
+	config  EMBTK_LIBFONTENC_VERSION_1_1_0
+		bool "libfontenc-1.1.0"
+	config  EMBTK_LIBFONTENC_VERSION_1_0_5
+		bool "libfontenc-1.0.5"
+endchoice
+
+config EMBTK_LIBFONTENC_VERSION_STRING
+	string
+	default "1.1.0"	if EMBTK_LIBFONTENC_VERSION_1_1_0
+	default "1.0.5"	if EMBTK_LIBFONTENC_VERSION_1_0_5
+
+config EMBTK_LIBFONTENC_NEED_PATCH
+	bool
+config EMBTK_LIBFONTENC_NEED_AUTORECONF
+	bool
+config EMBTK_LIBFONTENC_PKG_IS_TARGZ
+	bool
+config EMBTK_LIBFONTENC_PKG_IS_TARBZ2
+	bool

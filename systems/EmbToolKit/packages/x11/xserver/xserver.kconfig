@@ -1,0 +1,125 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2010-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         xserver.kconfig
+# \brief	xserver.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2010
+################################################################################
+
+config EMBTK_HAVE_XSERVER
+	bool "Have X window system server"
+	select EMBTK_HAVE_UTILMACROS
+	select EMBTK_HAVE_BIGREQSPROTO
+	select EMBTK_HAVE_COMPOSITEPROTO
+	select EMBTK_HAVE_DAMAGEPROTO
+	select EMBTK_HAVE_FIXESPROTO
+	select EMBTK_HAVE_FONTSPROTO
+	select EMBTK_HAVE_INPUTPROTO
+	select EMBTK_HAVE_KBPROTO
+	select EMBTK_HAVE_RANDRPROTO
+	select EMBTK_HAVE_RECORDPROTO
+	select EMBTK_HAVE_RENDERPROTO
+	select EMBTK_HAVE_RESOURCEPROTO
+	select EMBTK_HAVE_VIDEOPROTO
+	select EMBTK_HAVE_XCBPROTO
+	select EMBTK_HAVE_XCMISCPROTO
+	select EMBTK_HAVE_XEXTPROTO
+	select EMBTK_HAVE_XPROTO
+	select EMBTK_HAVE_LIBXFONT
+	select EMBTK_HAVE_LIBXKBFILE
+	select EMBTK_HAVE_XTRANS
+	select EMBTK_HAVE_LIBRESSL
+	select EMBTK_HAVE_PIXMAN
+	help
+		Have a X server in your root file system
+choice
+	prompt "X server variant to install"
+	depends on EMBTK_HAVE_XSERVER
+	help
+		Choose which variant of X server to install
+
+	config EMBTK_HAVE_XSERVER_XORG
+		bool "xorg-server X server"
+		select KEMBTK_EGLIBC_OPTION_EGLIBC_STREAMS if EMBTK_CLIB_EGLIBC
+		select EMBTK_HAVE_LIBPCIACCESS
+		help
+			Traditional X server found on most Linux distributions.
+	config EMBTK_HAVE_XSERVER_KDRIVE
+		bool "kdrive X server: Xfbdev"
+		help
+			KDrive is a small X Window System server implementation.
+			It is commonly used in embedded systems with the need
+			for a very thin X server.
+			Kdriver is almost unmaintained now days, despite the
+			fact it is integrated in the official xorg-server
+			package.
+endchoice
+choice
+	prompt "xserver version you wish"
+	depends on EMBTK_HAVE_XSERVER
+	help
+		Here you can choose which version of xserver you want to use.
+
+	config  EMBTK_XSERVER_VERSION_1_9_5
+		bool "xserver-1.9.5"
+	config  EMBTK_XSERVER_VERSION_1_9_3
+		bool "xserver-1.9.3"
+	config  EMBTK_XSERVER_VERSION_1_9_2
+		bool "xserver-1.9.2"
+	config  EMBTK_XSERVER_VERSION_1_9_1
+		bool "xserver-1.9.1"
+	config  EMBTK_XSERVER_VERSION_1_8_2
+		bool "xserver-1.8.2"
+	config  EMBTK_XSERVER_VERSION_1_8_1
+		bool "xserver-1.8.1"
+	config  EMBTK_XSERVER_VERSION_1_7_7
+		bool "xserver-1.7.7"
+	config  EMBTK_XSERVER_VERSION_1_7_6
+		bool "xserver-1.7.6"
+endchoice
+
+config EMBTK_HAVE_XSERVER_WITH_TSLIB
+	bool "build the x server with touchscreen library"
+	depends on EMBTK_HAVE_XSERVER
+	select EMBTK_HAVE_TSLIB
+
+if EMBTK_HAVE_XSERVER_XORG
+comment "Xorg server input drivers"
+source packages/x11/xf86inputevdev/xf86inputevdev.kconfig
+
+comment "Xorg server video drivers"
+source packages/x11/xf86videofbdev/xf86videofbdev.kconfig
+endif
+
+config EMBTK_XSERVER_VERSION_STRING
+	string
+	default "1.9.5"		if EMBTK_XSERVER_VERSION_1_9_5
+	default "1.9.3"		if EMBTK_XSERVER_VERSION_1_9_3
+	default "1.9.2"		if EMBTK_XSERVER_VERSION_1_9_2
+	default "1.9.1"		if EMBTK_XSERVER_VERSION_1_9_1
+	default "1.8.2"		if EMBTK_XSERVER_VERSION_1_8_2
+	default "1.8.1"		if EMBTK_XSERVER_VERSION_1_8_1
+	default "1.7.7"		if EMBTK_XSERVER_VERSION_1_7_7
+	default "1.7.6"		if EMBTK_XSERVER_VERSION_1_7_6
+
+config EMBTK_XSERVER_NEED_PATCH
+	bool
+config EMBTK_XSERVER_NEED_AUTORECONF
+	bool

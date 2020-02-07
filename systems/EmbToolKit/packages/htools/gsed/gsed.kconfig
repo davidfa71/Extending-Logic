@@ -1,0 +1,39 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2013-2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         gsed.kconfig
+# \brief	gsed.kconfig of Embtoolkit.
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         March 2013
+################################################################################
+
+config EMBTK_HOST_HAVE_GSED
+	bool
+	default y if EMBTK_HOST_OSTYPE_EQ_bsd
+	help
+	 gnu sed.
+
+config EMBTK_GSED_HOST_VERSION_STRING
+	string
+	default "4.2.1"
+
+config EMBTK_GSED_HOST_NEED_PATCH
+	bool
+config EMBTK_GSED_HOST_NEED_AUTORECONF
+	bool

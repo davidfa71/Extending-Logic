@@ -1,0 +1,60 @@
+################################################################################
+# Embtoolkit
+# Copyright(C) 2014 Abdoulaye Walsimou GAYE.
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+################################################################################
+#
+# \file         popt.kconfig
+# \brief	popt.kconfig of Embtoolkit
+# \author       Abdoulaye Walsimou GAYE <awg@embtoolkit.org>
+# \date         January 2014
+################################################################################
+
+config EMBTK_HAVE_POPT
+	bool "Have popt"
+	select KEMBTK_UCLIBC_UCLIBC_HAS_GLOB if EMBTK_CLIB_UCLIBC
+	select KEMBTK_UCLIBC_UCLIBC_HAS_GNU_GLOB if EMBTK_CLIB_UCLIBC
+
+	help
+	 This is the popt command line option parsing library.
+	 While it is similar to getopt(3), it contains a number of enhancements,
+	 including:
+	 1) popt is fully reentrant
+	 2) popt can parse arbitrary argv[] style arrays while getopt(2) makes
+	    this quite difficult
+	 3) popt allows users to alias command line arguments
+	 4) popt provides convenience functions for parsing strings into argv[]
+	    style arrays.
+	 See http://freshmeat.net/projects/popt
+
+choice
+	prompt "popt version you wish"
+	depends on EMBTK_HAVE_POPT
+	help
+	 Here you can choose which version of popt you want to use.
+
+	config  EMBTK_POPT_VERSION_1_16
+		bool "popt-1.16"
+endchoice
+
+config EMBTK_POPT_VERSION_STRING
+	string
+	default "1.16"		if EMBTK_POPT_VERSION_1_16
+
+config EMBTK_POPT_NEED_PATCH
+	bool
+config EMBTK_POPT_NEED_AUTORECONF
+	bool
