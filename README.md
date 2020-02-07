@@ -18,30 +18,19 @@ cd ..
 ```
 
 Use scripts at will. Examples:
-<<<<<<< HEAD
-./runAll.sh          -- This will translate all the feature models to standard and extended logic, build the corresponding BDDs and 
-                        print 3 tables corresponding to the number of clauses, the translation times and the BDD building times 
-=======
-./runAll.sh          -- This will translate all the feature models to standard and extended logic, build the corresponding BDDs and
-                        print 3 tables corresponding to the number of clauses, the translation times and the BDD building times
->>>>>>> e6d8f5fd563cf8e120bd3eb1c7dd0b055e2e5a35
-                        respectively. All the times are in milliseconds.
 
-./runAll-2threads.sh -- Same thing as runAll but instead of running everything in parallel, it uses only 2 threads. Useful if you
-                        only can/want use 2 threads at a time.
-<<<<<<< HEAD
-    
-=======
+./runAll.sh          -- This will translate all the feature models to standard and extended logic, build the corresponding       
+                        BDDs and print 3 tables corresponding to the number of clauses, the translation times and the BDD 
+                        building times respectively. All the times are in milliseconds.
 
->>>>>>> e6d8f5fd563cf8e120bd3eb1c7dd0b055e2e5a35
+./runAll-2threads.sh -- Same thing as runAll but instead of running everything in parallel, it uses only 2 threads. Useful if 
+                        you only can/want use 2 threads at a time.
+
 ./gatherResults.sh   -- The script to create the tables explained in the previous line and also the .csv files with the same info
 
-./cleanResults.sh    -- A script to delete the temporary files created in the experiments, including the translations and the logs
+./cleanResults.sh    -- A script to delete the temporary files created in the experiments, including the translations and the 
+                        logs
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e6d8f5fd563cf8e120bd3eb1c7dd0b055e2e5a35
 After running runAll.sh, you will find several files in the directories corresponding to each project tested:
 
 <name>-noXOR.log    -- A log of the standard translation + building of the BDD
@@ -57,7 +46,3 @@ After running runAll.sh, you will find several files in the directories correspo
 <name>-XOR.exp      -- The clauses in the extended translation of the system
 <name>-XOR.ord      -- The variables in the system as ordered by the static heuristic to start building the BDD
 <name>-XOR.dddmp    -- The BDD for the extended translation in dddmp format
-<<<<<<< HEAD
-=======
-
->>>>>>> e6d8f5fd563cf8e120bd3eb1c7dd0b055e2e5a35
