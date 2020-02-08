@@ -9,7 +9,7 @@ UNAME_S := $(shell uname -s)
     endif
 
 all:
-	cd cudd-3.0.0 && ./configure $(CONFPARM)
+	cd cudd-3.0.0 && touch aclocal.m4 Makefile.in && ./configure $(CONFPARM)
 	$(MAKE) -C cudd-3.0.0
 	sudo $(MAKE) -C cudd-3.0.0 install
 	@for i in $(DIRS); do  $(MAKE) -C $$i; done
