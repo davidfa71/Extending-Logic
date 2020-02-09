@@ -13,7 +13,6 @@ Compilation instructions:
 ```
 cd code
 make
-<enter root password to install CUDD libraries in /usr/local/lib>
 cd ..
 ```
 
