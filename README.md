@@ -20,7 +20,7 @@ Use scripts at will. Examples:
 
 ./runAll.sh          -- This will translate all the feature models to standard and extended logic, build the corresponding       
                         BDDs and print 3 tables corresponding to the number of clauses, the translation times and the BDD 
-                        building times respectively. All the times are in milliseconds.
+                        building times respectively. All the times are in milliseconds. It will take a few hours.
 
 ./runAll-2threads.sh -- Same thing as runAll but instead of running everything in parallel, it uses only 2 threads. Useful if 
                         you only can/want use 2 threads at a time.
