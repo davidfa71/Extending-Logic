@@ -4,9 +4,9 @@ OBJ = $(patsubst %,../obj/%,$(_OBJ))
 DEP = $(OBJ:.o=.d)  # one dependency file for each source
 
 
-INCLUDEFLAGS=-I/opt/local/include -I../tools/src -Isrc -I/usr/local/include 
+INCLUDEFLAGS=-I/opt/local/include -I../tools/src -Isrc -I/usr/local/include -I../include
 
-LDFLAGS=-lcudd -L/usr/local/lib -L/opt/local/lib 
+LDFLAGS=-lcudd -L/usr/local/lib -L/opt/local/lib -L../lib
 
 ifeq ($(OS),Windows_NT)
     CCFLAGS += -D WIN32
