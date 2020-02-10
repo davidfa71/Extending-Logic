@@ -1,4 +1,4 @@
-#!/opt/local/bin/bash
+#!/bin/bash
 SYSTEMS="Toybox axTLS BusyBox uClibc Fiasco Dell EmbToolKit Automotive02"
 for sys in $SYSTEMS
   do
