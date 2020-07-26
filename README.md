@@ -1,5 +1,5 @@
 **Software artifact accompanying the paper "Using Extended Logical Primitives for
-Efficient BDD Building" submitted to the IEEE Access journal**
+Efficient BDD Building" submitted to MDPI-Mathematics**
 
 The artifact has been tested on Linux and macOS.
 
