@@ -35,7 +35,7 @@
     string rootString;
     typedef enum {rootNode, mandatoryNode, optionalNode, groupNode, groupPartNode } nodeType;
     typedef enum { orCard, xorCard, otherCard } groupCard;
-    typedef enum { elTree, elConstraint, elOther } element;
+    typedef enum { elTree, elConstraint, elOther, elEOF } element;
     groupCard theCard;
     element theElement = elOther;
     int newcount = 1;
@@ -92,11 +92,13 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
 {tab}	                 { if (beforeId) tabcount++;                 }
 \<feature\_tree\>        { theElement = elTree;                      }
 \<constraints\>          { theElement = elConstraint; return elOther;} //Just to rearrange the nodes
-\<![^\>]*\>              {                                           }
+\<![^\>]*\>              {                                          }
 \<[^\><]*\>              { theElement = elOther;  lexeme = "" ;      }
-{newline}                { if (beforeId == false) {
+{newline}                {   
+			    if (beforeId == false) {
                             beforeId = true;
                             tabcount = 0;
+                            
                             return theElement;
                             }
                          }
@@ -107,7 +109,8 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
 {group}                  { beforeId = false; idtabcount = tabcount; cardtype = groupNode;      }
 {groupPart}              { beforeId = false; idtabcount = tabcount; cardtype = groupPartNode;  }
 (or)|(OR)                {                                                                     }
-{id}                     {  beforeId = false;
+{id}                     {  
+			    beforeId = false;
                             if (theElement == elTree) {
                                 idtabcount = tabcount;
                                 if (lexeme == "") {
@@ -150,7 +153,8 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
     high        =  atoi(string(txt, coma+1, txt.length() - coma - 2).c_str());
 }
 \({id}\)    {  lexeme = string(yytext,1, strlen(yytext)-2);  };
-.           {                                                };
+<<EOF>>     {  theElement = elEOF; return theElement; }
+.           {                                            };
 %%
 
 string newName() {
@@ -168,13 +172,12 @@ void scan(string filename) {
     node theNode;
     int nodeCounter = 0;
     element res = (element)(lexer->yylex());
-    while (res != elTree and !in.eof()) {
+    while (res != elTree && res != elEOF) {
         res = (element)(lexer->yylex());
     }
-    while (res == elTree and !in.eof())  {
+    while (res == elTree)  {
         // Group nodes don't have a name
         if (lexeme == "") lexeme = newName();
-        
         if (nodeMap.find(lexeme) != nodeMap.end()) {
             string name;
             // The name is repeting, we have to differentiate it
@@ -226,18 +229,18 @@ void scan(string filename) {
     
     // Now the constraints...
     
-    int clCount = 1;
-    while (res != elConstraint and !in.eof()) {
+    while (res != elConstraint && res != elEOF) {
         res = (element)(lexer->yylex());
     }
-    while (res == elConstraint and !in.eof())  {
-        if (not clause.empty()) {
+    while (res == elConstraint)  {
+        if (!clause.empty()) {
             clauses.push_back(clause);
             clause.clear();
         }
         res = (element)(lexer->yylex());
     };
-    
+
+   std::cerr << "Number of clauses " << clauses.size() << std::endl;
 }
 
 bool next_index(vector<int>& index, int top) {
@@ -247,16 +250,8 @@ bool next_index(vector<int>& index, int top) {
         int counter = index[pos];
         for(int newpos = pos; newpos < size; newpos++)
         index[newpos] = ++counter;
-        #ifdef _DEBUG_
-        cerr << "There is next index ";
-        print_index(index);
-        #endif
         return true;
     }
-    #ifdef _DEBUG_
-    cerr << "There no next index ";
-    print_index(index);
-    #endif
     return false;
 }
 
