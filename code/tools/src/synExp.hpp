@@ -17,6 +17,7 @@
 #include <vector>
 #include <sstream>
 #include <iomanip>
+#include <limits>
 #include <math.h>
 #include "symbolTable.hpp"
 
