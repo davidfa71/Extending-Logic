@@ -528,7 +528,7 @@ int main(int argc, char** argv) {
     scan(inputfile);
 
     // The root has to be in
-    expressions.push_back(new synSymbol(nodes[0].name));
+    expressions.push_back(new synSymbol(nodes[startNode].name));
     fillExpressions();
     addSymbols2Table(varnames);
     expressions = simplifyConstraints(expressions);
