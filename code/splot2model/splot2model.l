@@ -32,6 +32,7 @@
     bool useXOR      = false;
     bool beforeId    = true;
 
+    const int startNode = 1;
     string rootString;
     typedef enum {rootNode, mandatoryNode, optionalNode, groupNode, groupPartNode } nodeType;
     typedef enum { orCard, xorCard, otherCard } groupCard;
@@ -170,7 +171,7 @@ void scan(string filename) {
     ifstream in(filename.c_str());
     FlexLexer* lexer = new yyFlexLexer(&in);
     node theNode;
-    int nodeCounter = 0;
+    int nodeCounter = startNode;
     element res = (element)(lexer->yylex());
     while (res != elTree && res != elEOF) {
         res = (element)(lexer->yylex());
@@ -260,7 +261,7 @@ void fillExpressions(int k) {
     if (nodes[k].cardtype != groupNode)
         varnames.push_back(nodes[k].name);
     //std::cerr << "k " << k << " name " << nodes[k].name << " low " << nodes[k].low << " high " << nodes[k].high  << std::endl;
-    if (k != 0) { // 0 is the root, has no parent to imply
+    if (k != startNode) { // startNode is the root, has no parent to imply
         // The child implies its parent
         if (nodes[k].cardtype != groupPartNode && nodes[k].cardtype != groupNode) {
             synExp *child2parent = makeOr(makeNot(new synSymbol(nodes[k].name)),
@@ -347,7 +348,7 @@ void fillExpressions(int k) {
 }
 
 void fillExpressions() {
-    fillExpressions(0);
+    fillExpressions(startNode);
     for(list<list<int> >::iterator ittl = clauses.begin(); ittl != clauses.end(); ittl++) {
         synExp* clause = synFalse;
         for(list<int>::iterator itl = ittl->begin(); itl != ittl->end(); itl++) {
