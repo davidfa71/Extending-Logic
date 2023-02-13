@@ -23,17 +23,16 @@
     #include <algorithm>
     
     #include "synExp.hpp"
+    #include "configInfo.hpp"
+    #include "symbolTable.hpp"
     #include "mytime.hpp"
-    #include "eval.hpp"
-    #include "simplify.hpp"
-
-    #include "VariableTable.hpp"
-   
+    
+    using namespace std;
     int longname     = 0;
     bool useXOR      = false;
     bool beforeId    = true;
-    const int startNode = 1;
-    std::string rootString;
+
+    string rootString;
     typedef enum {rootNode, mandatoryNode, optionalNode, groupNode, groupPartNode } nodeType;
     typedef enum { orCard, xorCard, otherCard } groupCard;
     typedef enum { elTree, elConstraint, elOther, elEOF } element;
@@ -43,37 +42,36 @@
     int idtabcount = 0, tabcount = 0;
     int low, high;
     nodeType cardtype;
-    std::string lexeme;
+    string lexeme;
     bool rules = false;
-    std::list<std::list<int> > clauses;
-    std::vector<std::string> varnames;
-    std::vector<synExp*> expressions;
+    list<list<int> > clauses;
+    vector<string> varnames;
+    vector<synExp*> expressions;
     
     
     class node {
         
         public :
         
-        typedef std::vector<int>::iterator iterator;
+        typedef vector<int>::iterator iterator;
         groupCard          theCard;
-        std::string             name;
+        string             name;
         nodeType           cardtype;
         int                numberOfChildren, low, high, father, number;
-        std::vector<int>        children;
+        vector<int>        children;
         node::iterator     begin() { return children.begin(); };
         node::iterator     end()   { return children.end();   };
         node()  {};
     };
 
     
-    std::map<int, node>    nodes;
-    std::map<std::string, node> nodeMap;
-    std::vector<std::string>    stack;
-    std::list<int>         clause;
-    std::set<int>          ecrSet;
+    map<int, node>    nodes;
+    map<string, node> nodeMap;
+    vector<string>    stack;
+    list<int>         clause;
+    set<int>          ecrSet;
     
-    std::map<int, node> myMap;
-
+    map<int, node> myMap;
 %}
 
 newline   \n
@@ -129,7 +127,7 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
                             else
                                 if (theElement == elConstraint) {
                                     if (nodeMap.find(yytext)==nodeMap.end()) {
-                                        std::cerr << "Unknown feature " << std::setw(20) << yytext << " in constraints" << std::endl;
+                                        cerr << "Unknown feature " << setw(20) << yytext << " in constraints" << endl;
                                     }
                                     clause.push_back(nodeMap[yytext].number);
                                     ecrSet.insert(nodeMap[yytext].number);
@@ -137,9 +135,9 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
                         }
 \~{id}                  { beforeId = false;
                           if (theElement == elConstraint) {
-                              std::string aux = std::string(yytext, 1, strlen(yytext)-1);
+                              string aux = string(yytext, 1, strlen(yytext)-1);
                               if (nodeMap.find(aux)==nodeMap.end()) {
-                                  std::cerr << "Unknown feature " << std::setw(20) << aux << " in constraints" << std::endl;
+                                  cerr << "Unknown feature " << setw(20) << aux << " in constraints" << endl;
                               }
                               clause.push_back(-nodeMap[aux].number);
                               ecrSet.insert(-nodeMap[aux].number);
@@ -149,32 +147,30 @@ otherCard \[[0-9\*]+,[0-9\*]+\]
 {orCard}    {  theCard     =  orCard;  low = 1; high = -1;       }
 {xorCard}   {  theCard     =  xorCard; low = 1; high =  1;       }
 {otherCard} {  theCard     =  otherCard; 
-    std::string txt  =  std::string(yytext);
+    string txt  =  string(yytext);
     int coma    =  txt.find(',');
-    low         =  atoi(std::string(txt,1,coma-1).c_str());
-    high        =  atoi(std::string(txt, coma+1, txt.length() - coma - 2).c_str());
+    low         =  atoi(string(txt,1,coma-1).c_str());
+    high        =  atoi(string(txt, coma+1, txt.length() - coma - 2).c_str());
 }
-\({id}\)    {  lexeme = std::string(yytext,1, strlen(yytext)-2);  };
+\({id}\)    {  lexeme = string(yytext,1, strlen(yytext)-2);  };
 <<EOF>>     {  theElement = elEOF; return theElement; }
 .           {                                            };
 %%
 
-std::string newName() {
+string newName() {
     std::ostringstream ost;
     ost << "Aux_" << newcount++;
     return ost.str();
 }; 
 
-void scan(std::string filename) {
-    std::list<std::string> printStack;
-    std::map<int, std::string>     stack;
-    std::ifstream in(filename.c_str());
+void scan(string filename) {
+    list<string> printStack;
+    
+    map<int, string>     stack;
+    ifstream in(filename.c_str());
     FlexLexer* lexer = new yyFlexLexer(&in);
     node theNode;
-    // Needs to start at 1. 0 cannot be used
-    // for the root node, because -0 does not
-    // exist, so the root cannot be negated
-    int nodeCounter = startNode;
+    int nodeCounter = 0;
     element res = (element)(lexer->yylex());
     while (res != elTree && res != elEOF) {
         res = (element)(lexer->yylex());
@@ -183,11 +179,11 @@ void scan(std::string filename) {
         // Group nodes don't have a name
         if (lexeme == "") lexeme = newName();
         if (nodeMap.find(lexeme) != nodeMap.end()) {
-            std::string name;
+            string name;
             // The name is repeting, we have to differentiate it
             int myCount = 2;
             do {
-                std::ostringstream ost;
+                ostringstream ost;
                 ost << lexeme << "_" << myCount++;
                 name = ost.str();
             } while (nodeMap.find(name) != nodeMap.end());
@@ -225,7 +221,7 @@ void scan(std::string filename) {
         res = (element)(lexer->yylex());
         nodeCounter++;
     } // while (res == 1)
-    for(auto p : nodeMap) {
+    for(std::pair<const string, node>& p : nodeMap) {
         if (p.second.high == -1)
             p.second.high = p.second.children.size();
         nodes[p.second.number] = p.second;
@@ -247,7 +243,7 @@ void scan(std::string filename) {
    std::cerr << "Number of clauses " << clauses.size() << std::endl;
 }
 
-bool next_index(std::vector<int>& index, int top) {
+bool next_index(vector<int>& index, int top) {
     int size = index.size();
     for(int pos = size-1; pos > -1; pos--)
     if (index[pos] + size - pos < top) {
@@ -260,11 +256,11 @@ bool next_index(std::vector<int>& index, int top) {
 }
 
 void fillExpressions(int k) {
-    std::vector<int> oneClause;
+    vector<int> oneClause;
     if (nodes[k].cardtype != groupNode)
         varnames.push_back(nodes[k].name);
     //std::cerr << "k " << k << " name " << nodes[k].name << " low " << nodes[k].low << " high " << nodes[k].high  << std::endl;
-    if (k != startNode) { // 0 is the root, has no parent to imply
+    if (k != 0) { // 0 is the root, has no parent to imply
         // The child implies its parent
         if (nodes[k].cardtype != groupPartNode && nodes[k].cardtype != groupNode) {
             synExp *child2parent = makeOr(makeNot(new synSymbol(nodes[k].name)),
@@ -307,7 +303,7 @@ void fillExpressions(int k) {
             xorGroup = true;
         
         if (xorGroup) {
-            std::vector<synExp*> vXOR;
+            vector<synExp*> vXOR;
             for(int i : nodes[k].children)
                 vXOR.push_back(new synSymbol(nodes[i].name));
             synExp *parent2XOR = makeOr(makeNot(new synSymbol(nodes[nodes[k].father].name)),
@@ -316,7 +312,7 @@ void fillExpressions(int k) {
             expressions.push_back(parent2XOR);
         }
         if  (nodes[k].low > 0 && !xorGroup) {
-            std::vector<int> indices_low(nodes[k].children.size() - nodes[k].low + 1);
+            vector<int> indices_low(nodes[k].children.size() - nodes[k].low + 1);
             int counter = 0;
             // initialization of the indices
             for(int x = 0; x < indices_low.size(); x++) indices_low[x] = counter++;
@@ -334,7 +330,7 @@ void fillExpressions(int k) {
         // Let's go with the high, [atmost]
         if  (nodes[k].high != nodes[k].children.size() && !xorGroup) {
             // We have to form all the subsets of high+1 and add -k
-            std::vector<int> indices_high(nodes[k].high+1);
+            vector<int> indices_high(nodes[k].high+1);
             int counter = 0;
             for(int x = 0; x < indices_high.size(); x++) indices_high[x] = counter++;
             // we add the parent
@@ -351,24 +347,22 @@ void fillExpressions(int k) {
 }
 
 void fillExpressions() {
-    // The root is now 1, instead of 0
-    fillExpressions(startNode);
-    for(auto c : clauses) {
+    fillExpressions(0);
+    for(list<list<int> >::iterator ittl = clauses.begin(); ittl != clauses.end(); ittl++) {
         synExp* clause = synFalse;
-        for(auto lit : c) {
-            if (lit < 0)
-                clause = makeOr(clause, makeNot(new synSymbol(nodes[-lit].name)));
+        for(list<int>::iterator itl = ittl->begin(); itl != ittl->end(); itl++) {
+            if (*itl < 0)
+                clause = makeOr(clause, makeNot(new synSymbol(nodes[-*itl].name)));
             else
-                clause = makeOr(clause, new synSymbol(nodes[lit].name));
+                clause = makeOr(clause, new synSymbol(nodes[*itl].name));
         }
-        if (clause != synTrue)
-           expressions.push_back(clause);
+        expressions.push_back(clause);
     }
 }
 
-void printTree(std::string filename) {
-    std::ofstream tree(filename.c_str());
-    for(auto p : nodes) {
+void printTree(string filename) {
+    ofstream tree(filename.c_str());
+    for(std::pair<const int, node>& p : nodes) {
         tree << p.first << " " << p.second.name << " " << p.second.children.size() << " : ";
         for(int c : p.second.children)
             tree << c << " ";
@@ -376,26 +370,26 @@ void printTree(std::string filename) {
     }
 }
 
-void printExpressions(std::string expFile) {
-  std::ofstream fExpFile(expFile.c_str());
+void printExpressions(string expFile) {
+  ofstream fExpFile(expFile.c_str());
   for(synExp* exp : expressions)
     fExpFile << exp << std::endl;
   
 }
 
-void printVars(std::string varFile) {
-    std::ofstream fVarFile(varFile.c_str());
-    for(std::string var : varnames)
+void printVars(string varFile) {
+    ofstream fVarFile(varFile.c_str());
+    for(string var : varnames)
         fVarFile << var << " ";
         
     fVarFile << std::endl;
 }
 
-void printDIMACS(std::string dimacsFile) {
+void printDIMACS(string dimacsFile) {
     std::ofstream dimacs(dimacsFile);
-    std::unordered_map<std::string, int> varMap;
+    map<string, int> varMap;
     int c = 0;
-    for(std::string s : varnames)
+    for(string s : varnames)
         varMap[s] = c++;
         
     dimacs << "p cnf " <<  varnames.size() << " " << expressions.size() << std::endl;
@@ -406,33 +400,143 @@ void printDIMACS(std::string dimacsFile) {
         dimacs << "0" << std::endl;
     }
 }
+void    addSymbols2Table(std::vector<std::string> vars) {
+    for(std::string s : vars) {
+        configInfo *c = new configInfo();
+        c->setValue(new synSymbol(s));
+        c->setName(s);
+        c->setVartype("boolean");
+        symbolTable::addSymbol(s, c);
+    }
+}
 
+std::vector<synExp*> simplifyConstraints(std::vector<synExp*> pendingConstraints) {
+    bool changes;
+    std::vector<synExp*>  otherConstraints;
+    int counter = 1;
+    int numchanges = 0;
+    std::set<std::string> rep;
+    int setToTrue  = 0;
+    int setToFalse = 0;
+    std::cerr << "Simplify Constraints" << std::endl;
+    do {
+        changes     = false;
+        numchanges  = 0;
+        int counter = 1;
+        otherConstraints.clear();
+        for(synExp *e : pendingConstraints) {
+            bool simplified = false;
+            if (e->isSymbol()) {
+                // Constraint is a variable
+                std::string sn = e->getSymbol();
+                configInfo *w = symbolTable::getSymbol(sn);
+                if (w == NULL) {
+                    throw std::logic_error("Symbol "+sn+" not defined in symbol table\n");
+                }
+                synExp* wValue = w->getValue();
+                if (wValue != synTrue) {
+                    simplified = true;
+                    // If we have A and later not A or vice versa we may
+                    // flip A from true to false forever. So we check and
+                    // later we'll get an unsatisfiable set
+                    if (wValue != synTrue && wValue != synFalse) {
+                        setToTrue++;
+                        std::cerr << "1 We set var " << std::setw(20) << sn << " from "
+                        << std::setw(40)    << wValue   << " to true  "
+                        << " expression (" << counter << ") " << e << std::endl;
+                        numchanges++;
+                        w->setValue(synTrue);
+                        changes = true;
+                    }
+                    else if (wValue == synFalse) {
+                        std::cerr << "1 Var " << std::setw(20) << sn << " is true and false "
+                        << " in expression (" << counter << ") " << e << std::endl;
+                        exit(-1);
+                    }
+                    
+                }
+            }
+            else {
+                if (e->isNot() && e->first()->isSymbol()) {
+                    // Constraint is "not Variable"
+                    std::string sn = e->first()->getSymbol();
+                    varInfo *w = symbolTable::getSymbol(sn);
+                    synExp* wValue = w->getValue();
+                    if (wValue != synFalse) {
+                        simplified = true;
+                        if (wValue != synTrue && wValue != synFalse) {
+                            numchanges++;
+                            setToFalse++;
+                            std::cerr << "2 We set var " << std::setw(20) << sn << " from "
+                            << std::setw(40)    << wValue << " to false "
+                            << " expression (" << counter << ") " << e << std::endl;
+                            w->setValue(synFalse);
+                            changes = true;
+                        }
+                        else
+                        if (wValue == synTrue) {
+                            std::cerr << "2 Var " << std::setw(20) << sn << " is true and false "
+                            << " in expression (" << counter << ") " << e << std::endl;
+                            exit(-1);
+                        }
+                    }
+                }
+                
+                
+            }
+            // If simplified is true, expression was "x" or "not x"
+            // we want to keep those constraints, otherwise the variable
+            // would disappear and the model would be wrong.
+            
+            if (!e->isLiteral()) {
+                e = eval(e);
+            }
+            
+            counter++;
+
+            if (e != synTrue)
+            otherConstraints.push_back(e);
+        }
+        std::cerr << "Numchanges " << std::setw(7) << numchanges
+        << std::setw(7) << " otherConstraints " << otherConstraints.size() << std::endl;
+        pendingConstraints.clear();
+        pendingConstraints = otherConstraints;
+        rep.clear();
+    }
+    while (changes);
+    
+    
+    return pendingConstraints;
+}
+void printCTC(string ctcFile) {
+    
+}
 int main(int argc, char** argv) {
     long start = get_cpu_time();
 
     int paramCounter = 1;
-    if (argc > 1 and (std::string(argv[paramCounter]) == "-use-XOR")) {
+    if (argc > 1 and (string(argv[paramCounter]) == "-use-XOR")) {
         useXOR = true;
         paramCounter++;
     }
     if ((argc - paramCounter) != 1) {
-        std::cerr << "Usage : " << argv[0] << " [-use-XOR] <filename>" << std::endl;
+        cerr << "Usage : " << argv[0] << " [-use-XOR] <filename>" << endl;
         exit(-1);
     }
-    std::string inputfile = argv[paramCounter];
+    string inputfile = argv[paramCounter];
     scan(inputfile);
 
     // The root has to be in
-    expressions.push_back(new synSymbol(nodes[startNode].name));
+    expressions.push_back(new synSymbol(nodes[0].name));
     fillExpressions();
     addSymbols2Table(varnames);
     expressions = simplifyConstraints(expressions);
     size_t t = inputfile.find('.');
-    std::string basename   = std::string(inputfile, 0, t);
-    std::string varFile    = basename + ".var";
-    std::string expFile    = basename + ".exp";
-    std::string treeFile   = basename + ".tree";
-    std::string dimacsFile = basename + ".dimacs";
+    string basename   = string(inputfile, 0, t);
+    string varFile    = basename + ".var";
+    string expFile    = basename + ".exp";
+    string treeFile   = basename + ".tree";
+    string dimacsFile = basename + ".dimacs";
     printTree(treeFile);
     printExpressions(expFile);
     printVars(varFile);
