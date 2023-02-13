@@ -13,180 +13,232 @@
 #include <algorithm>
 #include <string>
 #include <set>
-#include <unordered_set>
 #include <list>
 #include <vector>
 #include <sstream>
 #include <iomanip>
 #include <limits>
 #include <math.h>
-#include <execinfo.h>
-#include <signal.h>
-#include <unordered_map>
-#include <cxxabi.h>
-#include <sys/wait.h>
-#include <unistd.h>
-//#include <sys/prctl.h>
+#include "symbolTable.hpp"
 
-class synExp;
-
-typedef std::vector<int>                     vint;
-typedef std::unordered_set<std::string>      sstring;
-typedef std::unordered_map<std::string, int> String2Int;
-typedef std::vector<synExp*>                 vSynExp;
-typedef std::unordered_map<std::string, synExp*> SubMap;
-
-enum synExpT    { synExp_Const,
-                  synExp_Symbol,
-                  synExp_Compound,
-                  synExp_XOR,
-                  synExp_String,
-                  synExp_Unknown,
-                  synExp_Comment,
-                  synExp_Macro
-};
-enum synConstsT { synConst_false,
-                  synConst_module,
-                  synConst_true
-};
-enum synOp      { synNot,
-                  synAnd,
-                  synOr,
-                  synImplies,
-                  synIfThenElse,
-                  synEqual,
-                  synXor
-};
-typedef std::set<synOp> SetSynOp;
+enum synExpT    { synExp_Const,   synExp_Symbol,   synExp_Compound, synExp_XOR, synExp_String, synExp_Unknown };
+enum synConstsT { synConst_false, synConst_module, synConst_true                                         };
+enum synOp      { synNot, synAnd, synOr, synImplies, synIfThenElse, synEqual, synXor                             };
 
 class synExp {
     
     public:
-    //static void showRemaining();
-    static void flattenAnd(synExp* exp, std::unordered_set<synExp*>& ss);
-    static void flattenOr(synExp* exp, std::unordered_set<synExp*>& ss);
-    synExp() {
-        mySymbols = NULL;
-#ifdef _DEBUG_
-    //store[this] = getStackTrace();
-#endif
-    }
-  
-#ifdef _DEBUG_
     
-//    std::string getStackTrace() {
-//        std::ostringstream ost;
-//        void *trace[30];
-//        char **messages = (char **)NULL;
-//        size_t size;
-//        int i = 0;
-//
-//        // get void*'s for all entries on the stack
-//        size = backtrace(trace, 30);
-//
-//        messages = backtrace_symbols(trace, size);
-//          /* skip first stack frame (points here) */
-//        int num;
-//        std::string file;
-//        std::string addr;
-//        std::string symbol;
-//        std::string plus;
-//        int offset = 0;
-//        int status = 0;
-//          for (i=0; i<size; ++i)
-//          {
-//              std::istringstream ist(messages[i]);
-//              ist >> num >> file >> addr >> symbol >> plus >> offset;
-//              char *demangled = abi::__cxa_demangle(symbol.c_str(), 0, 0, &status);
-//
-//              ost << num << " " << file << " ";
-//              if (demangled)
-//                  ost << demangled;
-//
-//              ost << "+" << offset <<  std::endl;
-//          }
-//        return ost.str();
-//        }
-#endif
-    //bool operator<(const synExp& a, const synExp& b);
-    virtual void                       printExpresion();
-    virtual synExpT                    get_type()          const;
-    virtual const std::string          get_string()        const;
-    virtual std::string                getSymbol()         const;
-    virtual std::string                getComment()        const;
-    virtual std::string                getMacro()          const;
-    virtual synOp                      get_op()            const;
-    virtual synExp*                    first()             const;
-    virtual synExp*                    second()            const;
-    virtual synExp*                    third()             const;
-    virtual vSynExp                    get_parms()         const;
-    virtual const SetSynOp&            giveOps()           const;
-    virtual bool                       isCompound()        const;
-    virtual bool                       isOr()              const;
-    virtual bool                       isAnd()             const;
-    virtual bool                       isNot()             const;
-    virtual bool                       isImplies()         const;
-    virtual bool                       isIf()              const;
-    virtual bool                       isEqual()           const;
-    virtual bool                       isSymbol()          const;
-    virtual bool                       isLiteral()         const;
-    bool                               isDisjunctionOfLiterals() const;
-    virtual bool                       isXOR()             const;
-    virtual bool                       isConst()           const;
-    virtual bool                       isString()          const;
-    virtual bool                       isUnknown()         const;
-    virtual bool                       isComment()         const;
-    virtual bool                       isMacro()           const;
-    // Does the formula contain the mod constant?
-    virtual bool                       hasConstantModule() const;
-    virtual synExp*                    copy_exp();
-    virtual void                       destroy();
-    virtual void                       computeSymbols(sstring *ss);
-    virtual int                        opPriority()        const;
-    void                               deleteSymbols();
-    void                               setSymbols(sstring*ss);
-    const sstring&                     giveSymbols();
-    const std::unordered_set<int>&     giveSymbolIndices() const;
-    void                               computeIndices(String2Int& m);
-    friend  std::ostream&              operator<<(std::ostream& os, synExp* ps);
-    friend  bool                       equal(synExp *e1, synExp *e2);
-     
-    int                                giveMax(const vint& var2pos) const;
-    int                                giveMaxInd(const vint& q)    const;
-    int                                giveMinInd(const vint& q)    const;
-    int                                giveMin(const vint& var2pos) const;
-    int                                getMax()                     const;
-    int                                getMin()                     const;
-    int                                getSmartSpan()               const;
-    void                               setSmartSpan(int n);
-    int                                getLCA()                     const;
-    float                              getScore()                   const;
-    void                               computeMaxMin(const vint& var2pos);
-    void                               setScore(double x);
-    int                                computeSpan(const vint& var2pos) const;
-    void                               setLCA(int x);
-    void                               thisOneIsProcessed();
-    static void                        numVars(int s);
-    virtual vint                       toDimacs(String2Int& theMap);
-    std::list<synExp *>                Tseitin(int& varnum);
-    std::list<synExp*>                 Tseitin_rec(synExp* e, int& varnum);
-    virtual synExp*                    substitute(SubMap& map);
-    virtual void                       print(std::ostream& os) const;
-    virtual                           ~synExp();
+    synExp() { mySymbols = NULL; }
+    
+        //virtual ~synExp() { std::cerr << "In destructor " << this << std::endl;};
+        virtual synExpT                         get_type()          const                   = 0;
+        virtual std::string                     get_string()        const { return "";           }
+        virtual std::string                     getSymbol()         const {
+            throw std::logic_error("Error accessing getSymbol in wrong object.\n");
+            int *p = NULL;
+            std::cerr << *p << std::endl;
+            exit(-1);
+            return "";
+        }
+        virtual synOp                           get_op()            const {
+            std::ostringstream ost;
+            ost << "Error accessing getOp in wrong object:" << this << std::endl;
+            throw std::logic_error(ost.str());
+        }
+        virtual synExp*                         first()             const {
+            return NULL;
+        }
+        virtual synExp*                         second()            const {
+            return NULL;
+        }
+        virtual synExp*                         third()             const {
+            return NULL;
+        }
+        virtual std::vector<synExp*>           get_parms()          const  {
+            throw (std::logic_error("Error accesing get_parms in wrong object"));
+        }
+
+        virtual const std::set<synOp>&          giveOps()           const   {
+            std::cerr << "Error accesing giveOps in wrong object: " << this << std::endl;
+            int *p = NULL;
+            std::cerr << *p << std::endl;
+            exit(-1);
+        }
+        virtual bool    isOr()       { return false; }
+        virtual bool    isAnd()      { return false; }
+        virtual bool    isNot()      { return false; }
+        virtual bool    isImplies()  { return false; }
+        virtual bool    isIf()       { return false; }
+        virtual bool    isEqual()    { return false; }
+        virtual bool    isSymbol()   { return false; }
+        virtual bool    isLiteral()  { return false; }
+        virtual bool    isXOR()      { return false; }
+        virtual bool    isConst()    { return false; }
+        virtual bool    isString()   { return false; }
+        virtual bool    isUnknown()  { return false; }
+
+    
+        virtual synExp* copy_exp() {
+            throw std::logic_error("Calling copy_exp in base class synExp\n");
+        }
+    
+        virtual void    destroy() {
+            throw std::logic_error("Calling destroy in base class synExp\n");
+        }
+        void deleteSymbols() {
+            if (mySymbols != NULL) {
+                mySymbols->clear();
+                delete mySymbols;
+                mySymbols = NULL;
+            }
+        }
+        //void addModules() { mySymbols.insert("MODULES"); }
+        void setSymbols(std::set<std::string>*ss) { mySymbols = ss; };
+        const std::set<std::string>&            giveSymbols()       {
+            if (mySymbols == NULL) {
+                mySymbols = new std::set<std::string>();
+                computeSymbols(mySymbols);
+            }
+            return *mySymbols;
+        }
+        virtual void computeSymbols(std::set<std::string> *ss) {};
+        const std::set<int>&                    giveSymbolIndices() const { return myIndices;    }
+        virtual int                             opPriority()        const  { return 0;  }
+        void                                    computeIndices(std::map<std::string, int>& m) {
+                                                    myIndices.clear();
+                                                    for(const std::string & s : giveSymbols()) {
+                                                        try {
+                                                        myIndices.insert(m.at(s));
+                                                        }
+                                                        catch(std::exception e) {
+                                                            std::ostringstream ost;
+                                                            ost << "Error looking for key *" << s << "* in varMap. Expression " << this << std::endl;
+                                                            throw std::logic_error(ost.str());
+                                                        }
+                                                    }
+                                                }
+
+        friend  std::ostream&          operator<<(std::ostream& os, synExp* ps);
+        friend  bool                   equal(synExp *e1, synExp *e2);
+    
+    template <class Q>
+        int giveMax(const Q& var2pos) const {
+        int pos;
+        int max = -1;
+        for(int x : giveSymbolIndices()) {
+            if ((pos = var2pos.at(x)) > max) {
+                    max = pos;
+                }
+        }
+        return max;
+    }
+    template <class Q>
+    int giveMaxInd(const Q& q) const {
+        int pos, ind = -1;
+        int max = -1;
+        for(int x : giveSymbolIndices()) {
+            if ((pos = q.at(x)) > max) {
+                max = pos;
+                ind = x;
+            }
+        }
+        return ind;
+    }
+
+    template <class Q>
+    int giveMinInd(const Q& q) const {
+        int pos, ind = -1;
+        int min = std::numeric_limits<int>::max();
+        for(int x : giveSymbolIndices()) {
+            if ((pos = q.at(x)) < min) {
+                min = pos;
+                ind = x;
+            }
+        }
+        return ind;
+    }
+
+    template <class Q>
+    int giveMin(const Q& var2pos) const {
+        int pos;
+        int min = std::numeric_limits<int>::max();
+        for(int x : giveSymbolIndices()) {
+            if ((pos = var2pos.at(x)) < min) {
+                    min = pos;
+            }
+        }
+        return min;
+    }
+    
+    int   getMax()   const { return max;   }
+    int   getMin()   const { return min;   }
+    int   getLCA()   const { return lca;   }
+    float getScore() const { return score; }
+    
+    template <class Q>   void computeMaxMin(const Q& var2pos) {
+        max = giveMax(var2pos);
+        min = giveMin(var2pos);
+        if (min > max) {
+            std::ostringstream ost;
+            ost << "Min is bigger than max in " << this << std::endl;
+            throw std::logic_error(ost.str());
+        }
+    }
+    
+    template <class O>   void computeScore(const O& o) {
+        score = 0;
+        for(int x = min; x <= max; x++) 
+            score += weights[x];
+               return;
+        //if (max != min)
+        //    score = score / (max - min + 1);
+        
+        //score = log(score)/2.0 + (max - min)/2.0;
+        //score += max - min;
+    }
+
+    void setScore(double x) { score = x;}
+    
+    template <class O>   int computeSpan(const O& var2pos) const {
+        int smin = std::numeric_limits<int>::max();
+        int smax = -1;
+        for(int i : myIndices) {
+            if (var2pos[i] < smin) smin = var2pos[i];
+            if (var2pos[i] > smax) smax = var2pos[i];
+        }
+        return smax - smin;
+    }
+   
+    
+
+    void setLCA(int x) { lca = x; }
+    
+    void thisOneIsProcessed() {
+        for(int index : myIndices)
+            weights[index]++;
+      
+        return;
+    }
+
+    static void numVars(int s) {
+        ocSoFar.resize(s);
+        weights.resize(s);
+    }
+    virtual std::vector<int>    toDimacs(std::map<std::string, int>& theMap);
+    virtual void print(std::ostream& os) const;
+
+    virtual ~synExp() {
+        deleteSymbols();
+        myIndices.clear();
+    };
 
 protected:
-    
-#ifdef _DEBUG_
-    //static std::unordered_map<synExp*, std::string> store;
-#endif
-    bool   tristate;
-    static vint ocSoFar;
-    static vint weights;
-    static String2Int string2int;
-    static std::unordered_map<int, std::string> int2string;
-    sstring *mySymbols;
-    std::unordered_set<int>         myIndices;
-    int max, min, lca, smartspan;
+    static std::vector<int> ocSoFar;
+    static std::vector<int> weights;
+    std::set<std::string> *mySymbols;
+    std::set<int>         myIndices;
+    int max, min, lca;
     float score;
 
 };
@@ -196,40 +248,56 @@ extern synExp *synTrue;
 extern synExp *synModule;
 extern synExp *synFalse;
 synExp *makeAnd(synExp* e1, synExp* e2);
-synExp *makeAnd(std::vector<synExp*>& s);
-synExp *makeOr(synExp* e1, synExp* e2, bool assumeBool = false);
-synExp *makeOr(std::vector<synExp*>& s);
+synExp *makeOr(synExp* e1, synExp* e2);
 synExp *makeNot(synExp* e1);
 synExp *makeImplies(synExp* e1, synExp* e2);
-synExp *makeIfThenElse(synExp* e1, synExp* e2, synExp* e3, bool assumeBool = false);
-synExp *makeEqual(synExp* e1, synExp* e2, bool assumeBool = false);
-
-synExp *makeXOR(vSynExp& v);
+synExp *makeIfThenElse(synExp* e1, synExp* e2, synExp* e3);
+synExp *makeEqual(synExp* e1, synExp* e2);
+synExp *makeXOR(std::vector<synExp*> v);
 std::list<synExp *> expandImplication(synExp* e);
 std::list<synExp *> toCNF(synExp* e);
 
 
 class synConst : public synExp {
 public:
-    synConst();
-    static synConst*       getSynFalse();
-    static synConst*       getSynModule();
-    static synConst*       getSynTrue();
-    static void            delConst();
-           bool            isConst()           const;
-           synExp*         copy_exp();
-           void            destroy();
-           bool            hasConstantModule() const;
-           synOp           get_op()            const;
-           const SetSynOp& giveOps()           const;
-           int             opPriority()        const;
-           synExpT         get_type()          const;
-           synConstsT      get_const()         const;
-           synExp*         substitute(SubMap& map);
+    synConst() : synExp() {};
+    static synConst*       getSynFalse()  {
+        if (!syncFalse)  syncFalse  = new synConst(synConst_false);  return syncFalse;
+        }
+    static synConst*       getSynModule() {
+            if (!syncModule) syncModule = new synConst(synConst_module); return syncModule;
+        }
+    static synConst*       getSynTrue()   {
+        if (!syncTrue)   syncTrue   = new synConst(synConst_true);   return syncTrue;
+        }
+    
+    bool    isConst()    { return true; }
+    synOp                           get_op()            const {
+        std::ostringstream ost;
+        ost << "Error accessing getOp in synConst:" << this << std::endl;
+        throw std::logic_error(ost.str());
+    }
+    
+    static void delConst() {
+        delete synTrue;
+        delete synFalse;
+        delete synModule;
+    }
+    synExpT                         get_type()              const { return synExp_Const; }
+    synConstsT                      get_const()             const { return theConst;     }
+  
+    const std::set<synOp>&          giveOps()               const { return myOps;        }
+    int                             opPriority()            const { return 1;            }
+    synExp* copy_exp();
+
+    void destroy();
+ 
+
 
 private:
+    
 
-    SetSynOp  myOps;
+    std::set<synOp>       myOps;
     static synConst *syncTrue, *syncFalse, *syncModule;
     synConst(synConstsT oneConst) : theConst(oneConst) {};
     synConstsT theConst;
@@ -238,30 +306,42 @@ private:
 };
 
 
+
 class synSymbol : public synExp {
 public:
-    synSymbol(int num);
-    synSymbol(const std::string& s);
-    synExpT                         get_type()          const;
-    std::string                     getSymbol()         const;
-    const SetSynOp&                 giveOps()           const;
-    int                             opPriority()        const;
-    bool                            isLiteral()         const;
-    bool                            isSymbol()          const;
-    virtual vint                    toDimacs(String2Int& theMap);
-    virtual synExp*                 copy_exp();
-    void                            computeSymbols(sstring* ss);
-    virtual synOp                   get_op()            const;
-    void                            destroy();
-    synExp*                         substitute(SubMap& map);
+    
+                                    synSymbol(std::string s) : synExp() {
+                                        name = s;
+                                    }
+    synExpT                         get_type()          const   { return synExp_Symbol;           }
+    std::string                     getSymbol()         const   { return name;                    }
+    const std::set<synOp>&          giveOps()           const   { return myOps;                   }
+    int                             opPriority()        const   { return 1;                       }
+    bool                            isLiteral()                 { return true;                    }
+    bool                            isSymbol()                  { return true;                    }
+    virtual std::vector<int>        toDimacs(std::map<std::string, int>& theMap);
+    synExp* copy_exp();
+    void computeSymbols(std::set<std::string>* ss) {
+        ss->insert(name);
+    };
+    virtual synOp                           get_op()            const {
+        std::ostringstream ost;
+        ost << "Error accessing getOp in synSymbol:" << this << ", "
+                    << (synExp*) this << std::endl;
+        throw std::logic_error(ost.str());
+    }
+    void    destroy();
+    //void    clear() { mySymbols.clear(); myIndices.clear(); myOps.clear(); }
 
-    ~synSymbol();
+    ~synSymbol() {
+        myOps.clear();
+    };
+
     
 private:
     
-    int                   mapNum;
-    SetSynOp              myOps;
-    bool                  tristate;
+    std::string           name;
+    std::set<synOp>       myOps;
 
     
     void print(std::ostream& os) const;
@@ -271,43 +351,74 @@ private:
 
 class synCompound : public synExp {
 public:
-    synCompound(synOp op,
-                synExp *e1,
-                synExp *e2 = synFalse,
-                synExp *e3 = synFalse);
-    int                             opPriority()          const;
-    synExpT                         get_type()            const;
-    synOp                           get_op()              const;
-    synExp                          *first()              const;
-    synExp                          *second()             const;
-    synExp                          *third()              const;
-    const SetSynOp&                 giveOps()             const;
-    bool                            isCompound()          const;
-    bool                            isOr()                const;
-    bool                            isAnd()               const;
-    bool                            isNot()               const;
-    bool                            isImplies()           const;
-    bool                            isIf()                const;
-    bool                            isEqual()             const;
-    bool                            isLiteral()           const;
-    bool                            hasConstantModule()   const;
-    void                            setFirst(synExp* f);
-    void                            setSecond(synExp* s);
-    void                            setThird(synExp* t);
-    friend std::ostream& operator<<(std::ostream& os, synCompound* ps);
-    synExp*                         copy_exp();
-    void                            computeSymbols(sstring* ss);
-    void                            destroy();
-    synExp*                         substitute(SubMap& map);
+    synCompound(synOp op, synExp *e1, synExp *e2 = synFalse, synExp *e3 = synFalse) : synExp(), Cop(op), Ce1(e1), Ce2(e2), Ce3(e3)   {
+        myOps.insert(op);
+        if (e1->get_type() == synExp_Compound) {
+            myOps.insert(e1->giveOps().begin(), e1->giveOps().end());
+        }
+        if (e2->get_type() == synExp_Compound) {
+            myOps.insert(e2->giveOps().begin(), e2->giveOps().end());
+        }
+        if (e3->get_type() == synExp_Compound) {
+            myOps.insert(e3->giveOps().begin(), e3->giveOps().end());
+        }
+        if (e1->isXOR() || e2->isXOR() || e3->isXOR()) {
+            myOps.insert(synXor);
+        }        
+    }
+    int     opPriority() const  {
+        switch(Cop) {
+            case synNot        : return  3;
+            case synXor        : return  3;
+            case synAnd        : return  4;
+            case synOr         : return  4;
+            case synImplies    : return  7;
+            case synIfThenElse : return  8;
+            case synEqual      : return  2;
+            }
+        return 0;
+    }
 
-    ~synCompound();
+    synExpT                         get_type()          const   { return synExp_Compound;   }
+    synOp                           get_op()            const   { return Cop;               }
+    synExp                          *first()            const   { return Ce1;               }
+    synExp                          *second()           const   { return Ce2;               }
+    synExp                          *third()            const   { return Ce3;               }
+    const std::set<synOp>&          giveOps()           const   { return myOps;             }
+
+    
+
+    friend std::ostream& operator<<(std::ostream& os, synCompound* ps);
+    bool                            isOr()                        { return Cop == synOr         ;}
+    bool                            isAnd()                       { return Cop == synAnd        ;}
+    bool                            isNot()                       { return Cop == synNot        ;}
+    bool                            isImplies()                   { return Cop == synImplies    ;}
+    bool                            isIf()                        { return Cop == synIfThenElse ;}
+    bool                            isEqual()                     { return Cop == synEqual      ;}
+
+    bool                            isLiteral()                   { return Cop == synNot &&
+                                                                Ce1->get_type() == synExp_Symbol; }
+    synExp* copy_exp();
+    void computeSymbols(std::set<std::string>* ss) {
+        Ce1->computeSymbols(ss);
+        Ce2->computeSymbols(ss);
+        Ce3->computeSymbols(ss);
+    };
+    
+    void    destroy();
+    //void    clear() { mySymbols.clear(); myIndices.clear(); myOps.clear(); }
+
+    ~synCompound() {
+        myOps.clear();
+    };
 
 private:
     
-    SetSynOp  myOps;
-    synOp   Cop;
+    std::set<synOp>       myOps;
+
+    synOp Cop;
     synExp *Ce1, *Ce2, *Ce3;
-    void    print(std::ostream& os) const;
+    void print(std::ostream& os) const;
     friend  bool equal(synExp *e1, synExp *e2);
 
 };
@@ -315,51 +426,65 @@ private:
 class synXOR : public synExp {
 public:
     
-    synXOR(vSynExp v);
-    synExpT                         get_type()          const;
-    vSynExp                         get_parms()         const;
-    void                            set_parms(vSynExp& w);
-    void                            clear_parms();
-    int                             opPriority()        const;
-    bool                            isXOR()             const;
-    const SetSynOp&                 giveOps()           const;
-    void print(std::ostream& os)                        const;
+    synXOR(std::vector<synExp*> v) : v(v) { myOps.insert(synXor); };
+    synExpT                         get_type()          const   { return synExp_XOR;   }
+    std::vector<synExp*>            get_parms()         const   { return v;            }
+    int                             opPriority()        const   { return 4;            }
+    bool    isXOR()                                             { return true; }
+    const std::set<synOp>&          giveOps()           const   { return myOps;                   }
+
+    void print(std::ostream& os) const;
     friend std::ostream& operator<<(std::ostream& os, synXOR* ps);
-    void                            destroy();
-    void                            computeSymbols(sstring* ss);
-    virtual synOp                   get_op()            const;
-    synExp*                         copy_exp();
-    bool                            hasConstantModule() const;
-    synExp*                         substitute(SubMap& map);
+    void    destroy();
+    void computeSymbols(std::set<std::string>* ss) {
+        for(synExp* s : v)
+            s->computeSymbols(ss);
+    }
+    virtual synOp                           get_op()            const {
+        std::ostringstream ost;
+        ost << "Error accessing getOp in XOR:" << this << std::endl;
+        throw std::logic_error(ost.str());
+    }
+    synExp* copy_exp();
 
     
 private:
-    vSynExp v;
-    SetSynOp       myOps;
+    std::vector<synExp*> v;
+    std::set<synOp>       myOps;
 
 };
 
 
 class synString : public synExp {
 public:
-    synString(const std::string& s);
-    bool                            isString()          const;
-    synExpT                         get_type()          const;
-    const std::string               get_string()        const;
-    synExp*                         eval();
-    int                             opPriority()        const;
-    const SetSynOp&                 giveOps()           const;
-    synOp                           get_op()            const;
-    synExp*                         copy_exp();
-    synExp*                         substitute(SubMap& map);
-    ~synString();
-    friend std::ostream& operator<<(std::ostream& os, synString* ps);
-
-private:
     
-    SetSynOp       myOps;
-    std::string     st;
-    void    print(std::ostream& os) const;
+                                    synString(std::string s) : synExp(), st(s)     {
+                                    };
+    bool                            isString()                { return true; }
+    synExpT                         get_type()          const { return synExp_String;   }
+    std::string                     get_string()        const { return st;              }
+    synExp*                         eval()                    { return this;            }
+    int                             opPriority()        const { return 1;               }
+    const std::set<synOp>&          giveOps()           const { return myOps;           }
+
+    synOp                           get_op()            const {
+        std::ostringstream ost;
+        ost << "Error accessing getOp in synString:" << st << std::endl;
+        throw std::logic_error(ost.str());
+    }
+    friend std::ostream& operator<<(std::ostream& os, synString* ps);
+    synExp* copy_exp();
+    //void    clear() { mySymbols.clear(); myIndices.clear(); myOps.clear(); }
+
+    ~synString() {
+        myOps.clear();
+    };
+
+    
+private:
+    std::set<synOp>       myOps;
+    std::string st;
+    void print(std::ostream& os) const;
     void    destroy();
 
 };
@@ -367,73 +492,33 @@ private:
 class synUnknown : public synExp {
 public:
     
-    synUnknown(const std::string& s);
-    synExpT                         get_type()          const;
-    const std::string               get_string()        const;
-    synExp*                         eval();
-    int                             opPriority()        const;
-    const SetSynOp&                 giveOps()           const;
-    bool                            isUnknown()         const;
-    synOp                           get_op()            const;
-    synExp*                         copy_exp();
-    void computeSymbols(sstring *ss);
-    synExp*                         substitute(SubMap& map);
-    virtual synExp*                 first()             const;
-    ~synUnknown();
+    synUnknown(std::string s) : synExp(), st(s)     {};
+    synExpT                         get_type()          const { return synExp_Unknown;   }
+    std::string                     get_string()        const { return st;              }
+    synExp*                         eval()                    { return this;            }
+    int                             opPriority()        const { return 1;               }
+    const std::set<synOp>&          giveOps()           const { return myOps;           }
+    bool                            isUnknown()               { return true; }
+    synOp                           get_op()            const {
+        std::ostringstream ost;
+        ost << "Error accessing getOp in synUnknown:" << st << std::endl;
+        throw std::logic_error(ost.str());
+    }
+    synExp* copy_exp();
+
+    ~synUnknown() {
+        myOps.clear();
+    };
+
     
 private:
-    SetSynOp       myOps;
+    std::set<synOp>       myOps;
     std::string st;
-    void print(std::ostream& os) const;
     void    destroy();
 
 };
 
-class synComment : public synExp {
-public:
-    synComment(const std::string& s);
-    synExpT                         get_type()          const;
-    std::string                     getComment()        const;
-    bool                            isComment()         const;
-    vint                            toDimacs(String2Int& theMap);
-    friend std::ostream& operator<<(std::ostream& os, synComment* ps);
-    int                             opPriority()        const;
-    const SetSynOp&                 giveOps()           const;
-    synOp                           get_op()            const;
-    synExp* copy_exp();
-    synExp*                         substitute(SubMap& map);
 
-    ~synComment();
-    
-    private:
-        SetSynOp       myOps;
-        std::string comment;
-        void print(std::ostream& os) const;
-        void destroy();
 
-};
-
-class synMacro : public synExp {
-public:
-    synMacro(const std::string& s);
-    synExpT                         get_type()          const;
-    std::string                     getMacro()          const;
-    bool                            isMacro()           const;
-    vint                            toDimacs(String2Int& theMap);
-    friend std::ostream& operator<<(std::ostream& os, synComment* ps);
-    int                             opPriority()        const;
-    const SetSynOp&                 giveOps()           const;
-    synOp                           get_op()            const;
-    synExp*                         copy_exp();
-    synExp*                         substitute(SubMap& map);
-
-    ~synMacro();
-    
-    private:
-        SetSynOp       myOps;
-        std::string macro;
-        void print(std::ostream& os) const;
-        void destroy();
-};
 
 #endif /* defined(__myKconf__synExp__) */
